@@ -29,27 +29,27 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainDialog));
-            this.tabControl = new System.Windows.Forms.TabControl();
+            this.main_tab = new System.Windows.Forms.TabControl();
             this.tab_local = new System.Windows.Forms.TabPage();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
-            this.button7 = new System.Windows.Forms.Button();
-            this.checkBox8 = new System.Windows.Forms.CheckBox();
-            this.checkBox7 = new System.Windows.Forms.CheckBox();
-            this.checkBox6 = new System.Windows.Forms.CheckBox();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.crashed_if_unresponsive = new System.Windows.Forms.CheckBox();
+            this.screenshot_button = new System.Windows.Forms.Button();
+            this.screenshot_on_crash = new System.Windows.Forms.CheckBox();
+            this.verbose_logging = new System.Windows.Forms.CheckBox();
+            this.start_with_windows = new System.Windows.Forms.CheckBox();
+            this.watch_button = new System.Windows.Forms.Button();
+            this.crash_script_button = new System.Windows.Forms.Button();
+            this.app_path_button = new System.Windows.Forms.Button();
+            this.crash_script_path = new System.Windows.Forms.TextBox();
+            this.crash_script_label = new System.Windows.Forms.Label();
+            this.metrics = new System.Windows.Forms.CheckBox();
+            this.maximize = new System.Windows.Forms.CheckBox();
+            this.always_on_top = new System.Windows.Forms.CheckBox();
+            this.time_delay = new System.Windows.Forms.TextBox();
+            this.time_delay_label = new System.Windows.Forms.Label();
+            this.cmd_line = new System.Windows.Forms.TextBox();
+            this.cmd_line_label = new System.Windows.Forms.Label();
+            this.app_path_label = new System.Windows.Forms.Label();
+            this.app_path = new System.Windows.Forms.TextBox();
             this.remote = new System.Windows.Forms.TabPage();
             this.label1 = new System.Windows.Forms.Label();
             this.checkBox5 = new System.Windows.Forms.CheckBox();
@@ -76,7 +76,7 @@
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.status_strip = new System.Windows.Forms.StatusStrip();
             this.status = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tabControl.SuspendLayout();
+            this.main_tab.SuspendLayout();
             this.tab_local.SuspendLayout();
             this.remote.SuspendLayout();
             this.log.SuspendLayout();
@@ -84,42 +84,42 @@
             this.status_strip.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tabControl
+            // main_tab
             // 
-            this.tabControl.Controls.Add(this.tab_local);
-            this.tabControl.Controls.Add(this.remote);
-            this.tabControl.Controls.Add(this.log);
-            this.tabControl.Controls.Add(this.about);
-            this.tabControl.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tabControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tabControl.Location = new System.Drawing.Point(0, 0);
-            this.tabControl.Multiline = true;
-            this.tabControl.Name = "tabControl";
-            this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(384, 336);
-            this.tabControl.TabIndex = 0;
+            this.main_tab.Controls.Add(this.tab_local);
+            this.main_tab.Controls.Add(this.remote);
+            this.main_tab.Controls.Add(this.log);
+            this.main_tab.Controls.Add(this.about);
+            this.main_tab.Dock = System.Windows.Forms.DockStyle.Top;
+            this.main_tab.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.main_tab.Location = new System.Drawing.Point(0, 0);
+            this.main_tab.Multiline = true;
+            this.main_tab.Name = "main_tab";
+            this.main_tab.SelectedIndex = 0;
+            this.main_tab.Size = new System.Drawing.Size(384, 336);
+            this.main_tab.TabIndex = 0;
             // 
             // tab_local
             // 
-            this.tab_local.Controls.Add(this.checkBox4);
-            this.tab_local.Controls.Add(this.button7);
-            this.tab_local.Controls.Add(this.checkBox8);
-            this.tab_local.Controls.Add(this.checkBox7);
-            this.tab_local.Controls.Add(this.checkBox6);
-            this.tab_local.Controls.Add(this.button6);
-            this.tab_local.Controls.Add(this.button2);
-            this.tab_local.Controls.Add(this.button1);
-            this.tab_local.Controls.Add(this.textBox4);
-            this.tab_local.Controls.Add(this.label5);
-            this.tab_local.Controls.Add(this.checkBox3);
-            this.tab_local.Controls.Add(this.checkBox2);
-            this.tab_local.Controls.Add(this.checkBox1);
-            this.tab_local.Controls.Add(this.textBox3);
-            this.tab_local.Controls.Add(this.label4);
-            this.tab_local.Controls.Add(this.textBox2);
-            this.tab_local.Controls.Add(this.label3);
-            this.tab_local.Controls.Add(this.label2);
-            this.tab_local.Controls.Add(this.textBox1);
+            this.tab_local.Controls.Add(this.crashed_if_unresponsive);
+            this.tab_local.Controls.Add(this.screenshot_button);
+            this.tab_local.Controls.Add(this.screenshot_on_crash);
+            this.tab_local.Controls.Add(this.verbose_logging);
+            this.tab_local.Controls.Add(this.start_with_windows);
+            this.tab_local.Controls.Add(this.watch_button);
+            this.tab_local.Controls.Add(this.crash_script_button);
+            this.tab_local.Controls.Add(this.app_path_button);
+            this.tab_local.Controls.Add(this.crash_script_path);
+            this.tab_local.Controls.Add(this.crash_script_label);
+            this.tab_local.Controls.Add(this.metrics);
+            this.tab_local.Controls.Add(this.maximize);
+            this.tab_local.Controls.Add(this.always_on_top);
+            this.tab_local.Controls.Add(this.time_delay);
+            this.tab_local.Controls.Add(this.time_delay_label);
+            this.tab_local.Controls.Add(this.cmd_line);
+            this.tab_local.Controls.Add(this.cmd_line_label);
+            this.tab_local.Controls.Add(this.app_path_label);
+            this.tab_local.Controls.Add(this.app_path);
             this.tab_local.Location = new System.Drawing.Point(4, 22);
             this.tab_local.Name = "tab_local";
             this.tab_local.Padding = new System.Windows.Forms.Padding(3);
@@ -128,175 +128,175 @@
             this.tab_local.Text = "Local";
             this.tab_local.UseVisualStyleBackColor = true;
             // 
-            // checkBox4
+            // crashed_if_unresponsive
             // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(8, 220);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(172, 17);
-            this.checkBox4.TabIndex = 19;
-            this.checkBox4.Text = "Assume crash if not responsive";
-            this.checkBox4.UseVisualStyleBackColor = true;
+            this.crashed_if_unresponsive.AutoSize = true;
+            this.crashed_if_unresponsive.Location = new System.Drawing.Point(8, 220);
+            this.crashed_if_unresponsive.Name = "crashed_if_unresponsive";
+            this.crashed_if_unresponsive.Size = new System.Drawing.Size(172, 17);
+            this.crashed_if_unresponsive.TabIndex = 7;
+            this.crashed_if_unresponsive.Text = "Assume crash if not responsive";
+            this.crashed_if_unresponsive.UseVisualStyleBackColor = true;
             // 
-            // button7
+            // screenshot_button
             // 
-            this.button7.Location = new System.Drawing.Point(196, 223);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(173, 24);
-            this.button7.TabIndex = 18;
-            this.button7.Text = "Take a screenshot";
-            this.button7.UseVisualStyleBackColor = true;
+            this.screenshot_button.Location = new System.Drawing.Point(196, 223);
+            this.screenshot_button.Name = "screenshot_button";
+            this.screenshot_button.Size = new System.Drawing.Size(173, 24);
+            this.screenshot_button.TabIndex = 14;
+            this.screenshot_button.Text = "Take a screenshot";
+            this.screenshot_button.UseVisualStyleBackColor = true;
             // 
-            // checkBox8
+            // screenshot_on_crash
             // 
-            this.checkBox8.AutoSize = true;
-            this.checkBox8.Location = new System.Drawing.Point(197, 200);
-            this.checkBox8.Name = "checkBox8";
-            this.checkBox8.Size = new System.Drawing.Size(158, 17);
-            this.checkBox8.TabIndex = 17;
-            this.checkBox8.Text = "Enable screenshot on crash";
-            this.checkBox8.UseVisualStyleBackColor = true;
+            this.screenshot_on_crash.AutoSize = true;
+            this.screenshot_on_crash.Location = new System.Drawing.Point(197, 200);
+            this.screenshot_on_crash.Name = "screenshot_on_crash";
+            this.screenshot_on_crash.Size = new System.Drawing.Size(158, 17);
+            this.screenshot_on_crash.TabIndex = 10;
+            this.screenshot_on_crash.Text = "Enable screenshot on crash";
+            this.screenshot_on_crash.UseVisualStyleBackColor = true;
             // 
-            // checkBox7
+            // verbose_logging
             // 
-            this.checkBox7.AutoSize = true;
-            this.checkBox7.Location = new System.Drawing.Point(197, 180);
-            this.checkBox7.Name = "checkBox7";
-            this.checkBox7.Size = new System.Drawing.Size(137, 17);
-            this.checkBox7.TabIndex = 16;
-            this.checkBox7.Text = "Enable verbose logging";
-            this.checkBox7.UseVisualStyleBackColor = true;
+            this.verbose_logging.AutoSize = true;
+            this.verbose_logging.Location = new System.Drawing.Point(197, 180);
+            this.verbose_logging.Name = "verbose_logging";
+            this.verbose_logging.Size = new System.Drawing.Size(137, 17);
+            this.verbose_logging.TabIndex = 9;
+            this.verbose_logging.Text = "Enable verbose logging";
+            this.verbose_logging.UseVisualStyleBackColor = true;
             // 
-            // checkBox6
+            // start_with_windows
             // 
-            this.checkBox6.AutoSize = true;
-            this.checkBox6.Location = new System.Drawing.Point(197, 160);
-            this.checkBox6.Name = "checkBox6";
-            this.checkBox6.Size = new System.Drawing.Size(117, 17);
-            this.checkBox6.TabIndex = 15;
-            this.checkBox6.Text = "Start with Windows";
-            this.checkBox6.UseVisualStyleBackColor = true;
+            this.start_with_windows.AutoSize = true;
+            this.start_with_windows.Location = new System.Drawing.Point(197, 160);
+            this.start_with_windows.Name = "start_with_windows";
+            this.start_with_windows.Size = new System.Drawing.Size(117, 17);
+            this.start_with_windows.TabIndex = 8;
+            this.start_with_windows.Text = "Start with Windows";
+            this.start_with_windows.UseVisualStyleBackColor = true;
             // 
-            // button6
+            // watch_button
             // 
-            this.button6.Location = new System.Drawing.Point(196, 128);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(173, 24);
-            this.button6.TabIndex = 14;
-            this.button6.Text = "Start Watching";
-            this.button6.UseVisualStyleBackColor = true;
+            this.watch_button.Location = new System.Drawing.Point(196, 128);
+            this.watch_button.Name = "watch_button";
+            this.watch_button.Size = new System.Drawing.Size(173, 24);
+            this.watch_button.TabIndex = 13;
+            this.watch_button.Text = "Start Watching";
+            this.watch_button.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // crash_script_button
             // 
-            this.button2.Location = new System.Drawing.Point(339, 268);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(30, 24);
-            this.button2.TabIndex = 13;
-            this.button2.Text = "...";
-            this.button2.UseVisualStyleBackColor = true;
+            this.crash_script_button.Location = new System.Drawing.Point(339, 268);
+            this.crash_script_button.Name = "crash_script_button";
+            this.crash_script_button.Size = new System.Drawing.Size(30, 24);
+            this.crash_script_button.TabIndex = 12;
+            this.crash_script_button.Text = "...";
+            this.crash_script_button.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // app_path_button
             // 
-            this.button1.Location = new System.Drawing.Point(339, 28);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(30, 24);
-            this.button1.TabIndex = 12;
-            this.button1.Text = "...";
-            this.button1.UseVisualStyleBackColor = true;
+            this.app_path_button.Location = new System.Drawing.Point(339, 28);
+            this.app_path_button.Name = "app_path_button";
+            this.app_path_button.Size = new System.Drawing.Size(30, 24);
+            this.app_path_button.TabIndex = 1;
+            this.app_path_button.Text = "...";
+            this.app_path_button.UseVisualStyleBackColor = true;
             // 
-            // textBox4
+            // crash_script_path
             // 
-            this.textBox4.Location = new System.Drawing.Point(8, 270);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(324, 20);
-            this.textBox4.TabIndex = 11;
+            this.crash_script_path.Location = new System.Drawing.Point(8, 270);
+            this.crash_script_path.Name = "crash_script_path";
+            this.crash_script_path.Size = new System.Drawing.Size(324, 20);
+            this.crash_script_path.TabIndex = 11;
             // 
-            // label5
+            // crash_script_label
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(8, 250);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(134, 13);
-            this.label5.TabIndex = 10;
-            this.label5.Text = "Script to execute on crash:";
+            this.crash_script_label.AutoSize = true;
+            this.crash_script_label.Location = new System.Drawing.Point(8, 250);
+            this.crash_script_label.Name = "crash_script_label";
+            this.crash_script_label.Size = new System.Drawing.Size(134, 13);
+            this.crash_script_label.TabIndex = 10;
+            this.crash_script_label.Text = "Script to execute on crash:";
             // 
-            // checkBox3
+            // metrics
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(8, 200);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(96, 17);
-            this.checkBox3.TabIndex = 8;
-            this.checkBox3.Text = "Enable Metrics";
-            this.checkBox3.UseVisualStyleBackColor = true;
+            this.metrics.AutoSize = true;
+            this.metrics.Location = new System.Drawing.Point(8, 200);
+            this.metrics.Name = "metrics";
+            this.metrics.Size = new System.Drawing.Size(96, 17);
+            this.metrics.TabIndex = 6;
+            this.metrics.Text = "Enable Metrics";
+            this.metrics.UseVisualStyleBackColor = true;
             // 
-            // checkBox2
+            // maximize
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(8, 180);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(99, 17);
-            this.checkBox2.TabIndex = 7;
-            this.checkBox2.Text = "Force Maximize";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.maximize.AutoSize = true;
+            this.maximize.Location = new System.Drawing.Point(8, 180);
+            this.maximize.Name = "maximize";
+            this.maximize.Size = new System.Drawing.Size(99, 17);
+            this.maximize.TabIndex = 5;
+            this.maximize.Text = "Force Maximize";
+            this.maximize.UseVisualStyleBackColor = true;
             // 
-            // checkBox1
+            // always_on_top
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(8, 160);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(126, 17);
-            this.checkBox1.TabIndex = 6;
-            this.checkBox1.Text = "Force Always on Top";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.always_on_top.AutoSize = true;
+            this.always_on_top.Location = new System.Drawing.Point(8, 160);
+            this.always_on_top.Name = "always_on_top";
+            this.always_on_top.Size = new System.Drawing.Size(126, 17);
+            this.always_on_top.TabIndex = 4;
+            this.always_on_top.Text = "Force Always on Top";
+            this.always_on_top.UseVisualStyleBackColor = true;
             // 
-            // textBox3
+            // time_delay
             // 
-            this.textBox3.Location = new System.Drawing.Point(8, 130);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(180, 20);
-            this.textBox3.TabIndex = 5;
+            this.time_delay.Location = new System.Drawing.Point(8, 130);
+            this.time_delay.Name = "time_delay";
+            this.time_delay.Size = new System.Drawing.Size(180, 20);
+            this.time_delay.TabIndex = 3;
             // 
-            // label4
+            // time_delay_label
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(8, 110);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(178, 13);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "Time delay before launch (seconds):";
+            this.time_delay_label.AutoSize = true;
+            this.time_delay_label.Location = new System.Drawing.Point(8, 110);
+            this.time_delay_label.Name = "time_delay_label";
+            this.time_delay_label.Size = new System.Drawing.Size(178, 13);
+            this.time_delay_label.TabIndex = 4;
+            this.time_delay_label.Text = "Time delay before launch (seconds):";
             // 
-            // textBox2
+            // cmd_line
             // 
-            this.textBox2.Location = new System.Drawing.Point(8, 80);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(360, 20);
-            this.textBox2.TabIndex = 3;
+            this.cmd_line.Location = new System.Drawing.Point(8, 80);
+            this.cmd_line.Name = "cmd_line";
+            this.cmd_line.Size = new System.Drawing.Size(360, 20);
+            this.cmd_line.TabIndex = 2;
             // 
-            // label3
+            // cmd_line_label
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(8, 60);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(174, 13);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Command line arguments (optional):";
+            this.cmd_line_label.AutoSize = true;
+            this.cmd_line_label.Location = new System.Drawing.Point(8, 60);
+            this.cmd_line_label.Name = "cmd_line_label";
+            this.cmd_line_label.Size = new System.Drawing.Size(174, 13);
+            this.cmd_line_label.TabIndex = 2;
+            this.cmd_line_label.Text = "Command line arguments (optional):";
             // 
-            // label2
+            // app_path_label
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 10);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(168, 13);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Application to watch (.bat or .exe):";
+            this.app_path_label.AutoSize = true;
+            this.app_path_label.Location = new System.Drawing.Point(8, 10);
+            this.app_path_label.Name = "app_path_label";
+            this.app_path_label.Size = new System.Drawing.Size(168, 13);
+            this.app_path_label.TabIndex = 1;
+            this.app_path_label.Text = "Application to watch (.bat or .exe):";
             // 
-            // textBox1
+            // app_path
             // 
-            this.textBox1.Location = new System.Drawing.Point(8, 30);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(324, 20);
-            this.textBox1.TabIndex = 0;
+            this.app_path.Location = new System.Drawing.Point(8, 30);
+            this.app_path.Name = "app_path";
+            this.app_path.Size = new System.Drawing.Size(324, 20);
+            this.app_path.TabIndex = 0;
             // 
             // remote
             // 
@@ -555,7 +555,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(384, 361);
             this.Controls.Add(this.status_strip);
-            this.Controls.Add(this.tabControl);
+            this.Controls.Add(this.main_tab);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -563,7 +563,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Phoenix Control Panel";
             this.TopMost = true;
-            this.tabControl.ResumeLayout(false);
+            this.main_tab.ResumeLayout(false);
             this.tab_local.ResumeLayout(false);
             this.tab_local.PerformLayout();
             this.remote.ResumeLayout(false);
@@ -579,25 +579,25 @@
 
         #endregion
 
-        private System.Windows.Forms.TabControl tabControl;
+        private System.Windows.Forms.TabControl main_tab;
         private System.Windows.Forms.TabPage tab_local;
         private System.Windows.Forms.TabPage remote;
         private System.Windows.Forms.TabPage about;
         private System.Windows.Forms.StatusStrip status_strip;
         private System.Windows.Forms.ToolStripStatusLabel status;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.CheckBox checkBox3;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.TextBox app_path;
+        private System.Windows.Forms.Label app_path_label;
+        private System.Windows.Forms.Label cmd_line_label;
+        private System.Windows.Forms.TextBox cmd_line;
+        private System.Windows.Forms.Label time_delay_label;
+        private System.Windows.Forms.TextBox time_delay;
+        private System.Windows.Forms.CheckBox always_on_top;
+        private System.Windows.Forms.CheckBox maximize;
+        private System.Windows.Forms.CheckBox metrics;
+        private System.Windows.Forms.TextBox crash_script_path;
+        private System.Windows.Forms.Label crash_script_label;
+        private System.Windows.Forms.Button app_path_button;
+        private System.Windows.Forms.Button crash_script_button;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.Label label7;
@@ -615,17 +615,17 @@
         private System.Windows.Forms.TextBox textBox11;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button watch_button;
         private System.Windows.Forms.CheckBox checkBox5;
         private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.CheckBox checkBox6;
-        private System.Windows.Forms.CheckBox checkBox7;
-        private System.Windows.Forms.CheckBox checkBox8;
+        private System.Windows.Forms.CheckBox start_with_windows;
+        private System.Windows.Forms.CheckBox verbose_logging;
+        private System.Windows.Forms.CheckBox screenshot_on_crash;
         private System.Windows.Forms.TabPage log;
         private System.Windows.Forms.RichTextBox richTextBox2;
-        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button screenshot_button;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.CheckBox crashed_if_unresponsive;
     }
 }
 
