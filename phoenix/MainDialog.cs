@@ -12,8 +12,10 @@ namespace phoenix
 {
     public partial class MainDialog : Form
     {
+        private IniSettings m_AppSettings;
         public MainDialog()
         {
+            m_AppSettings = new IniSettings("phoenix.ini");
             InitializeComponent();
         }
     }
