@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -51,6 +52,11 @@ namespace phoenix
         {
             if (!(Char.IsDigit(e.KeyChar) || (e.KeyChar == (char)Keys.Back) || (e.KeyChar == (char)Keys.Delete)))
                 e.Handled = true;
+        }
+
+        private void application_to_watch_TextChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store("Local", "ApplicationToWtach", application_to_watch.Text);
         }
     }
 }

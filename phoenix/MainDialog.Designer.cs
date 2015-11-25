@@ -290,6 +290,7 @@
             this.application_to_watch.Name = "application_to_watch";
             this.application_to_watch.Size = new System.Drawing.Size(324, 20);
             this.application_to_watch.TabIndex = 0;
+            this.application_to_watch.TextChanged += new System.EventHandler(this.application_to_watch_TextChanged);
             // 
             // remote_tab
             // 
