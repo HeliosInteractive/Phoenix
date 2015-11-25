@@ -94,14 +94,17 @@ namespace phoenix
             if (GetPrivateProfileString(Section, Key, "", strb, strb.Capacity, this.m_Path) > 0
                 && CanChangeType(strb.ToString(), typeof(T)))
             {
-                m_Settings[Section][Key] = strb.ToString();
-                return (T)Convert.ChangeType(strb.ToString(), typeof(T));
+                try
+                {
+                    m_Settings[Section][Key] = strb.ToString();
+                    return (T)Convert.ChangeType(strb.ToString(), typeof(T));
+                }
+                catch
+                { /* no-op */ }
             }
-            else
-            {
-                m_Settings[Section][Key] = DefaultValue.ToString();
-                return DefaultValue;
-            }
+            
+            m_Settings[Section][Key] = DefaultValue.ToString();
+            return DefaultValue;
         }
 
         /// <summary>
