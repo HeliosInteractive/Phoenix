@@ -50,26 +50,26 @@
             this.cmd_line_label = new System.Windows.Forms.Label();
             this.app_path_label = new System.Windows.Forms.Label();
             this.app_path = new System.Windows.Forms.TextBox();
-            this.remote = new System.Windows.Forms.TabPage();
+            this.remote_tab = new System.Windows.Forms.TabPage();
             this.label1 = new System.Windows.Forms.Label();
-            this.checkBox5 = new System.Windows.Forms.CheckBox();
-            this.button5 = new System.Windows.Forms.Button();
-            this.textBox11 = new System.Windows.Forms.TextBox();
-            this.label12 = new System.Windows.Forms.Label();
-            this.textBox10 = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.button4 = new System.Windows.Forms.Button();
-            this.textBox9 = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.textBox8 = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.button3 = new System.Windows.Forms.Button();
-            this.textBox7 = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
+            this.anon_updates = new System.Windows.Forms.CheckBox();
+            this.release_button = new System.Windows.Forms.Button();
+            this.password = new System.Windows.Forms.TextBox();
+            this.password_label = new System.Windows.Forms.Label();
+            this.username = new System.Windows.Forms.TextBox();
+            this.username_label = new System.Windows.Forms.Label();
+            this.update_location_button = new System.Windows.Forms.Button();
+            this.update_location = new System.Windows.Forms.TextBox();
+            this.update_location_label = new System.Windows.Forms.Label();
+            this.update_hash = new System.Windows.Forms.TextBox();
+            this.update_hash_label = new System.Windows.Forms.Label();
+            this.update_save_button = new System.Windows.Forms.Button();
+            this.update_password = new System.Windows.Forms.TextBox();
+            this.update_password_label = new System.Windows.Forms.Label();
+            this.update_channel = new System.Windows.Forms.TextBox();
+            this.update_channel_label = new System.Windows.Forms.Label();
+            this.update_server = new System.Windows.Forms.TextBox();
+            this.update_server_label = new System.Windows.Forms.Label();
             this.log = new System.Windows.Forms.TabPage();
             this.richTextBox2 = new System.Windows.Forms.RichTextBox();
             this.about = new System.Windows.Forms.TabPage();
@@ -78,7 +78,7 @@
             this.status = new System.Windows.Forms.ToolStripStatusLabel();
             this.main_tab.SuspendLayout();
             this.tab_local.SuspendLayout();
-            this.remote.SuspendLayout();
+            this.remote_tab.SuspendLayout();
             this.log.SuspendLayout();
             this.about.SuspendLayout();
             this.status_strip.SuspendLayout();
@@ -87,7 +87,7 @@
             // main_tab
             // 
             this.main_tab.Controls.Add(this.tab_local);
-            this.main_tab.Controls.Add(this.remote);
+            this.main_tab.Controls.Add(this.remote_tab);
             this.main_tab.Controls.Add(this.log);
             this.main_tab.Controls.Add(this.about);
             this.main_tab.Dock = System.Windows.Forms.DockStyle.Top;
@@ -298,34 +298,34 @@
             this.app_path.Size = new System.Drawing.Size(324, 20);
             this.app_path.TabIndex = 0;
             // 
-            // remote
+            // remote_tab
             // 
-            this.remote.Controls.Add(this.label1);
-            this.remote.Controls.Add(this.checkBox5);
-            this.remote.Controls.Add(this.button5);
-            this.remote.Controls.Add(this.textBox11);
-            this.remote.Controls.Add(this.label12);
-            this.remote.Controls.Add(this.textBox10);
-            this.remote.Controls.Add(this.label11);
-            this.remote.Controls.Add(this.button4);
-            this.remote.Controls.Add(this.textBox9);
-            this.remote.Controls.Add(this.label10);
-            this.remote.Controls.Add(this.textBox8);
-            this.remote.Controls.Add(this.label9);
-            this.remote.Controls.Add(this.button3);
-            this.remote.Controls.Add(this.textBox7);
-            this.remote.Controls.Add(this.label8);
-            this.remote.Controls.Add(this.textBox6);
-            this.remote.Controls.Add(this.label7);
-            this.remote.Controls.Add(this.textBox5);
-            this.remote.Controls.Add(this.label6);
-            this.remote.Location = new System.Drawing.Point(4, 22);
-            this.remote.Name = "remote";
-            this.remote.Padding = new System.Windows.Forms.Padding(3);
-            this.remote.Size = new System.Drawing.Size(376, 310);
-            this.remote.TabIndex = 1;
-            this.remote.Text = "Remote";
-            this.remote.UseVisualStyleBackColor = true;
+            this.remote_tab.Controls.Add(this.label1);
+            this.remote_tab.Controls.Add(this.anon_updates);
+            this.remote_tab.Controls.Add(this.release_button);
+            this.remote_tab.Controls.Add(this.password);
+            this.remote_tab.Controls.Add(this.password_label);
+            this.remote_tab.Controls.Add(this.username);
+            this.remote_tab.Controls.Add(this.username_label);
+            this.remote_tab.Controls.Add(this.update_location_button);
+            this.remote_tab.Controls.Add(this.update_location);
+            this.remote_tab.Controls.Add(this.update_location_label);
+            this.remote_tab.Controls.Add(this.update_hash);
+            this.remote_tab.Controls.Add(this.update_hash_label);
+            this.remote_tab.Controls.Add(this.update_save_button);
+            this.remote_tab.Controls.Add(this.update_password);
+            this.remote_tab.Controls.Add(this.update_password_label);
+            this.remote_tab.Controls.Add(this.update_channel);
+            this.remote_tab.Controls.Add(this.update_channel_label);
+            this.remote_tab.Controls.Add(this.update_server);
+            this.remote_tab.Controls.Add(this.update_server_label);
+            this.remote_tab.Location = new System.Drawing.Point(4, 22);
+            this.remote_tab.Name = "remote_tab";
+            this.remote_tab.Padding = new System.Windows.Forms.Padding(3);
+            this.remote_tab.Size = new System.Drawing.Size(376, 310);
+            this.remote_tab.TabIndex = 1;
+            this.remote_tab.Text = "Remote";
+            this.remote_tab.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -335,157 +335,159 @@
             this.label1.Size = new System.Drawing.Size(360, 2);
             this.label1.TabIndex = 21;
             // 
-            // checkBox5
+            // anon_updates
             // 
-            this.checkBox5.AutoSize = true;
-            this.checkBox5.Location = new System.Drawing.Point(104, 109);
-            this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(165, 17);
-            this.checkBox5.TabIndex = 20;
-            this.checkBox5.Text = "receive anonymous updates?";
-            this.checkBox5.UseVisualStyleBackColor = true;
+            this.anon_updates.AutoSize = true;
+            this.anon_updates.Location = new System.Drawing.Point(104, 109);
+            this.anon_updates.Name = "anon_updates";
+            this.anon_updates.Size = new System.Drawing.Size(165, 17);
+            this.anon_updates.TabIndex = 4;
+            this.anon_updates.Text = "receive anonymous updates?";
+            this.anon_updates.UseVisualStyleBackColor = true;
             // 
-            // button5
+            // release_button
             // 
-            this.button5.Location = new System.Drawing.Point(261, 268);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(108, 24);
-            this.button5.TabIndex = 19;
-            this.button5.Text = "Release update";
-            this.button5.UseVisualStyleBackColor = true;
+            this.release_button.Location = new System.Drawing.Point(261, 268);
+            this.release_button.Name = "release_button";
+            this.release_button.Size = new System.Drawing.Size(108, 24);
+            this.release_button.TabIndex = 11;
+            this.release_button.Text = "Release update";
+            this.release_button.UseVisualStyleBackColor = true;
             // 
-            // textBox11
+            // password
             // 
-            this.textBox11.Location = new System.Drawing.Point(134, 270);
-            this.textBox11.Name = "textBox11";
-            this.textBox11.Size = new System.Drawing.Size(120, 20);
-            this.textBox11.TabIndex = 18;
+            this.password.Location = new System.Drawing.Point(134, 270);
+            this.password.Name = "password";
+            this.password.Size = new System.Drawing.Size(120, 20);
+            this.password.TabIndex = 10;
+            this.password.UseSystemPasswordChar = true;
             // 
-            // label12
+            // password_label
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(134, 250);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(56, 13);
-            this.label12.TabIndex = 17;
-            this.label12.Text = "Password:";
+            this.password_label.AutoSize = true;
+            this.password_label.Location = new System.Drawing.Point(134, 250);
+            this.password_label.Name = "password_label";
+            this.password_label.Size = new System.Drawing.Size(56, 13);
+            this.password_label.TabIndex = 17;
+            this.password_label.Text = "Password:";
             // 
-            // textBox10
+            // username
             // 
-            this.textBox10.Location = new System.Drawing.Point(8, 270);
-            this.textBox10.Name = "textBox10";
-            this.textBox10.Size = new System.Drawing.Size(120, 20);
-            this.textBox10.TabIndex = 16;
+            this.username.Location = new System.Drawing.Point(8, 270);
+            this.username.Name = "username";
+            this.username.Size = new System.Drawing.Size(120, 20);
+            this.username.TabIndex = 9;
             // 
-            // label11
+            // username_label
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(8, 250);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(58, 13);
-            this.label11.TabIndex = 15;
-            this.label11.Text = "Username:";
+            this.username_label.AutoSize = true;
+            this.username_label.Location = new System.Drawing.Point(8, 250);
+            this.username_label.Name = "username_label";
+            this.username_label.Size = new System.Drawing.Size(58, 13);
+            this.username_label.TabIndex = 15;
+            this.username_label.Text = "Username:";
             // 
-            // button4
+            // update_location_button
             // 
-            this.button4.Location = new System.Drawing.Point(339, 218);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(30, 24);
-            this.button4.TabIndex = 14;
-            this.button4.Text = "...";
-            this.button4.UseVisualStyleBackColor = true;
+            this.update_location_button.Location = new System.Drawing.Point(339, 218);
+            this.update_location_button.Name = "update_location_button";
+            this.update_location_button.Size = new System.Drawing.Size(30, 24);
+            this.update_location_button.TabIndex = 8;
+            this.update_location_button.Text = "...";
+            this.update_location_button.UseVisualStyleBackColor = true;
             // 
-            // textBox9
+            // update_location
             // 
-            this.textBox9.Location = new System.Drawing.Point(8, 220);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(324, 20);
-            this.textBox9.TabIndex = 13;
+            this.update_location.Location = new System.Drawing.Point(8, 220);
+            this.update_location.Name = "update_location";
+            this.update_location.Size = new System.Drawing.Size(324, 20);
+            this.update_location.TabIndex = 7;
             // 
-            // label10
+            // update_location_label
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(8, 200);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(130, 13);
-            this.label10.TabIndex = 11;
-            this.label10.Text = "Update package location:";
+            this.update_location_label.AutoSize = true;
+            this.update_location_label.Location = new System.Drawing.Point(8, 200);
+            this.update_location_label.Name = "update_location_label";
+            this.update_location_label.Size = new System.Drawing.Size(130, 13);
+            this.update_location_label.TabIndex = 11;
+            this.update_location_label.Text = "Update package location:";
             // 
-            // textBox8
+            // update_hash
             // 
-            this.textBox8.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox8.Location = new System.Drawing.Point(87, 160);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.ReadOnly = true;
-            this.textBox8.Size = new System.Drawing.Size(281, 22);
-            this.textBox8.TabIndex = 10;
-            this.textBox8.Text = "b3d97746dbb45e92dc083db205e1fd14";
+            this.update_hash.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.update_hash.Location = new System.Drawing.Point(87, 160);
+            this.update_hash.Name = "update_hash";
+            this.update_hash.ReadOnly = true;
+            this.update_hash.Size = new System.Drawing.Size(281, 22);
+            this.update_hash.TabIndex = 6;
+            this.update_hash.Text = "b3d97746dbb45e92dc083db205e1fd14";
             // 
-            // label9
+            // update_hash_label
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(8, 163);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(71, 13);
-            this.label9.TabIndex = 9;
-            this.label9.Text = "Update hash:";
+            this.update_hash_label.AutoSize = true;
+            this.update_hash_label.Location = new System.Drawing.Point(8, 163);
+            this.update_hash_label.Name = "update_hash_label";
+            this.update_hash_label.Size = new System.Drawing.Size(71, 13);
+            this.update_hash_label.TabIndex = 9;
+            this.update_hash_label.Text = "Update hash:";
             // 
-            // button3
+            // update_save_button
             // 
-            this.button3.Location = new System.Drawing.Point(316, 128);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(53, 24);
-            this.button3.TabIndex = 8;
-            this.button3.Text = "Save";
-            this.button3.UseVisualStyleBackColor = true;
+            this.update_save_button.Location = new System.Drawing.Point(316, 128);
+            this.update_save_button.Name = "update_save_button";
+            this.update_save_button.Size = new System.Drawing.Size(53, 24);
+            this.update_save_button.TabIndex = 5;
+            this.update_save_button.Text = "Save";
+            this.update_save_button.UseVisualStyleBackColor = true;
             // 
-            // textBox7
+            // update_password
             // 
-            this.textBox7.Location = new System.Drawing.Point(8, 130);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(300, 20);
-            this.textBox7.TabIndex = 7;
+            this.update_password.Location = new System.Drawing.Point(8, 130);
+            this.update_password.Name = "update_password";
+            this.update_password.Size = new System.Drawing.Size(300, 20);
+            this.update_password.TabIndex = 3;
+            this.update_password.UseSystemPasswordChar = true;
             // 
-            // label8
+            // update_password_label
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(8, 110);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(267, 13);
-            this.label8.TabIndex = 6;
-            this.label8.Text = "Update password (                                                        )";
+            this.update_password_label.AutoSize = true;
+            this.update_password_label.Location = new System.Drawing.Point(8, 110);
+            this.update_password_label.Name = "update_password_label";
+            this.update_password_label.Size = new System.Drawing.Size(267, 13);
+            this.update_password_label.TabIndex = 6;
+            this.update_password_label.Text = "Update password (                                                        )";
             // 
-            // textBox6
+            // update_channel
             // 
-            this.textBox6.Location = new System.Drawing.Point(8, 80);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(360, 20);
-            this.textBox6.TabIndex = 5;
+            this.update_channel.Location = new System.Drawing.Point(8, 80);
+            this.update_channel.Name = "update_channel";
+            this.update_channel.Size = new System.Drawing.Size(360, 20);
+            this.update_channel.TabIndex = 2;
             // 
-            // label7
+            // update_channel_label
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(8, 60);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(86, 13);
-            this.label7.TabIndex = 4;
-            this.label7.Text = "Update channel:";
+            this.update_channel_label.AutoSize = true;
+            this.update_channel_label.Location = new System.Drawing.Point(8, 60);
+            this.update_channel_label.Name = "update_channel_label";
+            this.update_channel_label.Size = new System.Drawing.Size(86, 13);
+            this.update_channel_label.TabIndex = 4;
+            this.update_channel_label.Text = "Update channel:";
             // 
-            // textBox5
+            // update_server
             // 
-            this.textBox5.Location = new System.Drawing.Point(8, 30);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(360, 20);
-            this.textBox5.TabIndex = 3;
+            this.update_server.Location = new System.Drawing.Point(8, 30);
+            this.update_server.Name = "update_server";
+            this.update_server.Size = new System.Drawing.Size(360, 20);
+            this.update_server.TabIndex = 1;
             // 
-            // label6
+            // update_server_label
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(8, 10);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(117, 13);
-            this.label6.TabIndex = 2;
-            this.label6.Text = "Update server address:";
+            this.update_server_label.AutoSize = true;
+            this.update_server_label.Location = new System.Drawing.Point(8, 10);
+            this.update_server_label.Name = "update_server_label";
+            this.update_server_label.Size = new System.Drawing.Size(117, 13);
+            this.update_server_label.TabIndex = 2;
+            this.update_server_label.Text = "Update server address:";
             // 
             // log
             // 
@@ -566,8 +568,8 @@
             this.main_tab.ResumeLayout(false);
             this.tab_local.ResumeLayout(false);
             this.tab_local.PerformLayout();
-            this.remote.ResumeLayout(false);
-            this.remote.PerformLayout();
+            this.remote_tab.ResumeLayout(false);
+            this.remote_tab.PerformLayout();
             this.log.ResumeLayout(false);
             this.about.ResumeLayout(false);
             this.status_strip.ResumeLayout(false);
@@ -581,7 +583,7 @@
 
         private System.Windows.Forms.TabControl main_tab;
         private System.Windows.Forms.TabPage tab_local;
-        private System.Windows.Forms.TabPage remote;
+        private System.Windows.Forms.TabPage remote_tab;
         private System.Windows.Forms.TabPage about;
         private System.Windows.Forms.StatusStrip status_strip;
         private System.Windows.Forms.ToolStripStatusLabel status;
@@ -598,25 +600,25 @@
         private System.Windows.Forms.Label crash_script_label;
         private System.Windows.Forms.Button app_path_button;
         private System.Windows.Forms.Button crash_script_button;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox textBox6;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox textBox7;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox textBox8;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.TextBox textBox9;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox textBox10;
-        private System.Windows.Forms.TextBox textBox11;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Label update_server_label;
+        private System.Windows.Forms.TextBox update_server;
+        private System.Windows.Forms.Label update_channel_label;
+        private System.Windows.Forms.TextBox update_channel;
+        private System.Windows.Forms.Label update_password_label;
+        private System.Windows.Forms.TextBox update_password;
+        private System.Windows.Forms.Button update_save_button;
+        private System.Windows.Forms.Label update_hash_label;
+        private System.Windows.Forms.TextBox update_hash;
+        private System.Windows.Forms.Label update_location_label;
+        private System.Windows.Forms.Button update_location_button;
+        private System.Windows.Forms.TextBox update_location;
+        private System.Windows.Forms.Label username_label;
+        private System.Windows.Forms.TextBox username;
+        private System.Windows.Forms.TextBox password;
+        private System.Windows.Forms.Label password_label;
+        private System.Windows.Forms.Button release_button;
         private System.Windows.Forms.Button watch_button;
-        private System.Windows.Forms.CheckBox checkBox5;
+        private System.Windows.Forms.CheckBox anon_updates;
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.CheckBox start_with_windows;
         private System.Windows.Forms.CheckBox verbose_logging;
