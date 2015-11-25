@@ -77,6 +77,21 @@ namespace phoenix
         }
 
         /// <summary>
+        /// Store a value to be saved later via SaveReadEntries()
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="Section"></param>
+        /// <param name="Key"></param>
+        /// <param name="value"></param>
+        public void Store<T>(string Section, string Key, T value)
+        {
+            if (!m_Settings.ContainsKey(Section))
+                m_Settings[Section] = new Dictionary<string, string>();
+
+            m_Settings[Section][Key] = value.ToString();
+        }
+
+        /// <summary>
         /// Reads an entry in INI file, returns DefaultValue if not found
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -86,9 +101,6 @@ namespace phoenix
         /// <returns></returns>
         public T Read<T>(string Section, string Key, T DefaultValue)
         {
-            if (!m_Settings.ContainsKey(Section))
-                m_Settings[Section] = new Dictionary<string, string>();
-
             StringBuilder strb = new StringBuilder(2048);
 
             if (GetPrivateProfileString(Section, Key, "", strb, strb.Capacity, this.m_Path) > 0
@@ -96,14 +108,15 @@ namespace phoenix
             {
                 try
                 {
-                    m_Settings[Section][Key] = strb.ToString();
-                    return (T)Convert.ChangeType(strb.ToString(), typeof(T));
+                    T temp_val = (T)Convert.ChangeType(strb.ToString(), typeof(T));
+                    Store(Section, Key, temp_val);
+                    return temp_val;
                 }
                 catch
                 { /* no-op */ }
             }
-            
-            m_Settings[Section][Key] = DefaultValue.ToString();
+
+            Store(Section, Key, DefaultValue);
             return DefaultValue;
         }
 
