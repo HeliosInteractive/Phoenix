@@ -71,16 +71,16 @@
             this.update_server = new System.Windows.Forms.TextBox();
             this.update_server_label = new System.Windows.Forms.Label();
             this.log = new System.Windows.Forms.TabPage();
-            this.richTextBox2 = new System.Windows.Forms.RichTextBox();
-            this.about = new System.Windows.Forms.TabPage();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.log_box = new System.Windows.Forms.RichTextBox();
+            this.about_tab = new System.Windows.Forms.TabPage();
+            this.about_text_box = new System.Windows.Forms.RichTextBox();
             this.status_strip = new System.Windows.Forms.StatusStrip();
             this.status = new System.Windows.Forms.ToolStripStatusLabel();
             this.main_tab.SuspendLayout();
             this.tab_local.SuspendLayout();
             this.remote_tab.SuspendLayout();
             this.log.SuspendLayout();
-            this.about.SuspendLayout();
+            this.about_tab.SuspendLayout();
             this.status_strip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -89,7 +89,7 @@
             this.main_tab.Controls.Add(this.tab_local);
             this.main_tab.Controls.Add(this.remote_tab);
             this.main_tab.Controls.Add(this.log);
-            this.main_tab.Controls.Add(this.about);
+            this.main_tab.Controls.Add(this.about_tab);
             this.main_tab.Dock = System.Windows.Forms.DockStyle.Top;
             this.main_tab.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.main_tab.Location = new System.Drawing.Point(0, 0);
@@ -491,7 +491,7 @@
             // 
             // log
             // 
-            this.log.Controls.Add(this.richTextBox2);
+            this.log.Controls.Add(this.log_box);
             this.log.Location = new System.Drawing.Point(4, 22);
             this.log.Name = "log";
             this.log.Padding = new System.Windows.Forms.Padding(3);
@@ -500,35 +500,35 @@
             this.log.Text = "Log";
             this.log.UseVisualStyleBackColor = true;
             // 
-            // richTextBox2
+            // log_box
             // 
-            this.richTextBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBox2.Location = new System.Drawing.Point(3, 3);
-            this.richTextBox2.Name = "richTextBox2";
-            this.richTextBox2.Size = new System.Drawing.Size(370, 304);
-            this.richTextBox2.TabIndex = 0;
-            this.richTextBox2.Text = "";
+            this.log_box.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.log_box.Location = new System.Drawing.Point(3, 3);
+            this.log_box.Name = "log_box";
+            this.log_box.Size = new System.Drawing.Size(370, 304);
+            this.log_box.TabIndex = 0;
+            this.log_box.Text = "";
             // 
-            // about
+            // about_tab
             // 
-            this.about.Controls.Add(this.richTextBox1);
-            this.about.Location = new System.Drawing.Point(4, 22);
-            this.about.Name = "about";
-            this.about.Padding = new System.Windows.Forms.Padding(3);
-            this.about.Size = new System.Drawing.Size(376, 310);
-            this.about.TabIndex = 3;
-            this.about.Text = "About";
-            this.about.UseVisualStyleBackColor = true;
+            this.about_tab.Controls.Add(this.about_text_box);
+            this.about_tab.Location = new System.Drawing.Point(4, 22);
+            this.about_tab.Name = "about_tab";
+            this.about_tab.Padding = new System.Windows.Forms.Padding(3);
+            this.about_tab.Size = new System.Drawing.Size(376, 310);
+            this.about_tab.TabIndex = 3;
+            this.about_tab.Text = "About";
+            this.about_tab.UseVisualStyleBackColor = true;
             // 
-            // richTextBox1
+            // about_text_box
             // 
-            this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBox1.Location = new System.Drawing.Point(20, 20);
-            this.richTextBox1.Margin = new System.Windows.Forms.Padding(0);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(335, 270);
-            this.richTextBox1.TabIndex = 1;
-            this.richTextBox1.Text = "Helios Phoenix Control Panel\nversion 0.1.0\n© 2015 Helios Interactive\nAll rights r" +
+            this.about_text_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.about_text_box.Location = new System.Drawing.Point(20, 20);
+            this.about_text_box.Margin = new System.Windows.Forms.Padding(0);
+            this.about_text_box.Name = "about_text_box";
+            this.about_text_box.Size = new System.Drawing.Size(335, 270);
+            this.about_text_box.TabIndex = 1;
+            this.about_text_box.Text = "Helios Phoenix Control Panel\nversion 0.1.0\n© 2015 Helios Interactive\nAll rights r" +
     "eserved.";
             // 
             // status_strip
@@ -571,7 +571,7 @@
             this.remote_tab.ResumeLayout(false);
             this.remote_tab.PerformLayout();
             this.log.ResumeLayout(false);
-            this.about.ResumeLayout(false);
+            this.about_tab.ResumeLayout(false);
             this.status_strip.ResumeLayout(false);
             this.status_strip.PerformLayout();
             this.ResumeLayout(false);
@@ -584,7 +584,7 @@
         private System.Windows.Forms.TabControl main_tab;
         private System.Windows.Forms.TabPage tab_local;
         private System.Windows.Forms.TabPage remote_tab;
-        private System.Windows.Forms.TabPage about;
+        private System.Windows.Forms.TabPage about_tab;
         private System.Windows.Forms.StatusStrip status_strip;
         private System.Windows.Forms.ToolStripStatusLabel status;
         private System.Windows.Forms.TextBox app_path;
@@ -619,12 +619,12 @@
         private System.Windows.Forms.Button release_button;
         private System.Windows.Forms.Button watch_button;
         private System.Windows.Forms.CheckBox anon_updates;
-        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.RichTextBox about_text_box;
         private System.Windows.Forms.CheckBox start_with_windows;
         private System.Windows.Forms.CheckBox verbose_logging;
         private System.Windows.Forms.CheckBox screenshot_on_crash;
         private System.Windows.Forms.TabPage log;
-        private System.Windows.Forms.RichTextBox richTextBox2;
+        private System.Windows.Forms.RichTextBox log_box;
         private System.Windows.Forms.Button screenshot_button;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox crashed_if_unresponsive;
