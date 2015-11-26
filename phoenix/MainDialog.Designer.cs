@@ -125,7 +125,7 @@
             this.tab_local.Location = new System.Drawing.Point(4, 22);
             this.tab_local.Name = "tab_local";
             this.tab_local.Padding = new System.Windows.Forms.Padding(3);
-            this.tab_local.Size = new System.Drawing.Size(376, 310);
+            this.tab_local.Size = new System.Drawing.Size(376, 312);
             this.tab_local.TabIndex = 0;
             this.tab_local.Text = "Local";
             this.tab_local.UseVisualStyleBackColor = true;
@@ -189,6 +189,7 @@
             this.watch_button.TabIndex = 13;
             this.watch_button.Text = "Start Watching";
             this.watch_button.UseVisualStyleBackColor = true;
+            this.watch_button.Click += new System.EventHandler(this.watch_button_Click);
             // 
             // crash_script_button
             // 
