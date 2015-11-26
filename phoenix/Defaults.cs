@@ -8,12 +8,12 @@
             public static string CommandLineArguments = "";
             public static string ScriptToExecuteOnCrash = "";
             public static int TimeDelayBeforeLaunch = 10;
+            public static int MaximumRetries = 10;
             public static bool ForceAlwaysOnTop = false;
             public static bool ForceMaximize = false;
             public static bool EnableMetrics = true;
             public static bool AssumeCrashIfNotResponsive = true;
             public static bool StartWithWindows = true;
-            public static bool EnableVerboseLogging = true;
             public static bool EnableScreenshotOnCrash = true;
         }
 
