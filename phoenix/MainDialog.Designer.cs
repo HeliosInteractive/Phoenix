@@ -31,18 +31,18 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainDialog));
             this.main_tab = new System.Windows.Forms.TabControl();
             this.tab_local = new System.Windows.Forms.TabPage();
+            this.label2 = new System.Windows.Forms.Label();
+            this.maximum_retries = new System.Windows.Forms.TextBox();
             this.time_delay_before_launch = new System.Windows.Forms.TextBox();
             this.assume_crash_if_not_responsive = new System.Windows.Forms.CheckBox();
             this.screenshot_button = new System.Windows.Forms.Button();
             this.enable_screenshot_on_crash = new System.Windows.Forms.CheckBox();
-            this.start_with_windows = new System.Windows.Forms.CheckBox();
             this.watch_button = new System.Windows.Forms.Button();
             this.crash_script_button = new System.Windows.Forms.Button();
             this.app_path_button = new System.Windows.Forms.Button();
             this.script_to_execute_on_crash = new System.Windows.Forms.TextBox();
             this.crash_script_label = new System.Windows.Forms.Label();
             this.enable_metrics = new System.Windows.Forms.CheckBox();
-            this.force_maximize = new System.Windows.Forms.CheckBox();
             this.force_always_on_top = new System.Windows.Forms.CheckBox();
             this.time_delay_label = new System.Windows.Forms.Label();
             this.command_line_arguments = new System.Windows.Forms.TextBox();
@@ -50,7 +50,6 @@
             this.app_path_label = new System.Windows.Forms.Label();
             this.application_to_watch = new System.Windows.Forms.TextBox();
             this.remote_tab = new System.Windows.Forms.TabPage();
-            this.label1 = new System.Windows.Forms.Label();
             this.receive_anonymous_updates = new System.Windows.Forms.CheckBox();
             this.release_button = new System.Windows.Forms.Button();
             this.password = new System.Windows.Forms.TextBox();
@@ -75,8 +74,6 @@
             this.about_text_box = new System.Windows.Forms.RichTextBox();
             this.status_strip = new System.Windows.Forms.StatusStrip();
             this.status = new System.Windows.Forms.ToolStripStatusLabel();
-            this.maximum_retries = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.main_tab.SuspendLayout();
             this.tab_local.SuspendLayout();
             this.remote_tab.SuspendLayout();
@@ -108,14 +105,12 @@
             this.tab_local.Controls.Add(this.assume_crash_if_not_responsive);
             this.tab_local.Controls.Add(this.screenshot_button);
             this.tab_local.Controls.Add(this.enable_screenshot_on_crash);
-            this.tab_local.Controls.Add(this.start_with_windows);
             this.tab_local.Controls.Add(this.watch_button);
             this.tab_local.Controls.Add(this.crash_script_button);
             this.tab_local.Controls.Add(this.app_path_button);
             this.tab_local.Controls.Add(this.script_to_execute_on_crash);
             this.tab_local.Controls.Add(this.crash_script_label);
             this.tab_local.Controls.Add(this.enable_metrics);
-            this.tab_local.Controls.Add(this.force_maximize);
             this.tab_local.Controls.Add(this.force_always_on_top);
             this.tab_local.Controls.Add(this.time_delay_label);
             this.tab_local.Controls.Add(this.command_line_arguments);
@@ -130,6 +125,24 @@
             this.tab_local.Text = "Local";
             this.tab_local.UseVisualStyleBackColor = true;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(193, 110);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(147, 13);
+            this.label2.TabIndex = 14;
+            this.label2.Text = "Maximum retries (0 for infinity):";
+            // 
+            // maximum_retries
+            // 
+            this.maximum_retries.Location = new System.Drawing.Point(193, 130);
+            this.maximum_retries.Name = "maximum_retries";
+            this.maximum_retries.Size = new System.Drawing.Size(173, 20);
+            this.maximum_retries.TabIndex = 4;
+            this.maximum_retries.TextChanged += new System.EventHandler(this.maximum_retries_TextChanged);
+            this.maximum_retries.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.maximum_retries_KeyPress);
+            // 
             // time_delay_before_launch
             // 
             this.time_delay_before_launch.Location = new System.Drawing.Point(8, 130);
@@ -142,7 +155,7 @@
             // assume_crash_if_not_responsive
             // 
             this.assume_crash_if_not_responsive.AutoSize = true;
-            this.assume_crash_if_not_responsive.Location = new System.Drawing.Point(8, 220);
+            this.assume_crash_if_not_responsive.Location = new System.Drawing.Point(8, 258);
             this.assume_crash_if_not_responsive.Name = "assume_crash_if_not_responsive";
             this.assume_crash_if_not_responsive.Size = new System.Drawing.Size(172, 17);
             this.assume_crash_if_not_responsive.TabIndex = 8;
@@ -152,17 +165,17 @@
             // 
             // screenshot_button
             // 
-            this.screenshot_button.Location = new System.Drawing.Point(192, 233);
+            this.screenshot_button.Location = new System.Drawing.Point(8, 280);
             this.screenshot_button.Name = "screenshot_button";
             this.screenshot_button.Size = new System.Drawing.Size(173, 24);
-            this.screenshot_button.TabIndex = 14;
+            this.screenshot_button.TabIndex = 11;
             this.screenshot_button.Text = "Take a screenshot";
             this.screenshot_button.UseVisualStyleBackColor = true;
             // 
             // enable_screenshot_on_crash
             // 
             this.enable_screenshot_on_crash.AutoSize = true;
-            this.enable_screenshot_on_crash.Location = new System.Drawing.Point(193, 178);
+            this.enable_screenshot_on_crash.Location = new System.Drawing.Point(193, 258);
             this.enable_screenshot_on_crash.Name = "enable_screenshot_on_crash";
             this.enable_screenshot_on_crash.Size = new System.Drawing.Size(158, 17);
             this.enable_screenshot_on_crash.TabIndex = 10;
@@ -170,33 +183,22 @@
             this.enable_screenshot_on_crash.UseVisualStyleBackColor = true;
             this.enable_screenshot_on_crash.CheckedChanged += new System.EventHandler(this.enable_screenshot_on_crash_CheckedChanged);
             // 
-            // start_with_windows
-            // 
-            this.start_with_windows.AutoSize = true;
-            this.start_with_windows.Location = new System.Drawing.Point(193, 158);
-            this.start_with_windows.Name = "start_with_windows";
-            this.start_with_windows.Size = new System.Drawing.Size(117, 17);
-            this.start_with_windows.TabIndex = 9;
-            this.start_with_windows.Text = "Start with Windows";
-            this.start_with_windows.UseVisualStyleBackColor = true;
-            this.start_with_windows.CheckedChanged += new System.EventHandler(this.start_with_windows_CheckedChanged);
-            // 
             // watch_button
             // 
-            this.watch_button.Location = new System.Drawing.Point(192, 200);
+            this.watch_button.Location = new System.Drawing.Point(192, 280);
             this.watch_button.Name = "watch_button";
             this.watch_button.Size = new System.Drawing.Size(173, 24);
-            this.watch_button.TabIndex = 13;
+            this.watch_button.TabIndex = 12;
             this.watch_button.Text = "Start Watching";
             this.watch_button.UseVisualStyleBackColor = true;
             this.watch_button.Click += new System.EventHandler(this.watch_button_Click);
             // 
             // crash_script_button
             // 
-            this.crash_script_button.Location = new System.Drawing.Point(337, 269);
+            this.crash_script_button.Location = new System.Drawing.Point(337, 178);
             this.crash_script_button.Name = "crash_script_button";
             this.crash_script_button.Size = new System.Drawing.Size(30, 24);
-            this.crash_script_button.TabIndex = 12;
+            this.crash_script_button.TabIndex = 6;
             this.crash_script_button.Text = "...";
             this.crash_script_button.UseVisualStyleBackColor = true;
             this.crash_script_button.Click += new System.EventHandler(this.crash_script_button_Click);
@@ -213,50 +215,39 @@
             // 
             // script_to_execute_on_crash
             // 
-            this.script_to_execute_on_crash.Location = new System.Drawing.Point(8, 271);
+            this.script_to_execute_on_crash.Location = new System.Drawing.Point(8, 180);
             this.script_to_execute_on_crash.Name = "script_to_execute_on_crash";
             this.script_to_execute_on_crash.Size = new System.Drawing.Size(319, 20);
-            this.script_to_execute_on_crash.TabIndex = 11;
+            this.script_to_execute_on_crash.TabIndex = 5;
             this.script_to_execute_on_crash.TextChanged += new System.EventHandler(this.script_to_execute_on_crash_TextChanged);
             // 
             // crash_script_label
             // 
             this.crash_script_label.AutoSize = true;
-            this.crash_script_label.Location = new System.Drawing.Point(8, 251);
+            this.crash_script_label.Location = new System.Drawing.Point(8, 160);
             this.crash_script_label.Name = "crash_script_label";
-            this.crash_script_label.Size = new System.Drawing.Size(134, 13);
+            this.crash_script_label.Size = new System.Drawing.Size(316, 13);
             this.crash_script_label.TabIndex = 10;
-            this.crash_script_label.Text = "Script to execute on crash:";
+            this.crash_script_label.Text = "Script to execute on crash (exit code will be passed as argument):";
             // 
             // enable_metrics
             // 
             this.enable_metrics.AutoSize = true;
-            this.enable_metrics.Location = new System.Drawing.Point(8, 200);
+            this.enable_metrics.Location = new System.Drawing.Point(193, 238);
             this.enable_metrics.Name = "enable_metrics";
             this.enable_metrics.Size = new System.Drawing.Size(96, 17);
-            this.enable_metrics.TabIndex = 7;
+            this.enable_metrics.TabIndex = 9;
             this.enable_metrics.Text = "Enable Metrics";
             this.enable_metrics.UseVisualStyleBackColor = true;
             this.enable_metrics.CheckedChanged += new System.EventHandler(this.enable_metrics_CheckedChanged);
             // 
-            // force_maximize
-            // 
-            this.force_maximize.AutoSize = true;
-            this.force_maximize.Location = new System.Drawing.Point(8, 180);
-            this.force_maximize.Name = "force_maximize";
-            this.force_maximize.Size = new System.Drawing.Size(99, 17);
-            this.force_maximize.TabIndex = 6;
-            this.force_maximize.Text = "Force Maximize";
-            this.force_maximize.UseVisualStyleBackColor = true;
-            this.force_maximize.CheckedChanged += new System.EventHandler(this.force_maximize_CheckedChanged);
-            // 
             // force_always_on_top
             // 
             this.force_always_on_top.AutoSize = true;
-            this.force_always_on_top.Location = new System.Drawing.Point(8, 160);
+            this.force_always_on_top.Location = new System.Drawing.Point(8, 240);
             this.force_always_on_top.Name = "force_always_on_top";
             this.force_always_on_top.Size = new System.Drawing.Size(126, 17);
-            this.force_always_on_top.TabIndex = 5;
+            this.force_always_on_top.TabIndex = 7;
             this.force_always_on_top.Text = "Force Always on Top";
             this.force_always_on_top.UseVisualStyleBackColor = true;
             this.force_always_on_top.CheckedChanged += new System.EventHandler(this.force_always_on_top_CheckedChanged);
@@ -306,7 +297,6 @@
             // 
             // remote_tab
             // 
-            this.remote_tab.Controls.Add(this.label1);
             this.remote_tab.Controls.Add(this.receive_anonymous_updates);
             this.remote_tab.Controls.Add(this.release_button);
             this.remote_tab.Controls.Add(this.password);
@@ -333,14 +323,6 @@
             this.remote_tab.Text = "Remote";
             this.remote_tab.UseVisualStyleBackColor = true;
             // 
-            // label1
-            // 
-            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label1.Location = new System.Drawing.Point(8, 190);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(358, 2);
-            this.label1.TabIndex = 21;
-            // 
             // receive_anonymous_updates
             // 
             this.receive_anonymous_updates.AutoSize = true;
@@ -354,7 +336,7 @@
             // 
             // release_button
             // 
-            this.release_button.Location = new System.Drawing.Point(255, 268);
+            this.release_button.Location = new System.Drawing.Point(255, 278);
             this.release_button.Name = "release_button";
             this.release_button.Size = new System.Drawing.Size(112, 24);
             this.release_button.TabIndex = 11;
@@ -363,7 +345,7 @@
             // 
             // password
             // 
-            this.password.Location = new System.Drawing.Point(132, 270);
+            this.password.Location = new System.Drawing.Point(132, 280);
             this.password.Name = "password";
             this.password.Size = new System.Drawing.Size(112, 20);
             this.password.TabIndex = 10;
@@ -372,7 +354,7 @@
             // password_label
             // 
             this.password_label.AutoSize = true;
-            this.password_label.Location = new System.Drawing.Point(132, 250);
+            this.password_label.Location = new System.Drawing.Point(132, 260);
             this.password_label.Name = "password_label";
             this.password_label.Size = new System.Drawing.Size(56, 13);
             this.password_label.TabIndex = 17;
@@ -380,7 +362,7 @@
             // 
             // username
             // 
-            this.username.Location = new System.Drawing.Point(8, 270);
+            this.username.Location = new System.Drawing.Point(8, 280);
             this.username.Name = "username";
             this.username.Size = new System.Drawing.Size(112, 20);
             this.username.TabIndex = 9;
@@ -389,7 +371,7 @@
             // username_label
             // 
             this.username_label.AutoSize = true;
-            this.username_label.Location = new System.Drawing.Point(8, 250);
+            this.username_label.Location = new System.Drawing.Point(8, 260);
             this.username_label.Name = "username_label";
             this.username_label.Size = new System.Drawing.Size(58, 13);
             this.username_label.TabIndex = 15;
@@ -397,7 +379,7 @@
             // 
             // update_location_button
             // 
-            this.update_location_button.Location = new System.Drawing.Point(337, 218);
+            this.update_location_button.Location = new System.Drawing.Point(337, 228);
             this.update_location_button.Name = "update_location_button";
             this.update_location_button.Size = new System.Drawing.Size(30, 24);
             this.update_location_button.TabIndex = 8;
@@ -406,7 +388,7 @@
             // 
             // update_package_location
             // 
-            this.update_package_location.Location = new System.Drawing.Point(8, 220);
+            this.update_package_location.Location = new System.Drawing.Point(8, 230);
             this.update_package_location.Name = "update_package_location";
             this.update_package_location.Size = new System.Drawing.Size(319, 20);
             this.update_package_location.TabIndex = 7;
@@ -414,7 +396,7 @@
             // update_location_label
             // 
             this.update_location_label.AutoSize = true;
-            this.update_location_label.Location = new System.Drawing.Point(8, 200);
+            this.update_location_label.Location = new System.Drawing.Point(8, 210);
             this.update_location_label.Name = "update_location_label";
             this.update_location_label.Size = new System.Drawing.Size(130, 13);
             this.update_location_label.TabIndex = 11;
@@ -423,10 +405,10 @@
             // update_hash
             // 
             this.update_hash.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.update_hash.Location = new System.Drawing.Point(85, 160);
+            this.update_hash.Location = new System.Drawing.Point(8, 180);
             this.update_hash.Name = "update_hash";
             this.update_hash.ReadOnly = true;
-            this.update_hash.Size = new System.Drawing.Size(281, 22);
+            this.update_hash.Size = new System.Drawing.Size(358, 22);
             this.update_hash.TabIndex = 6;
             this.update_hash.Text = "b3d97746dbb45e92dc083db205e1fd14";
             this.update_hash.TextChanged += new System.EventHandler(this.update_hash_TextChanged);
@@ -434,7 +416,7 @@
             // update_hash_label
             // 
             this.update_hash_label.AutoSize = true;
-            this.update_hash_label.Location = new System.Drawing.Point(8, 163);
+            this.update_hash_label.Location = new System.Drawing.Point(8, 160);
             this.update_hash_label.Name = "update_hash_label";
             this.update_hash_label.Size = new System.Drawing.Size(71, 13);
             this.update_hash_label.TabIndex = 9;
@@ -506,7 +488,7 @@
             this.log.Location = new System.Drawing.Point(4, 22);
             this.log.Name = "log";
             this.log.Padding = new System.Windows.Forms.Padding(3);
-            this.log.Size = new System.Drawing.Size(376, 310);
+            this.log.Size = new System.Drawing.Size(376, 312);
             this.log.TabIndex = 4;
             this.log.Text = "Log";
             this.log.UseVisualStyleBackColor = true;
@@ -516,7 +498,7 @@
             this.log_box.Dock = System.Windows.Forms.DockStyle.Fill;
             this.log_box.Location = new System.Drawing.Point(3, 3);
             this.log_box.Name = "log_box";
-            this.log_box.Size = new System.Drawing.Size(370, 304);
+            this.log_box.Size = new System.Drawing.Size(370, 306);
             this.log_box.TabIndex = 0;
             this.log_box.Text = "";
             // 
@@ -526,7 +508,7 @@
             this.about_tab.Location = new System.Drawing.Point(4, 22);
             this.about_tab.Name = "about_tab";
             this.about_tab.Padding = new System.Windows.Forms.Padding(3);
-            this.about_tab.Size = new System.Drawing.Size(376, 310);
+            this.about_tab.Size = new System.Drawing.Size(376, 312);
             this.about_tab.TabIndex = 3;
             this.about_tab.Text = "About";
             this.about_tab.UseVisualStyleBackColor = true;
@@ -559,24 +541,6 @@
             this.status.Name = "status";
             this.status.Size = new System.Drawing.Size(39, 17);
             this.status.Text = "Ready";
-            // 
-            // maximum_retries
-            // 
-            this.maximum_retries.Location = new System.Drawing.Point(193, 130);
-            this.maximum_retries.Name = "maximum_retries";
-            this.maximum_retries.Size = new System.Drawing.Size(173, 20);
-            this.maximum_retries.TabIndex = 4;
-            this.maximum_retries.TextChanged += new System.EventHandler(this.maximum_retries_TextChanged);
-            this.maximum_retries.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.maximum_retries_KeyPress);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(193, 110);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(147, 13);
-            this.label2.TabIndex = 14;
-            this.label2.Text = "Maximum retries (0 for infinity):";
             // 
             // MainDialog
             // 
@@ -622,7 +586,6 @@
         private System.Windows.Forms.TextBox command_line_arguments;
         private System.Windows.Forms.Label time_delay_label;
         private System.Windows.Forms.CheckBox force_always_on_top;
-        private System.Windows.Forms.CheckBox force_maximize;
         private System.Windows.Forms.CheckBox enable_metrics;
         private System.Windows.Forms.TextBox script_to_execute_on_crash;
         private System.Windows.Forms.Label crash_script_label;
@@ -648,12 +611,10 @@
         private System.Windows.Forms.Button watch_button;
         private System.Windows.Forms.CheckBox receive_anonymous_updates;
         private System.Windows.Forms.RichTextBox about_text_box;
-        private System.Windows.Forms.CheckBox start_with_windows;
         private System.Windows.Forms.CheckBox enable_screenshot_on_crash;
         private System.Windows.Forms.TabPage log;
         private System.Windows.Forms.RichTextBox log_box;
         private System.Windows.Forms.Button screenshot_button;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox assume_crash_if_not_responsive;
         private System.Windows.Forms.TextBox time_delay_before_launch;
         private System.Windows.Forms.TextBox maximum_retries;
