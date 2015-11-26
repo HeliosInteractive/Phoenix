@@ -137,6 +137,7 @@
             this.assume_crash_if_not_responsive.TabIndex = 7;
             this.assume_crash_if_not_responsive.Text = "Assume crash if not responsive";
             this.assume_crash_if_not_responsive.UseVisualStyleBackColor = true;
+            this.assume_crash_if_not_responsive.CheckedChanged += new System.EventHandler(this.assume_crash_if_not_responsive_CheckedChanged);
             // 
             // screenshot_button
             // 
@@ -156,6 +157,7 @@
             this.enable_screenshot_on_crash.TabIndex = 10;
             this.enable_screenshot_on_crash.Text = "Enable screenshot on crash";
             this.enable_screenshot_on_crash.UseVisualStyleBackColor = true;
+            this.enable_screenshot_on_crash.CheckedChanged += new System.EventHandler(this.enable_screenshot_on_crash_CheckedChanged);
             // 
             // enable_verbose_logging
             // 
@@ -166,6 +168,7 @@
             this.enable_verbose_logging.TabIndex = 9;
             this.enable_verbose_logging.Text = "Enable verbose logging";
             this.enable_verbose_logging.UseVisualStyleBackColor = true;
+            this.enable_verbose_logging.CheckedChanged += new System.EventHandler(this.enable_verbose_logging_CheckedChanged);
             // 
             // start_with_windows
             // 
@@ -176,6 +179,7 @@
             this.start_with_windows.TabIndex = 8;
             this.start_with_windows.Text = "Start with Windows";
             this.start_with_windows.UseVisualStyleBackColor = true;
+            this.start_with_windows.CheckedChanged += new System.EventHandler(this.start_with_windows_CheckedChanged);
             // 
             // watch_button
             // 
@@ -210,6 +214,7 @@
             this.script_to_execute_on_crash.Name = "script_to_execute_on_crash";
             this.script_to_execute_on_crash.Size = new System.Drawing.Size(324, 20);
             this.script_to_execute_on_crash.TabIndex = 11;
+            this.script_to_execute_on_crash.TextChanged += new System.EventHandler(this.script_to_execute_on_crash_TextChanged);
             // 
             // crash_script_label
             // 
@@ -229,6 +234,7 @@
             this.enable_metrics.TabIndex = 6;
             this.enable_metrics.Text = "Enable Metrics";
             this.enable_metrics.UseVisualStyleBackColor = true;
+            this.enable_metrics.CheckedChanged += new System.EventHandler(this.enable_metrics_CheckedChanged);
             // 
             // force_maximize
             // 
@@ -239,6 +245,7 @@
             this.force_maximize.TabIndex = 5;
             this.force_maximize.Text = "Force Maximize";
             this.force_maximize.UseVisualStyleBackColor = true;
+            this.force_maximize.CheckedChanged += new System.EventHandler(this.force_maximize_CheckedChanged);
             // 
             // force_always_on_top
             // 
@@ -249,6 +256,7 @@
             this.force_always_on_top.TabIndex = 4;
             this.force_always_on_top.Text = "Force Always on Top";
             this.force_always_on_top.UseVisualStyleBackColor = true;
+            this.force_always_on_top.CheckedChanged += new System.EventHandler(this.force_always_on_top_CheckedChanged);
             // 
             // time_delay_label
             // 
@@ -265,6 +273,7 @@
             this.command_line_arguments.Name = "command_line_arguments";
             this.command_line_arguments.Size = new System.Drawing.Size(360, 20);
             this.command_line_arguments.TabIndex = 2;
+            this.command_line_arguments.TextChanged += new System.EventHandler(this.command_line_arguments_TextChanged);
             // 
             // cmd_line_label
             // 
@@ -338,6 +347,7 @@
             this.receive_anonymous_updates.TabIndex = 4;
             this.receive_anonymous_updates.Text = "receive anonymous updates?";
             this.receive_anonymous_updates.UseVisualStyleBackColor = true;
+            this.receive_anonymous_updates.CheckedChanged += new System.EventHandler(this.receive_anonymous_updates_CheckedChanged);
             // 
             // release_button
             // 
@@ -371,6 +381,7 @@
             this.username.Name = "username";
             this.username.Size = new System.Drawing.Size(120, 20);
             this.username.TabIndex = 9;
+            this.username.TextChanged += new System.EventHandler(this.username_TextChanged);
             // 
             // username_label
             // 
@@ -415,6 +426,7 @@
             this.update_hash.Size = new System.Drawing.Size(281, 22);
             this.update_hash.TabIndex = 6;
             this.update_hash.Text = "b3d97746dbb45e92dc083db205e1fd14";
+            this.update_hash.TextChanged += new System.EventHandler(this.update_hash_TextChanged);
             // 
             // update_hash_label
             // 
@@ -457,6 +469,7 @@
             this.update_channel.Name = "update_channel";
             this.update_channel.Size = new System.Drawing.Size(360, 20);
             this.update_channel.TabIndex = 2;
+            this.update_channel.TextChanged += new System.EventHandler(this.update_channel_TextChanged);
             // 
             // update_channel_label
             // 
@@ -473,6 +486,7 @@
             this.update_server_address.Name = "update_server_address";
             this.update_server_address.Size = new System.Drawing.Size(360, 20);
             this.update_server_address.TabIndex = 1;
+            this.update_server_address.TextChanged += new System.EventHandler(this.update_server_address_TextChanged);
             // 
             // update_server_label
             // 
@@ -549,6 +563,7 @@
             this.time_delay_before_launch.Name = "time_delay_before_launch";
             this.time_delay_before_launch.Size = new System.Drawing.Size(180, 20);
             this.time_delay_before_launch.TabIndex = 3;
+            this.time_delay_before_launch.TextChanged += new System.EventHandler(this.time_delay_before_launch_TextChanged);
             this.time_delay_before_launch.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.time_delay_before_launch_KeyPress);
             // 
             // MainDialog

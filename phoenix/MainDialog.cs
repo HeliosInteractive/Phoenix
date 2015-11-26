@@ -52,5 +52,125 @@ namespace phoenix
                 Helpers.GetPropertyName(() => Defaults.Local.ApplicationToWtach),
                 (sender as TextBox).Text);
         }
+
+        private void command_line_arguments_TextChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Local.CommandLineArguments),
+                Helpers.GetPropertyName(() => Defaults.Local.CommandLineArguments),
+                (sender as TextBox).Text);
+        }
+
+        private void time_delay_before_launch_TextChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Local.TimeDelayBeforeLaunch),
+                Helpers.GetPropertyName(() => Defaults.Local.TimeDelayBeforeLaunch),
+                (sender as TextBox).Text);
+        }
+
+        private void force_always_on_top_CheckedChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Local.ForceAlwaysOnTop),
+                Helpers.GetPropertyName(() => Defaults.Local.ForceAlwaysOnTop),
+                (sender as CheckBox).Checked);
+        }
+
+        private void force_maximize_CheckedChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Local.ForceMaximize),
+                Helpers.GetPropertyName(() => Defaults.Local.ForceMaximize),
+                (sender as CheckBox).Checked);
+        }
+
+        private void enable_metrics_CheckedChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Local.EnableMetrics),
+                Helpers.GetPropertyName(() => Defaults.Local.EnableMetrics),
+                (sender as CheckBox).Checked);
+        }
+
+        private void assume_crash_if_not_responsive_CheckedChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Local.AssumeCrashIfNotResponsive),
+                Helpers.GetPropertyName(() => Defaults.Local.AssumeCrashIfNotResponsive),
+                (sender as CheckBox).Checked);
+        }
+
+        private void start_with_windows_CheckedChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Local.StartWithWindows),
+                Helpers.GetPropertyName(() => Defaults.Local.StartWithWindows),
+                (sender as CheckBox).Checked);
+        }
+
+        private void enable_verbose_logging_CheckedChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Local.EnableVerboseLogging),
+                Helpers.GetPropertyName(() => Defaults.Local.EnableVerboseLogging),
+                (sender as CheckBox).Checked);
+        }
+
+        private void enable_screenshot_on_crash_CheckedChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Local.EnableScreenshotOnCrash),
+                Helpers.GetPropertyName(() => Defaults.Local.EnableScreenshotOnCrash),
+                (sender as CheckBox).Checked);
+        }
+
+        private void script_to_execute_on_crash_TextChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Local.ScriptToExecuteOnCrash),
+                Helpers.GetPropertyName(() => Defaults.Local.ScriptToExecuteOnCrash),
+                (sender as TextBox).Text);
+        }
+
+        private void update_server_address_TextChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Remote.UpdateServerAddress),
+                Helpers.GetPropertyName(() => Defaults.Remote.UpdateServerAddress),
+                (sender as TextBox).Text);
+        }
+
+        private void update_channel_TextChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Remote.UpdateChannel),
+                Helpers.GetPropertyName(() => Defaults.Remote.UpdateChannel),
+                (sender as TextBox).Text);
+        }
+
+        private void receive_anonymous_updates_CheckedChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Remote.ReceiveAnonymousUpdates),
+                Helpers.GetPropertyName(() => Defaults.Remote.ReceiveAnonymousUpdates),
+                (sender as CheckBox).Checked);
+        }
+
+        private void update_hash_TextChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Remote.UpdateHash),
+                Helpers.GetPropertyName(() => Defaults.Remote.UpdateHash),
+                (sender as TextBox).Text);
+        }
+
+        private void username_TextChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Remote.Username),
+                Helpers.GetPropertyName(() => Defaults.Remote.Username),
+                (sender as TextBox).Text);
+        }
     }
 }
