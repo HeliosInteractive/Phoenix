@@ -10,9 +10,16 @@ namespace phoenix
         int     m_DelaySeconds  = 0;
         int     m_Attempts      = 10;
         int     m_CurrAttempt   = 0;
+        string  m_CrashScript   = string.Empty;
         string  m_ProcessPath   = string.Empty;
         string  m_CommandLine   = string.Empty;
         bool    m_Validated     = false;
+
+        public string CrashScript
+        {
+            get { return m_CrashScript; }
+            set { m_CrashScript = value; Validate(); }
+        }
 
         public int Attempts
         {
@@ -59,10 +66,17 @@ namespace phoenix
             if (!Path.IsPathRooted(m_ProcessPath))
                 m_ProcessPath = Path.GetFullPath(m_ProcessPath);
 
+            if (m_CrashScript != string.Empty && !Path.IsPathRooted(m_CrashScript))
+                m_CrashScript = Path.GetFullPath(m_CrashScript);
+
             if (!File.Exists(m_ProcessPath))
             {
                 m_ProcessPath = string.Empty;
                 return;
+            }
+            if (!File.Exists(m_CrashScript))
+            {
+                m_CrashScript = string.Empty;
             }
 
             m_Validated = true;
@@ -91,8 +105,18 @@ namespace phoenix
             if (!m_Validated || (m_Attempts > 0 &&  m_CurrAttempt >= m_Attempts))
                 return;
 
+            if (m_CrashScript != string.Empty)
+            {
+                ProcessStartInfo psi = new ProcessStartInfo();
+                psi.FileName = CrashScript;
+
+                Process process = new Process();
+                process.StartInfo = psi;
+                process.Start();
+            }
+
             Task.Delay(1000 * DelaySeconds)
-                .ContinueWith(fn => ExecuteProcess());
+                .ContinueWith(fn => ExecuteProcess() );
 
             m_CurrAttempt++;
         }

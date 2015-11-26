@@ -134,6 +134,8 @@ namespace phoenix
                 Helpers.GetClassName(() => Defaults.Local.ScriptToExecuteOnCrash),
                 Helpers.GetPropertyName(() => Defaults.Local.ScriptToExecuteOnCrash),
                 (sender as TextBox).Text);
+
+            m_ProcessRunner.CrashScript = script_to_execute_on_crash.Text;
         }
 
         private void update_server_address_TextChanged(object sender, EventArgs e)
@@ -198,6 +200,7 @@ namespace phoenix
             m_ProcessRunner.ProcessPath = application_to_watch.Text;
             m_ProcessRunner.CommandLine = command_line_arguments.Text;
             m_ProcessRunner.Attempts = Int32.Parse(maximum_retries.Text);
+            m_ProcessRunner.CrashScript = script_to_execute_on_crash.Text;
 
             m_ProcessRunner.Run();
         }
@@ -207,6 +210,14 @@ namespace phoenix
             if (m_FileDialog.ShowDialog() == DialogResult.OK)
             {
                 application_to_watch.Text = m_FileDialog.FileName;
+            }
+        }
+
+        private void crash_script_button_Click(object sender, EventArgs e)
+        {
+            if (m_FileDialog.ShowDialog() == DialogResult.OK)
+            {
+                script_to_execute_on_crash.Text = m_FileDialog.FileName;
             }
         }
     }
