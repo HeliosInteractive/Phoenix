@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Defaults.cs" />
+    <Compile Include="Helpers.cs" />
     <Compile Include="IniSettings.cs" />
     <Compile Include="MainDialog.cs">
       <SubType>Form</SubType>
