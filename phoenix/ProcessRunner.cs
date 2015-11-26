@@ -2,6 +2,7 @@
 using System.IO;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 namespace phoenix
 {
@@ -17,6 +18,8 @@ namespace phoenix
         string  m_ProcessPath   = string.Empty;
         string  m_CommandLine   = string.Empty;
         bool    m_Validated     = false;
+        bool    m_Monitoring    = false;
+        Process m_Process       = null;
 
         /// <summary>
         /// An event that is fired when the process is exited
@@ -80,6 +83,41 @@ namespace phoenix
 
             m_CurrAttempt = 0;
             ExecuteProcess();
+            ExecuteMonitor();
+        }
+
+        void ExecuteMonitor()
+        {
+            if (m_Monitoring)
+                return;
+
+            m_Monitoring = true;
+            MonitorAction();
+        }
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        void MonitorAction()
+        {
+            if (m_Process == null || m_Process.HasExited)
+                return;
+
+            m_Process.Refresh();
+
+            if (!m_Process.Responding)
+            {
+                try { m_Process.Kill(); } catch { /* no-op */ }
+                HandleProcessExit(m_Process, null);
+            }
+            else if (m_Process.MainWindowHandle != IntPtr.Zero)
+            {
+                SetForegroundWindow(m_Process.MainWindowHandle);
+            }
+
+            Task.Delay(1000)
+                .ContinueWith(fn => MonitorAction());
         }
 
         /// <summary>
@@ -136,11 +174,11 @@ namespace phoenix
             if (CommandLine != string.Empty)
                 process_info.Arguments = CommandLine;
 
-            Process process = new Process();
-            process.StartInfo = process_info;
-            process.EnableRaisingEvents = true;
-            process.Exited += new EventHandler(HandleProcessExit);
-            process.Start();
+            m_Process = new Process();
+            m_Process.StartInfo = process_info;
+            m_Process.EnableRaisingEvents = true;
+            m_Process.Exited += new EventHandler(HandleProcessExit);
+            m_Process.Start();
         }
 
         /// <summary>
@@ -166,9 +204,9 @@ namespace phoenix
                     OnProcessExit(dead_process.ExitCode);
                 }
 
-                Process process = new Process();
-                process.StartInfo = process_info;
-                process.Start();
+                m_Process = new Process();
+                m_Process.StartInfo = process_info;
+                m_Process.Start();
             }
 
             Task.Delay(1000 * DelaySeconds)

@@ -557,7 +557,6 @@
             this.Name = "MainDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Phoenix Control Panel";
-            this.TopMost = true;
             this.main_tab.ResumeLayout(false);
             this.tab_local.ResumeLayout(false);
             this.tab_local.PerformLayout();
