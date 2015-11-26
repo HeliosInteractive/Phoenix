@@ -208,6 +208,7 @@
             this.app_path_button.TabIndex = 1;
             this.app_path_button.Text = "...";
             this.app_path_button.UseVisualStyleBackColor = true;
+            this.app_path_button.Click += new System.EventHandler(this.app_path_button_Click);
             // 
             // script_to_execute_on_crash
             // 

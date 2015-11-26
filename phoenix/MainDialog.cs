@@ -7,10 +7,13 @@ namespace phoenix
     {
         private IniSettings     m_AppSettings;
         private ProcessRunner   m_ProcessRunner;
+        private OpenFileDialog  m_FileDialog;
+
         public MainDialog()
         {
             m_AppSettings = new IniSettings("phoenix.ini");
             m_ProcessRunner = new ProcessRunner();
+            m_FileDialog = new OpenFileDialog();
 
             InitializeComponent();
             ApplySettings();
@@ -53,6 +56,8 @@ namespace phoenix
                 Helpers.GetClassName(() => Defaults.Local.ApplicationToWtach),
                 Helpers.GetPropertyName(() => Defaults.Local.ApplicationToWtach),
                 (sender as TextBox).Text);
+
+            m_ProcessRunner.ProcessPath = application_to_watch.Text;
         }
 
         private void command_line_arguments_TextChanged(object sender, EventArgs e)
@@ -61,6 +66,8 @@ namespace phoenix
                 Helpers.GetClassName(() => Defaults.Local.CommandLineArguments),
                 Helpers.GetPropertyName(() => Defaults.Local.CommandLineArguments),
                 (sender as TextBox).Text);
+
+            m_ProcessRunner.CommandLine = command_line_arguments.Text;
         }
 
         private void time_delay_before_launch_TextChanged(object sender, EventArgs e)
@@ -69,6 +76,8 @@ namespace phoenix
                 Helpers.GetClassName(() => Defaults.Local.TimeDelayBeforeLaunch),
                 Helpers.GetPropertyName(() => Defaults.Local.TimeDelayBeforeLaunch),
                 (sender as TextBox).Text);
+
+            m_ProcessRunner.DelaySeconds = Int32.Parse(time_delay_before_launch.Text);
         }
 
         private void force_always_on_top_CheckedChanged(object sender, EventArgs e)
@@ -179,6 +188,8 @@ namespace phoenix
                 Helpers.GetClassName(() => Defaults.Local.MaximumRetries),
                 Helpers.GetPropertyName(() => Defaults.Local.MaximumRetries),
                 (sender as TextBox).Text);
+
+            m_ProcessRunner.Attempts = Int32.Parse(maximum_retries.Text);
         }
 
         private void watch_button_Click(object sender, EventArgs e)
@@ -189,6 +200,14 @@ namespace phoenix
             m_ProcessRunner.Attempts = Int32.Parse(maximum_retries.Text);
 
             m_ProcessRunner.Run();
+        }
+
+        private void app_path_button_Click(object sender, EventArgs e)
+        {
+            if (m_FileDialog.ShowDialog() == DialogResult.OK)
+            {
+                application_to_watch.Text = m_FileDialog.FileName;
+            }
         }
     }
 }
