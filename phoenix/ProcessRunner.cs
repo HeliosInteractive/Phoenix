@@ -22,12 +22,6 @@ namespace phoenix
         Process m_Process       = null;
 
         /// <summary>
-        /// An event that is fired when the process is exited
-        /// Process exit code will be passed to the called handler
-        /// </summary>
-        public Action<int> ProcessExited;
-
-        /// <summary>
         /// <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ms633539(v=vs.85).aspx"/>
         /// </summary>
         /// <param name="hWnd"></param>
@@ -136,16 +130,6 @@ namespace phoenix
         }
 
         /// <summary>
-        /// Virtual method, gets called on process exit every time it exits
-        /// </summary>
-        /// <param name="exit_code">Process' exit code</param>
-        protected virtual void OnProcessExit(int exit_code)
-        {
-            if (ProcessExited != null)
-                ProcessExited(exit_code);
-        }
-
-        /// <summary>
         /// Validate members. Sets a flag that prevents Run() from operating
         /// if members are incorrectly set.
         /// </summary>
@@ -222,7 +206,6 @@ namespace phoenix
                 {
                     Process dead_process = (sender as Process);
                     process_info.Arguments = dead_process.ExitCode.ToString();
-                    OnProcessExit(dead_process.ExitCode);
                 }
 
                 m_Process = new Process();
