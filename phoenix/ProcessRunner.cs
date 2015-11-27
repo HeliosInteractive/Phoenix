@@ -28,6 +28,22 @@ namespace phoenix
         public Action<int> ProcessExited;
 
         /// <summary>
+        /// <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ms633539(v=vs.85).aspx"/>
+        /// </summary>
+        /// <param name="hWnd"></param>
+        /// <returns></returns>
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        /// <summary>
+        /// <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ms633505(v=vs.85).aspx"/>
+        /// </summary>
+        /// <returns></returns>
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetForegroundWindow();
+
+        /// <summary>
         /// A script to be called in case of process exit/crash.
         /// Process exit code will be passed to the called script
         /// </summary>
@@ -85,10 +101,6 @@ namespace phoenix
             ExecuteProcess();
         }
 
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool SetForegroundWindow(IntPtr hWnd);
-
         public void Monitor()
         {
             if (m_PauseMonitor || m_Process == null || m_Process.HasExited)
@@ -103,7 +115,8 @@ namespace phoenix
             }
             else if (m_Process.MainWindowHandle != IntPtr.Zero)
             {
-                SetForegroundWindow(m_Process.MainWindowHandle);
+                if (GetForegroundWindow() != m_Process.MainWindowHandle)
+                    SetForegroundWindow(m_Process.MainWindowHandle);
             }
         }
 
