@@ -173,6 +173,7 @@
             this.screenshot_button.TabIndex = 11;
             this.screenshot_button.Text = "Take a screenshot";
             this.screenshot_button.UseVisualStyleBackColor = true;
+            this.screenshot_button.Click += new System.EventHandler(this.screenshot_button_Click);
             // 
             // enable_screenshot_on_crash
             // 

@@ -59,6 +59,7 @@
     <Compile Include="ProcessRunner.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScreenCapture.cs" />
     <EmbeddedResource Include="MainDialog.resx">
       <DependentUpon>MainDialog.cs</DependentUpon>
     </EmbeddedResource>

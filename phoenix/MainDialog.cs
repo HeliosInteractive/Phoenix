@@ -231,5 +231,10 @@ namespace phoenix
         {
             m_PauseMonitor = false;
         }
+
+        private void screenshot_button_Click(object sender, EventArgs e)
+        {
+            ScreenCapture.TakeScreenShot();
+        }
     }
 }
