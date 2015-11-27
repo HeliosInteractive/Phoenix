@@ -181,13 +181,23 @@ namespace phoenix
 
         private void watch_button_Click(object sender, EventArgs e)
         {
-            m_ProcessRunner.DelaySeconds = Int32.Parse(time_delay_before_launch.Text);
-            m_ProcessRunner.ProcessPath = application_to_watch.Text;
-            m_ProcessRunner.CommandLine = command_line_arguments.Text;
-            m_ProcessRunner.Attempts = Int32.Parse(maximum_retries.Text);
-            m_ProcessRunner.CrashScript = script_to_execute_on_crash.Text;
+            if (watch_button.Text.StartsWith("Start"))
+            {
+                watch_button.Text = "Stop Watching";
 
-            m_ProcessRunner.Run();
+                m_ProcessRunner.DelaySeconds = Int32.Parse(time_delay_before_launch.Text);
+                m_ProcessRunner.ProcessPath = application_to_watch.Text;
+                m_ProcessRunner.CommandLine = command_line_arguments.Text;
+                m_ProcessRunner.Attempts = Int32.Parse(maximum_retries.Text);
+                m_ProcessRunner.CrashScript = script_to_execute_on_crash.Text;
+                m_ProcessRunner.Start();
+            }
+            else if(watch_button.Text.StartsWith("Stop"))
+            {
+                watch_button.Text = "Start Watching";
+
+                m_ProcessRunner.Stop();
+            }
         }
 
         private void app_path_button_Click(object sender, EventArgs e)

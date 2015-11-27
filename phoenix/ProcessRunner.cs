@@ -93,12 +93,28 @@ namespace phoenix
         /// <summary>
         /// Call this method to reset the counter and monitor the process
         /// </summary>
-        public void Run()
+        public void Start()
         {
             if (!m_Validated) return;
 
             m_CurrAttempt = 0;
             ExecuteProcess();
+        }
+
+        /// <summary>
+        /// Stops monitoring the Process
+        /// </summary>
+        public void Stop()
+        {
+            if (m_Process != null)
+            {
+                // we don't care anymore
+                m_Process.EnableRaisingEvents = false;
+            }
+
+            m_Process = null;
+            m_CurrAttempt = 0;
+            m_PauseMonitor = true;
         }
 
         public void Monitor()
