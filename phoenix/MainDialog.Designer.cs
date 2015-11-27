@@ -130,26 +130,26 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(193, 110);
+            this.label2.Location = new System.Drawing.Point(254, 60);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(147, 13);
+            this.label2.Size = new System.Drawing.Size(66, 13);
             this.label2.TabIndex = 14;
-            this.label2.Text = "Maximum retries (0 for infinity):";
+            this.label2.Text = "Max Retries:";
             // 
             // maximum_retries
             // 
-            this.maximum_retries.Location = new System.Drawing.Point(193, 130);
+            this.maximum_retries.Location = new System.Drawing.Point(254, 80);
             this.maximum_retries.Name = "maximum_retries";
-            this.maximum_retries.Size = new System.Drawing.Size(173, 20);
+            this.maximum_retries.Size = new System.Drawing.Size(112, 20);
             this.maximum_retries.TabIndex = 4;
             this.maximum_retries.TextChanged += new System.EventHandler(this.maximum_retries_TextChanged);
             this.maximum_retries.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.maximum_retries_KeyPress);
             // 
             // time_delay_before_launch
             // 
-            this.time_delay_before_launch.Location = new System.Drawing.Point(8, 130);
+            this.time_delay_before_launch.Location = new System.Drawing.Point(131, 80);
             this.time_delay_before_launch.Name = "time_delay_before_launch";
-            this.time_delay_before_launch.Size = new System.Drawing.Size(173, 20);
+            this.time_delay_before_launch.Size = new System.Drawing.Size(112, 20);
             this.time_delay_before_launch.TabIndex = 3;
             this.time_delay_before_launch.TextChanged += new System.EventHandler(this.time_delay_before_launch_TextChanged);
             this.time_delay_before_launch.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.time_delay_before_launch_KeyPress);
@@ -198,7 +198,7 @@
             // 
             // crash_script_button
             // 
-            this.crash_script_button.Location = new System.Drawing.Point(337, 178);
+            this.crash_script_button.Location = new System.Drawing.Point(337, 128);
             this.crash_script_button.Name = "crash_script_button";
             this.crash_script_button.Size = new System.Drawing.Size(30, 24);
             this.crash_script_button.TabIndex = 6;
@@ -218,7 +218,7 @@
             // 
             // script_to_execute_on_crash
             // 
-            this.script_to_execute_on_crash.Location = new System.Drawing.Point(8, 180);
+            this.script_to_execute_on_crash.Location = new System.Drawing.Point(8, 130);
             this.script_to_execute_on_crash.Name = "script_to_execute_on_crash";
             this.script_to_execute_on_crash.Size = new System.Drawing.Size(319, 20);
             this.script_to_execute_on_crash.TabIndex = 5;
@@ -227,7 +227,7 @@
             // crash_script_label
             // 
             this.crash_script_label.AutoSize = true;
-            this.crash_script_label.Location = new System.Drawing.Point(8, 160);
+            this.crash_script_label.Location = new System.Drawing.Point(8, 110);
             this.crash_script_label.Name = "crash_script_label";
             this.crash_script_label.Size = new System.Drawing.Size(311, 13);
             this.crash_script_label.TabIndex = 10;
@@ -258,17 +258,17 @@
             // time_delay_label
             // 
             this.time_delay_label.AutoSize = true;
-            this.time_delay_label.Location = new System.Drawing.Point(8, 110);
+            this.time_delay_label.Location = new System.Drawing.Point(131, 60);
             this.time_delay_label.Name = "time_delay_label";
-            this.time_delay_label.Size = new System.Drawing.Size(166, 13);
+            this.time_delay_label.Size = new System.Drawing.Size(103, 13);
             this.time_delay_label.TabIndex = 4;
-            this.time_delay_label.Text = "Delay before re-launch (seconds):";
+            this.time_delay_label.Text = "Re-launch Delay (s):";
             // 
             // command_line_arguments
             // 
             this.command_line_arguments.Location = new System.Drawing.Point(8, 80);
             this.command_line_arguments.Name = "command_line_arguments";
-            this.command_line_arguments.Size = new System.Drawing.Size(358, 20);
+            this.command_line_arguments.Size = new System.Drawing.Size(112, 20);
             this.command_line_arguments.TabIndex = 2;
             this.command_line_arguments.TextChanged += new System.EventHandler(this.command_line_arguments_TextChanged);
             // 
@@ -277,9 +277,9 @@
             this.cmd_line_label.AutoSize = true;
             this.cmd_line_label.Location = new System.Drawing.Point(8, 60);
             this.cmd_line_label.Name = "cmd_line_label";
-            this.cmd_line_label.Size = new System.Drawing.Size(174, 13);
+            this.cmd_line_label.Size = new System.Drawing.Size(80, 13);
             this.cmd_line_label.TabIndex = 2;
-            this.cmd_line_label.Text = "Command line arguments (optional):";
+            this.cmd_line_label.Text = "Command Line:";
             // 
             // app_path_label
             // 
