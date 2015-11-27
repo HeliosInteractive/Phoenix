@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainDialog));
             this.main_tab = new System.Windows.Forms.TabControl();
             this.tab_local = new System.Windows.Forms.TabPage();
@@ -74,6 +75,7 @@
             this.about_text_box = new System.Windows.Forms.RichTextBox();
             this.status_strip = new System.Windows.Forms.StatusStrip();
             this.status = new System.Windows.Forms.ToolStripStatusLabel();
+            this.process_monitor_timer = new System.Windows.Forms.Timer(this.components);
             this.main_tab.SuspendLayout();
             this.tab_local.SuspendLayout();
             this.remote_tab.SuspendLayout();
@@ -542,6 +544,11 @@
             this.status.Size = new System.Drawing.Size(39, 17);
             this.status.Text = "Ready";
             // 
+            // process_monitor_timer
+            // 
+            this.process_monitor_timer.Interval = 60;
+            this.process_monitor_timer.Tick += new System.EventHandler(this.process_monitor_timer_Tick);
+            // 
             // MainDialog
             // 
             this.AccessibleDescription = "Monitors and restarts crashed applications.";
@@ -557,6 +564,8 @@
             this.Name = "MainDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Phoenix Control Panel";
+            this.Activated += new System.EventHandler(this.MainDialog_Activated);
+            this.Deactivate += new System.EventHandler(this.MainDialog_Deactivate);
             this.main_tab.ResumeLayout(false);
             this.tab_local.ResumeLayout(false);
             this.tab_local.PerformLayout();
@@ -618,6 +627,7 @@
         private System.Windows.Forms.TextBox time_delay_before_launch;
         private System.Windows.Forms.TextBox maximum_retries;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Timer process_monitor_timer;
     }
 }
 

@@ -8,6 +8,7 @@ namespace phoenix
         private IniSettings     m_AppSettings;
         private ProcessRunner   m_ProcessRunner;
         private OpenFileDialog  m_FileDialog;
+        private bool            m_PauseMonitor = false;
 
         public MainDialog()
         {
@@ -17,6 +18,8 @@ namespace phoenix
 
             InitializeComponent();
             ApplySettings();
+
+            process_monitor_timer.Start();
         }
 
         private void ApplySettings()
@@ -201,6 +204,22 @@ namespace phoenix
             {
                 script_to_execute_on_crash.Text = m_FileDialog.FileName;
             }
+        }
+
+        private void process_monitor_timer_Tick(object sender, EventArgs e)
+        {
+            if (m_PauseMonitor) return;
+            m_ProcessRunner.Monitor();
+        }
+
+        private void MainDialog_Activated(object sender, EventArgs e)
+        {
+            m_PauseMonitor = true;
+        }
+
+        private void MainDialog_Deactivate(object sender, EventArgs e)
+        {
+            m_PauseMonitor = false;
         }
     }
 }
