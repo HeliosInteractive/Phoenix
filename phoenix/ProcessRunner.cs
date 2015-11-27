@@ -111,7 +111,6 @@ namespace phoenix
             if (!m_Process.Responding)
             {
                 try { m_Process.Kill(); } catch { /* no-op */ }
-                HandleProcessExit(m_Process, null);
             }
             else if (m_Process.MainWindowHandle != IntPtr.Zero)
             {
