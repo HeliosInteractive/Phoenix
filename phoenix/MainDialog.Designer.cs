@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainDialog));
             this.main_tab = new System.Windows.Forms.TabControl();
             this.tab_local = new System.Windows.Forms.TabPage();
@@ -76,12 +78,14 @@
             this.status_strip = new System.Windows.Forms.StatusStrip();
             this.status = new System.Windows.Forms.ToolStripStatusLabel();
             this.process_monitor_timer = new System.Windows.Forms.Timer(this.components);
+            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.main_tab.SuspendLayout();
             this.tab_local.SuspendLayout();
             this.remote_tab.SuspendLayout();
             this.log.SuspendLayout();
             this.about_tab.SuspendLayout();
             this.status_strip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.SuspendLayout();
             // 
             // main_tab
@@ -101,6 +105,7 @@
             // 
             // tab_local
             // 
+            this.tab_local.Controls.Add(this.chart1);
             this.tab_local.Controls.Add(this.label2);
             this.tab_local.Controls.Add(this.maximum_retries);
             this.tab_local.Controls.Add(this.time_delay_before_launch);
@@ -550,6 +555,21 @@
             this.process_monitor_timer.Interval = 60;
             this.process_monitor_timer.Tick += new System.EventHandler(this.process_monitor_timer_Tick);
             // 
+            // chart1
+            // 
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
+            this.chart1.Location = new System.Drawing.Point(8, 157);
+            this.chart1.Name = "chart1";
+            this.chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Grayscale;
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Area;
+            series1.Name = "Series1";
+            this.chart1.Series.Add(series1);
+            this.chart1.Size = new System.Drawing.Size(358, 77);
+            this.chart1.TabIndex = 15;
+            this.chart1.Text = "metrics_chart";
+            // 
             // MainDialog
             // 
             this.AccessibleDescription = "Monitors and restarts crashed applications.";
@@ -576,6 +596,7 @@
             this.about_tab.ResumeLayout(false);
             this.status_strip.ResumeLayout(false);
             this.status_strip.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -629,6 +650,7 @@
         private System.Windows.Forms.TextBox maximum_retries;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Timer process_monitor_timer;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
     }
 }
 
