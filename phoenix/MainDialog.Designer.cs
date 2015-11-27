@@ -229,9 +229,9 @@
             this.crash_script_label.AutoSize = true;
             this.crash_script_label.Location = new System.Drawing.Point(8, 160);
             this.crash_script_label.Name = "crash_script_label";
-            this.crash_script_label.Size = new System.Drawing.Size(316, 13);
+            this.crash_script_label.Size = new System.Drawing.Size(311, 13);
             this.crash_script_label.TabIndex = 10;
-            this.crash_script_label.Text = "Script to execute on crash (exit code will be passed as argument):";
+            this.crash_script_label.Text = "Script to execute on crash (exit time will be passed as argument):";
             // 
             // enable_metrics
             // 

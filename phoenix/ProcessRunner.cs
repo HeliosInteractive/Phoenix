@@ -224,7 +224,7 @@ namespace phoenix
                 if (sender as Process != null)
                 {
                     Process dead_process = (sender as Process);
-                    process_info.Arguments = dead_process.ExitCode.ToString();
+                    process_info.Arguments = dead_process.ExitTime.Ticks.ToString();
                 }
 
                 m_Process = new Process();
