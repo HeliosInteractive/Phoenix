@@ -20,7 +20,25 @@ namespace phoenix
         bool    m_Validated     = false;
         bool    m_PauseMonitor  = false;
         Process m_Process       = null;
+        bool    m_AlwaysOnTop   = false;
+        bool    m_CrashIfUnresp = false;
+        bool    m_CrashScrshot  = false;
 
+        public bool AssumeCrashIfNotResponsive
+        {
+            get { return m_CrashIfUnresp; }
+            set { m_CrashIfUnresp = value; }
+        }
+        public bool ScreenShotOnCrash
+        {
+            get { return m_CrashScrshot; }
+            set { m_CrashScrshot = value; }
+        }
+        public bool ForceAlwaysOnTop
+        {
+            get { return m_AlwaysOnTop; }
+            set { m_AlwaysOnTop = value; }
+        }
         /// <summary>
         /// <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ms633539(v=vs.85).aspx"/>
         /// </summary>
@@ -118,11 +136,12 @@ namespace phoenix
 
             m_Process.Refresh();
 
-            if (!m_Process.Responding)
+            if (AssumeCrashIfNotResponsive && !m_Process.Responding)
             {
                 try { m_Process.Kill(); } catch { /* no-op */ }
             }
-            else if (m_Process.MainWindowHandle != IntPtr.Zero)
+
+            if (ForceAlwaysOnTop && m_Process.MainWindowHandle != IntPtr.Zero)
             {
                 if (GetForegroundWindow() != m_Process.MainWindowHandle)
                     SetForegroundWindow(m_Process.MainWindowHandle);
@@ -211,6 +230,11 @@ namespace phoenix
                 m_Process = new Process();
                 m_Process.StartInfo = process_info;
                 m_Process.Start();
+            }
+
+            if (ScreenShotOnCrash)
+            {
+                ScreenCapture.TakeScreenShot();
             }
 
             Task.Delay(1000 * DelaySeconds)

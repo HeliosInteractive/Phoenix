@@ -87,6 +87,8 @@ namespace phoenix
                 Helpers.GetClassName(() => Defaults.Local.ForceAlwaysOnTop),
                 Helpers.GetPropertyName(() => Defaults.Local.ForceAlwaysOnTop),
                 (sender as CheckBox).Checked);
+
+            m_ProcessRunner.ForceAlwaysOnTop = force_always_on_top.Checked;
         }
 
         private void enable_metrics_CheckedChanged(object sender, EventArgs e)
@@ -103,6 +105,8 @@ namespace phoenix
                 Helpers.GetClassName(() => Defaults.Local.AssumeCrashIfNotResponsive),
                 Helpers.GetPropertyName(() => Defaults.Local.AssumeCrashIfNotResponsive),
                 (sender as CheckBox).Checked);
+
+            m_ProcessRunner.AssumeCrashIfNotResponsive = assume_crash_if_not_responsive.Checked;
         }
 
         private void enable_screenshot_on_crash_CheckedChanged(object sender, EventArgs e)
@@ -111,6 +115,8 @@ namespace phoenix
                 Helpers.GetClassName(() => Defaults.Local.EnableScreenshotOnCrash),
                 Helpers.GetPropertyName(() => Defaults.Local.EnableScreenshotOnCrash),
                 (sender as CheckBox).Checked);
+
+            m_ProcessRunner.ScreenShotOnCrash = enable_screenshot_on_crash.Checked;
         }
 
         private void script_to_execute_on_crash_TextChanged(object sender, EventArgs e)
