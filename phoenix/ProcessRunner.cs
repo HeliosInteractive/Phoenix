@@ -18,7 +18,7 @@ namespace phoenix
         string  m_ProcessPath   = string.Empty;
         string  m_CommandLine   = string.Empty;
         bool    m_Validated     = false;
-        bool    m_Monitoring    = false;
+        bool    m_PauseMonitor  = false;
         Process m_Process       = null;
 
         /// <summary>
@@ -83,25 +83,15 @@ namespace phoenix
 
             m_CurrAttempt = 0;
             ExecuteProcess();
-            ExecuteMonitor();
-        }
-
-        void ExecuteMonitor()
-        {
-            if (m_Monitoring)
-                return;
-
-            m_Monitoring = true;
-            MonitorAction();
         }
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool SetForegroundWindow(IntPtr hWnd);
 
-        void MonitorAction()
+        public void Monitor()
         {
-            if (m_Process == null || m_Process.HasExited)
+            if (m_PauseMonitor || m_Process == null || m_Process.HasExited)
                 return;
 
             m_Process.Refresh();
@@ -115,9 +105,6 @@ namespace phoenix
             {
                 SetForegroundWindow(m_Process.MainWindowHandle);
             }
-
-            Task.Delay(1000)
-                .ContinueWith(fn => MonitorAction());
         }
 
         /// <summary>
@@ -179,6 +166,9 @@ namespace phoenix
             m_Process.EnableRaisingEvents = true;
             m_Process.Exited += new EventHandler(HandleProcessExit);
             m_Process.Start();
+
+            // resume process monitoring
+            m_PauseMonitor = false;
         }
 
         /// <summary>
@@ -191,6 +181,9 @@ namespace phoenix
         {
             if (!m_Validated || (m_Attempts > 0 &&  m_CurrAttempt >= m_Attempts))
                 return;
+
+            // Don't monitor till we restart
+            m_PauseMonitor = true;
 
             if (m_CrashScript != string.Empty)
             {
