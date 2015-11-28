@@ -233,9 +233,6 @@ namespace phoenix
             if (!m_PauseMonitor)
                 m_ProcessRunner.Monitor();
 
-            if (m_MemoryUsageSeries == null || m_CpuUsageSeries == null)
-                return;
-
             m_ProcessRunner.UpdateMetrics();
 
             m_MemoryUsageSeries.Points.Clear();
