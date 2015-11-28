@@ -2,7 +2,6 @@
 using System.IO;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Microsoft.VisualBasic.Devices;
 
 namespace phoenix
 {
@@ -13,7 +12,6 @@ namespace phoenix
     {
         PerformanceCounter
                     m_PerformanceCounter;
-        double      m_TotalMemory   = 0;
         int         m_DelaySeconds  = 0;
         int         m_Attempts      = 10;
         int         m_CurrAttempt   = 0;
@@ -29,18 +27,22 @@ namespace phoenix
         const int   m_NumSamples    = 100;
         double[]    m_MemoryUsage   = new double[m_NumSamples];
         double[]    m_CpuUsage      = new double[m_NumSamples];
+        double[]    m_UsageIndices  = new double[m_NumSamples];
 
         public ProcessRunner()
         {
             for (int index = 0; index < m_NumSamples; ++index)
             {
+                m_UsageIndices[index] = index;
                 m_MemoryUsage[index] = 0;
                 m_CpuUsage[index] = 0;
             }
-
-            m_TotalMemory =  new ComputerInfo().TotalPhysicalMemory;
         }
 
+        public double[] UsageIndices
+        {
+            get { return m_UsageIndices; }
+        }
         public double[] MemoryUsage
         {
             get { return m_MemoryUsage; }

@@ -237,14 +237,12 @@ namespace phoenix
                 return;
 
             m_ProcessRunner.UpdateMetrics();
+
             m_MemoryUsageSeries.Points.Clear();
             m_CpuUsageSeries.Points.Clear();
 
-            for (int index = 0; index < m_ProcessRunner.NumSamples; ++index)
-            {
-                m_MemoryUsageSeries.Points.AddXY(index, m_ProcessRunner.MemoryUsage[index]);
-                m_CpuUsageSeries.Points.AddXY(index, m_ProcessRunner.CpuUsage[index]);
-            }
+            m_MemoryUsageSeries.Points.DataBindXY(m_ProcessRunner.UsageIndices, m_ProcessRunner.MemoryUsage);
+            m_CpuUsageSeries.Points.DataBindXY(m_ProcessRunner.UsageIndices, m_ProcessRunner.CpuUsage);
 
             memory_chart.Invalidate();
             cpu_chart.Invalidate();
