@@ -57,6 +57,7 @@
     <Compile Include="MainDialog.Designer.cs">
       <DependentUpon>MainDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="ProcessRunner.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

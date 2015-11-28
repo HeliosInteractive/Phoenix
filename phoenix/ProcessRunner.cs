@@ -3,14 +3,13 @@ using System.IO;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.VisualBasic.Devices;
-using System.Runtime.InteropServices;
 
 namespace phoenix
 {
     /// <summary>
     /// A class that runs and monitors a given process
     /// </summary>
-    class ProcessRunner
+    class ProcessRunner : IDisposable
     {
         PerformanceCounter
                     m_PerformanceCounter;
@@ -69,21 +68,6 @@ namespace phoenix
             get { return m_AlwaysOnTop; }
             set { m_AlwaysOnTop = value; }
         }
-        /// <summary>
-        /// <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ms633539(v=vs.85).aspx"/>
-        /// </summary>
-        /// <param name="hWnd"></param>
-        /// <returns></returns>
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool SetForegroundWindow(IntPtr hWnd);
-
-        /// <summary>
-        /// <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ms633505(v=vs.85).aspx"/>
-        /// </summary>
-        /// <returns></returns>
-        [DllImport("user32.dll")]
-        private static extern IntPtr GetForegroundWindow();
 
         /// <summary>
         /// A script to be called in case of process exit/crash.
@@ -173,14 +157,14 @@ namespace phoenix
 
             if (ForceAlwaysOnTop && m_Process.MainWindowHandle != IntPtr.Zero)
             {
-                if (GetForegroundWindow() != m_Process.MainWindowHandle)
-                    SetForegroundWindow(m_Process.MainWindowHandle);
+                if (NativeMethods.GetForegroundWindow() != m_Process.MainWindowHandle)
+                    NativeMethods.SetForegroundWindow(m_Process.MainWindowHandle);
             }
         }
 
         public void UpdateMetrics()
         {
-            if (m_PauseMonitor || m_Process == null || m_Process.HasExited)
+            if (m_PauseMonitor || m_Process == null || m_Process.HasExited || !m_Process.Responding)
                 return;
 
             for (int index = 1; index < m_NumSamples; ++index)
@@ -189,7 +173,7 @@ namespace phoenix
                 m_CpuUsage[index - 1] = m_CpuUsage[index];
             }
 
-            m_MemoryUsage[m_NumSamples - 1] = m_Process.WorkingSet64 / m_TotalMemory;
+            m_MemoryUsage[m_NumSamples - 1] = m_Process.WorkingSet64 / (double)m_Process.PeakWorkingSet64;
             try { m_CpuUsage[m_NumSamples - 1] = m_PerformanceCounter.NextValue() / 100d; }
             catch { m_CpuUsage[m_NumSamples - 1] = 0; }
         }
@@ -302,5 +286,33 @@ namespace phoenix
 
             m_CurrAttempt++;
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    if (m_PerformanceCounter != null)
+                        m_PerformanceCounter.Close();
+
+                    if (m_Process != null)
+                        m_Process.Close();
+                }
+                // free native resources
+                disposedValue = true;
+            }
+        }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+        }
+        #endregion
     }
 }

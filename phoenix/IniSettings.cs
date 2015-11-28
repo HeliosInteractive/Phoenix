@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Text;
 
 namespace phoenix
@@ -15,30 +14,6 @@ namespace phoenix
         private Dictionary<string, Dictionary<string, string>>
                         m_Settings  = new Dictionary<string, Dictionary<string, string>>();
         private string  m_Path      = string.Empty;
-
-        /// <summary>
-        /// <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ms725501(v=vs.85).aspx"/>
-        /// </summary>
-        /// <param name="section"></param>
-        /// <param name="key"></param>
-        /// <param name="val"></param>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
-        [DllImport("kernel32")]
-        private static extern long WritePrivateProfileString(string section, string key, string val, string filePath);
-
-        /// <summary>
-        /// <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ms724353(v=vs.85).aspx"/>
-        /// </summary>
-        /// <param name="section"></param>
-        /// <param name="key"></param>
-        /// <param name="def"></param>
-        /// <param name="retVal"></param>
-        /// <param name="size"></param>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
-        [DllImport("kernel32")]
-        private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
 
         /// <summary>
         /// Constructor. Creates an empty file if "path" does not exist.
@@ -73,7 +48,7 @@ namespace phoenix
         public void Write(string Section, string Key, string Value)
         {
             if (Value == string.Empty) return;
-            WritePrivateProfileString(Section, Key, Value, this.m_Path);
+            NativeMethods.WritePrivateProfileString(Section, Key, Value, this.m_Path);
         }
 
         /// <summary>
@@ -103,7 +78,7 @@ namespace phoenix
         {
             StringBuilder strb = new StringBuilder(2048);
 
-            if (GetPrivateProfileString(Section, Key, "", strb, strb.Capacity, this.m_Path) > 0
+            if (NativeMethods.GetPrivateProfileString(Section, Key, "", strb, strb.Capacity, this.m_Path) > 0
                 && CanChangeType(strb.ToString(), typeof(T)))
             {
                 try

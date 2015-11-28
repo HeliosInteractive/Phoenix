@@ -15,6 +15,7 @@
         {
             if (disposing && (components != null))
             {
+                m_ProcessRunner.Dispose();
                 components.Dispose();
             }
             base.Dispose(disposing);
