@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace phoenix
 {
@@ -9,6 +10,8 @@ namespace phoenix
         private ProcessRunner   m_ProcessRunner;
         private OpenFileDialog  m_FileDialog;
         private bool            m_PauseMonitor = false;
+        private Series          m_CpuUsageSeries;
+        private Series          m_MemoryUsageSeries;
 
         public MainDialog()
         {
@@ -18,6 +21,9 @@ namespace phoenix
 
             InitializeComponent();
             ApplySettings();
+
+            m_MemoryUsageSeries = metrics_chart.Series.FindByName("memory_usage_series");
+            m_CpuUsageSeries = metrics_chart.Series.FindByName("cpu_usage_series");
 
             process_monitor_timer.Start();
         }
@@ -227,12 +233,17 @@ namespace phoenix
             if (!m_PauseMonitor)
                 m_ProcessRunner.Monitor();
 
-            var series = metrics_chart.Series.FindByName("metric_series");
-            series.Points.Clear();
+            if (m_MemoryUsageSeries == null || m_CpuUsageSeries == null)
+                return;
 
-            for (int i = DateTime.Now.Second; i < DateTime.Now.Second+100; i++)
+            m_ProcessRunner.UpdateMetrics();
+            m_MemoryUsageSeries.Points.Clear();
+            m_CpuUsageSeries.Points.Clear();
+
+            for (int index = 0; index < m_ProcessRunner.NumSamples; ++index)
             {
-                series.Points.AddXY(i, Math.Cos(i));
+                m_MemoryUsageSeries.Points.AddXY(index, m_ProcessRunner.MemoryUsage[index]);
+                m_CpuUsageSeries.Points.AddXY(index, m_ProcessRunner.CpuUsage[index]);
             }
 
             metrics_chart.Invalidate();

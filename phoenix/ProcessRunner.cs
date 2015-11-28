@@ -2,6 +2,7 @@
 using System.IO;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Microsoft.VisualBasic.Devices;
 using System.Runtime.InteropServices;
 
 namespace phoenix
@@ -11,19 +12,48 @@ namespace phoenix
     /// </summary>
     class ProcessRunner
     {
-        int     m_DelaySeconds  = 0;
-        int     m_Attempts      = 10;
-        int     m_CurrAttempt   = 0;
-        string  m_CrashScript   = string.Empty;
-        string  m_ProcessPath   = string.Empty;
-        string  m_CommandLine   = string.Empty;
-        bool    m_Validated     = false;
-        bool    m_PauseMonitor  = false;
-        Process m_Process       = null;
-        bool    m_AlwaysOnTop   = false;
-        bool    m_CrashIfUnresp = false;
-        bool    m_CrashScrshot  = false;
+        PerformanceCounter
+                    m_PerformanceCounter;
+        double      m_TotalMemory   = 0;
+        int         m_DelaySeconds  = 0;
+        int         m_Attempts      = 10;
+        int         m_CurrAttempt   = 0;
+        string      m_CrashScript   = string.Empty;
+        string      m_ProcessPath   = string.Empty;
+        string      m_CommandLine   = string.Empty;
+        bool        m_Validated     = false;
+        bool        m_PauseMonitor  = false;
+        Process     m_Process       = null;
+        bool        m_AlwaysOnTop   = false;
+        bool        m_CrashIfUnresp = false;
+        bool        m_CrashScrshot  = false;
+        const int   m_NumSamples    = 100;
+        double[]    m_MemoryUsage   = new double[m_NumSamples];
+        double[]    m_CpuUsage      = new double[m_NumSamples];
 
+        public ProcessRunner()
+        {
+            for (int index = 0; index < m_NumSamples; ++index)
+            {
+                m_MemoryUsage[index] = 0;
+                m_CpuUsage[index] = 0;
+            }
+
+            m_TotalMemory =  new ComputerInfo().TotalPhysicalMemory;
+        }
+
+        public double[] MemoryUsage
+        {
+            get { return m_MemoryUsage; }
+        }
+        public double[] CpuUsage
+        {
+            get { return m_CpuUsage; }
+        }
+        public int NumSamples
+        {
+            get { return m_NumSamples; }
+        }
         public bool AssumeCrashIfNotResponsive
         {
             get { return m_CrashIfUnresp; }
@@ -148,6 +178,34 @@ namespace phoenix
             }
         }
 
+        public void UpdateMetrics()
+        {
+            if (m_PauseMonitor || m_Process == null || m_Process.HasExited)
+                return;
+
+            for (int index = 1; index < m_NumSamples; ++index)
+            {
+                m_MemoryUsage[index - 1] = m_MemoryUsage[index];
+                m_CpuUsage[index - 1] = m_CpuUsage[index];
+            }
+
+            m_MemoryUsage[m_NumSamples - 1] = m_Process.WorkingSet64 / m_TotalMemory;
+            try { m_CpuUsage[m_NumSamples - 1] = m_PerformanceCounter.NextValue() / 100d; }
+            catch { m_CpuUsage[m_NumSamples - 1] = 0; }
+        }
+
+        void ResetPerformanceCounter()
+        {
+            if (m_Process == null || m_Process.HasExited)
+                return;
+
+            m_PerformanceCounter = new PerformanceCounter(
+                "Process",
+                "% Processor Time",
+                m_Process.ProcessName,
+                m_Process.MachineName);
+        }
+
         /// <summary>
         /// Validate members. Sets a flag that prevents Run() from operating
         /// if members are incorrectly set.
@@ -200,6 +258,8 @@ namespace phoenix
 
             // resume process monitoring
             m_PauseMonitor = false;
+
+            ResetPerformanceCounter();
         }
 
         /// <summary>
