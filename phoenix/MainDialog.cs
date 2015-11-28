@@ -22,8 +22,8 @@ namespace phoenix
             InitializeComponent();
             ApplySettings();
 
-            m_MemoryUsageSeries = metrics_chart.Series.FindByName("memory_usage_series");
-            m_CpuUsageSeries = metrics_chart.Series.FindByName("cpu_usage_series");
+            m_MemoryUsageSeries = memory_chart.Series[0];
+            m_CpuUsageSeries = cpu_chart.Series[0];
 
             process_monitor_timer.Start();
         }
@@ -246,7 +246,8 @@ namespace phoenix
                 m_CpuUsageSeries.Points.AddXY(index, m_ProcessRunner.CpuUsage[index]);
             }
 
-            metrics_chart.Invalidate();
+            memory_chart.Invalidate();
+            cpu_chart.Invalidate();
         }
 
         private void MainDialog_Activated(object sender, EventArgs e)

@@ -29,15 +29,16 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainDialog));
             this.main_tab = new System.Windows.Forms.TabControl();
             this.tab_local = new System.Windows.Forms.TabPage();
-            this.metrics_chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.cpu_chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.label2 = new System.Windows.Forms.Label();
             this.maximum_retries = new System.Windows.Forms.TextBox();
             this.time_delay_before_launch = new System.Windows.Forms.TextBox();
@@ -82,13 +83,15 @@
             this.status_strip = new System.Windows.Forms.StatusStrip();
             this.status = new System.Windows.Forms.ToolStripStatusLabel();
             this.process_monitor_timer = new System.Windows.Forms.Timer(this.components);
+            this.memory_chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.main_tab.SuspendLayout();
             this.tab_local.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.metrics_chart)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cpu_chart)).BeginInit();
             this.remote_tab.SuspendLayout();
             this.log.SuspendLayout();
             this.about_tab.SuspendLayout();
             this.status_strip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.memory_chart)).BeginInit();
             this.SuspendLayout();
             // 
             // main_tab
@@ -108,7 +111,8 @@
             // 
             // tab_local
             // 
-            this.tab_local.Controls.Add(this.metrics_chart);
+            this.tab_local.Controls.Add(this.memory_chart);
+            this.tab_local.Controls.Add(this.cpu_chart);
             this.tab_local.Controls.Add(this.label2);
             this.tab_local.Controls.Add(this.maximum_retries);
             this.tab_local.Controls.Add(this.time_delay_before_launch);
@@ -135,56 +139,46 @@
             this.tab_local.Text = "Local";
             this.tab_local.UseVisualStyleBackColor = true;
             // 
-            // metrics_chart
+            // cpu_chart
             // 
-            this.metrics_chart.BorderlineWidth = 0;
-            chartArea1.AxisX.IsMarginVisible = false;
-            chartArea1.AxisX.LabelStyle.Enabled = false;
-            chartArea1.AxisX.LineWidth = 0;
-            chartArea1.AxisX.MajorGrid.Enabled = false;
-            chartArea1.AxisX.MajorTickMark.Enabled = false;
-            chartArea1.AxisY.IsMarginVisible = false;
-            chartArea1.AxisY.LabelStyle.Enabled = false;
-            chartArea1.AxisY.LineWidth = 0;
-            chartArea1.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
-            chartArea1.AxisY.MajorTickMark.Enabled = false;
-            chartArea1.BackColor = System.Drawing.Color.Snow;
-            chartArea1.BorderWidth = 0;
-            chartArea1.Name = "metrics_chart_area";
-            chartArea1.Position.Auto = false;
-            chartArea1.Position.Height = 100F;
-            chartArea1.Position.Width = 100F;
-            this.metrics_chart.ChartAreas.Add(chartArea1);
-            legend1.Alignment = System.Drawing.StringAlignment.Far;
-            legend1.BackColor = System.Drawing.Color.Transparent;
-            legend1.DockedToChartArea = "metrics_chart_area";
-            legend1.Name = "mem_legend";
+            this.cpu_chart.BorderlineWidth = 0;
+            chartArea2.AxisX.IsMarginVisible = false;
+            chartArea2.AxisX.LabelStyle.Enabled = false;
+            chartArea2.AxisX.LineWidth = 0;
+            chartArea2.AxisX.MajorGrid.Enabled = false;
+            chartArea2.AxisX.MajorTickMark.Enabled = false;
+            chartArea2.AxisY.IsMarginVisible = false;
+            chartArea2.AxisY.LabelStyle.Enabled = false;
+            chartArea2.AxisY.LineWidth = 0;
+            chartArea2.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
+            chartArea2.AxisY.MajorTickMark.Enabled = false;
+            chartArea2.AxisY.Maximum = 1D;
+            chartArea2.AxisY.Minimum = 0D;
+            chartArea2.BackColor = System.Drawing.Color.Snow;
+            chartArea2.BorderWidth = 0;
+            chartArea2.Name = "metrics_chart_area";
+            chartArea2.Position.Auto = false;
+            chartArea2.Position.Height = 100F;
+            chartArea2.Position.Width = 100F;
+            this.cpu_chart.ChartAreas.Add(chartArea2);
             legend2.BackColor = System.Drawing.Color.Transparent;
             legend2.DockedToChartArea = "metrics_chart_area";
             legend2.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
             legend2.IsTextAutoFit = false;
             legend2.Name = "cpu_legend";
-            this.metrics_chart.Legends.Add(legend1);
-            this.metrics_chart.Legends.Add(legend2);
-            this.metrics_chart.Location = new System.Drawing.Point(8, 157);
-            this.metrics_chart.Name = "metrics_chart";
-            this.metrics_chart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.SeaGreen;
-            series1.ChartArea = "metrics_chart_area";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series1.IsXValueIndexed = true;
-            series1.Legend = "mem_legend";
-            series1.LegendText = "% Memory Usage";
-            series1.Name = "memory_usage_series";
+            this.cpu_chart.Legends.Add(legend2);
+            this.cpu_chart.Location = new System.Drawing.Point(8, 157);
+            this.cpu_chart.Name = "cpu_chart";
+            this.cpu_chart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.SeaGreen;
             series2.ChartArea = "metrics_chart_area";
             series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             series2.IsXValueIndexed = true;
             series2.Legend = "cpu_legend";
             series2.LegendText = "% CPU Usage";
             series2.Name = "cpu_usage_series";
-            this.metrics_chart.Series.Add(series1);
-            this.metrics_chart.Series.Add(series2);
-            this.metrics_chart.Size = new System.Drawing.Size(358, 77);
-            this.metrics_chart.TabIndex = 15;
+            this.cpu_chart.Series.Add(series2);
+            this.cpu_chart.Size = new System.Drawing.Size(173, 77);
+            this.cpu_chart.TabIndex = 15;
             // 
             // label2
             // 
@@ -609,6 +603,46 @@
             this.process_monitor_timer.Interval = 60;
             this.process_monitor_timer.Tick += new System.EventHandler(this.process_monitor_timer_Tick);
             // 
+            // memory_chart
+            // 
+            this.memory_chart.BorderlineWidth = 0;
+            chartArea1.AxisX.IsMarginVisible = false;
+            chartArea1.AxisX.LabelStyle.Enabled = false;
+            chartArea1.AxisX.LineWidth = 0;
+            chartArea1.AxisX.MajorGrid.Enabled = false;
+            chartArea1.AxisX.MajorTickMark.Enabled = false;
+            chartArea1.AxisY.IsMarginVisible = false;
+            chartArea1.AxisY.LabelStyle.Enabled = false;
+            chartArea1.AxisY.LineWidth = 0;
+            chartArea1.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
+            chartArea1.AxisY.MajorTickMark.Enabled = false;
+            chartArea1.AxisY.Maximum = 1D;
+            chartArea1.AxisY.Minimum = 0D;
+            chartArea1.BackColor = System.Drawing.Color.Snow;
+            chartArea1.BorderWidth = 0;
+            chartArea1.Name = "metrics_chart_area";
+            chartArea1.Position.Auto = false;
+            chartArea1.Position.Height = 100F;
+            chartArea1.Position.Width = 100F;
+            this.memory_chart.ChartAreas.Add(chartArea1);
+            legend1.Alignment = System.Drawing.StringAlignment.Far;
+            legend1.BackColor = System.Drawing.Color.Transparent;
+            legend1.DockedToChartArea = "metrics_chart_area";
+            legend1.Name = "mem_legend";
+            this.memory_chart.Legends.Add(legend1);
+            this.memory_chart.Location = new System.Drawing.Point(193, 157);
+            this.memory_chart.Name = "memory_chart";
+            this.memory_chart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Berry;
+            series1.ChartArea = "metrics_chart_area";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.IsXValueIndexed = true;
+            series1.Legend = "mem_legend";
+            series1.LegendText = "% Memory Usage";
+            series1.Name = "memory_usage_series";
+            this.memory_chart.Series.Add(series1);
+            this.memory_chart.Size = new System.Drawing.Size(173, 77);
+            this.memory_chart.TabIndex = 16;
+            // 
             // MainDialog
             // 
             this.AccessibleDescription = "Monitors and restarts crashed applications.";
@@ -629,13 +663,14 @@
             this.main_tab.ResumeLayout(false);
             this.tab_local.ResumeLayout(false);
             this.tab_local.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.metrics_chart)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cpu_chart)).EndInit();
             this.remote_tab.ResumeLayout(false);
             this.remote_tab.PerformLayout();
             this.log.ResumeLayout(false);
             this.about_tab.ResumeLayout(false);
             this.status_strip.ResumeLayout(false);
             this.status_strip.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.memory_chart)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -689,7 +724,8 @@
         private System.Windows.Forms.TextBox maximum_retries;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Timer process_monitor_timer;
-        private System.Windows.Forms.DataVisualization.Charting.Chart metrics_chart;
+        private System.Windows.Forms.DataVisualization.Charting.Chart cpu_chart;
+        private System.Windows.Forms.DataVisualization.Charting.Chart memory_chart;
     }
 }
 
