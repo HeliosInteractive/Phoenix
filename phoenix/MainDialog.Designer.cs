@@ -34,6 +34,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainDialog));
             this.main_tab = new System.Windows.Forms.TabControl();
             this.tab_local = new System.Windows.Forms.TabPage();
+            this.metrics_chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.label2 = new System.Windows.Forms.Label();
             this.maximum_retries = new System.Windows.Forms.TextBox();
             this.time_delay_before_launch = new System.Windows.Forms.TextBox();
@@ -78,14 +79,13 @@
             this.status_strip = new System.Windows.Forms.StatusStrip();
             this.status = new System.Windows.Forms.ToolStripStatusLabel();
             this.process_monitor_timer = new System.Windows.Forms.Timer(this.components);
-            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.main_tab.SuspendLayout();
             this.tab_local.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.metrics_chart)).BeginInit();
             this.remote_tab.SuspendLayout();
             this.log.SuspendLayout();
             this.about_tab.SuspendLayout();
             this.status_strip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.SuspendLayout();
             // 
             // main_tab
@@ -105,7 +105,7 @@
             // 
             // tab_local
             // 
-            this.tab_local.Controls.Add(this.chart1);
+            this.tab_local.Controls.Add(this.metrics_chart);
             this.tab_local.Controls.Add(this.label2);
             this.tab_local.Controls.Add(this.maximum_retries);
             this.tab_local.Controls.Add(this.time_delay_before_launch);
@@ -131,6 +131,38 @@
             this.tab_local.TabIndex = 0;
             this.tab_local.Text = "Local";
             this.tab_local.UseVisualStyleBackColor = true;
+            // 
+            // metrics_chart
+            // 
+            this.metrics_chart.BorderlineWidth = 0;
+            chartArea1.AxisX.IsMarginVisible = false;
+            chartArea1.AxisX.LabelStyle.Enabled = false;
+            chartArea1.AxisX.LineWidth = 0;
+            chartArea1.AxisX.MajorGrid.Enabled = false;
+            chartArea1.AxisX.MajorTickMark.Enabled = false;
+            chartArea1.AxisY.IsMarginVisible = false;
+            chartArea1.AxisY.LabelStyle.Enabled = false;
+            chartArea1.AxisY.LineWidth = 0;
+            chartArea1.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
+            chartArea1.AxisY.MajorTickMark.Enabled = false;
+            chartArea1.BackColor = System.Drawing.Color.Snow;
+            chartArea1.BorderWidth = 0;
+            chartArea1.Name = "usage_graph";
+            chartArea1.Position.Auto = false;
+            chartArea1.Position.Height = 100F;
+            chartArea1.Position.Width = 100F;
+            this.metrics_chart.ChartAreas.Add(chartArea1);
+            this.metrics_chart.Location = new System.Drawing.Point(8, 157);
+            this.metrics_chart.Name = "metrics_chart";
+            this.metrics_chart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.SeaGreen;
+            series1.ChartArea = "usage_graph";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.IsVisibleInLegend = false;
+            series1.IsXValueIndexed = true;
+            series1.Name = "metric_series";
+            this.metrics_chart.Series.Add(series1);
+            this.metrics_chart.Size = new System.Drawing.Size(358, 77);
+            this.metrics_chart.TabIndex = 15;
             // 
             // label2
             // 
@@ -555,21 +587,6 @@
             this.process_monitor_timer.Interval = 60;
             this.process_monitor_timer.Tick += new System.EventHandler(this.process_monitor_timer_Tick);
             // 
-            // chart1
-            // 
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
-            this.chart1.Location = new System.Drawing.Point(8, 157);
-            this.chart1.Name = "chart1";
-            this.chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Grayscale;
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Area;
-            series1.Name = "Series1";
-            this.chart1.Series.Add(series1);
-            this.chart1.Size = new System.Drawing.Size(358, 77);
-            this.chart1.TabIndex = 15;
-            this.chart1.Text = "metrics_chart";
-            // 
             // MainDialog
             // 
             this.AccessibleDescription = "Monitors and restarts crashed applications.";
@@ -590,13 +607,13 @@
             this.main_tab.ResumeLayout(false);
             this.tab_local.ResumeLayout(false);
             this.tab_local.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.metrics_chart)).EndInit();
             this.remote_tab.ResumeLayout(false);
             this.remote_tab.PerformLayout();
             this.log.ResumeLayout(false);
             this.about_tab.ResumeLayout(false);
             this.status_strip.ResumeLayout(false);
             this.status_strip.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -650,7 +667,7 @@
         private System.Windows.Forms.TextBox maximum_retries;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Timer process_monitor_timer;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+        private System.Windows.Forms.DataVisualization.Charting.Chart metrics_chart;
     }
 }
 

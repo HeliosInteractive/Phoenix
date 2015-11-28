@@ -224,8 +224,18 @@ namespace phoenix
 
         private void process_monitor_timer_Tick(object sender, EventArgs e)
         {
-            if (m_PauseMonitor) return;
-            m_ProcessRunner.Monitor();
+            if (!m_PauseMonitor)
+                m_ProcessRunner.Monitor();
+
+            var series = metrics_chart.Series.FindByName("metric_series");
+            series.Points.Clear();
+
+            for (int i = DateTime.Now.Second; i < DateTime.Now.Second+100; i++)
+            {
+                series.Points.AddXY(i, Math.Cos(i));
+            }
+
+            metrics_chart.Invalidate();
         }
 
         private void MainDialog_Activated(object sender, EventArgs e)
