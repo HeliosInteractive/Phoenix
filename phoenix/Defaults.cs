@@ -10,7 +10,7 @@
             public static int TimeDelayBeforeLaunch = 10;
             public static int MaximumRetries = 10;
             public static bool ForceAlwaysOnTop = false;
-            public static bool EnableMetrics = true;
+            public static bool StartMinimized = true;
             public static bool AssumeCrashIfNotResponsive = true;
             public static bool EnableScreenshotOnCrash = true;
         }

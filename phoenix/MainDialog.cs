@@ -10,6 +10,7 @@ namespace phoenix
         private ProcessRunner   m_ProcessRunner;
         private OpenFileDialog  m_FileDialog;
         private bool            m_PauseMonitor = false;
+        private bool            m_FormVisible = false;
         private Series          m_CpuUsageSeries;
         private Series          m_MemoryUsageSeries;
 
@@ -25,6 +26,9 @@ namespace phoenix
             m_MemoryUsageSeries = memory_chart.Series[0];
             m_CpuUsageSeries = cpu_chart.Series[0];
 
+            notify_icon.Icon = Icon;
+            m_FormVisible = !start_minimized.Checked;
+
             process_monitor_timer.Start();
         }
 
@@ -38,7 +42,7 @@ namespace phoenix
             maximum_retries.Text                    = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Local.MaximumRetries),             Defaults.Local.MaximumRetries).ToString();
             script_to_execute_on_crash.Text         = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Local.ScriptToExecuteOnCrash),     Defaults.Local.ScriptToExecuteOnCrash);
             force_always_on_top.Checked             = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Local.ForceAlwaysOnTop),           Defaults.Local.ForceAlwaysOnTop);
-            enable_metrics.Checked                  = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Local.EnableMetrics),              Defaults.Local.EnableMetrics);
+            start_minimized.Checked                 = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Local.StartMinimized),             Defaults.Local.StartMinimized);
             assume_crash_if_not_responsive.Checked  = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Local.AssumeCrashIfNotResponsive), Defaults.Local.AssumeCrashIfNotResponsive);
             enable_screenshot_on_crash.Checked      = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Local.EnableScreenshotOnCrash),    Defaults.Local.EnableScreenshotOnCrash);
 
@@ -95,14 +99,6 @@ namespace phoenix
                 (sender as CheckBox).Checked);
 
             m_ProcessRunner.ForceAlwaysOnTop = force_always_on_top.Checked;
-        }
-
-        private void enable_metrics_CheckedChanged(object sender, EventArgs e)
-        {
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Local.EnableMetrics),
-                Helpers.GetPropertyName(() => Defaults.Local.EnableMetrics),
-                (sender as CheckBox).Checked);
         }
 
         private void assume_crash_if_not_responsive_CheckedChanged(object sender, EventArgs e)
@@ -258,6 +254,30 @@ namespace phoenix
         private void screenshot_button_Click(object sender, EventArgs e)
         {
             ScreenCapture.TakeScreenShot();
+        }
+
+        private void start_minimized_CheckedChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Local.StartMinimized),
+                Helpers.GetPropertyName(() => Defaults.Local.StartMinimized),
+                (sender as CheckBox).Checked);
+        }
+
+        private void toggleUIToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            m_FormVisible = !m_FormVisible;
+            SetVisibleCore(!Visible);
+        }
+
+        private void exitPhoenixToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        protected override void SetVisibleCore(bool value)
+        {
+            base.SetVisibleCore(m_FormVisible);
         }
     }
 }
