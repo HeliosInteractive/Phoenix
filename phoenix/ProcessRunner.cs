@@ -136,8 +136,8 @@ namespace phoenix
         {
             if (m_Process != null)
             {
-                // we don't care anymore
                 m_Process.EnableRaisingEvents = false;
+                m_Process.Dispose();
             }
 
             m_Process = null;
@@ -145,9 +145,12 @@ namespace phoenix
             m_PauseMonitor = true;
         }
 
+        /// <summary>
+        /// Monitor the running process
+        /// </summary>
         public void Monitor()
         {
-            if (m_PauseMonitor || m_Process == null || m_Process.HasExited)
+            if (!Monitorable())
                 return;
 
             m_Process.Refresh();
@@ -164,9 +167,12 @@ namespace phoenix
             }
         }
 
+        /// <summary>
+        /// Update the metrics data.
+        /// </summary>
         public void UpdateMetrics()
         {
-            if (m_PauseMonitor || m_Process == null || m_Process.HasExited || !m_Process.Responding)
+            if (!Monitorable())
                 return;
 
             for (int index = 1; index < m_NumSamples; ++index)
@@ -180,9 +186,12 @@ namespace phoenix
             catch { m_CpuUsage[m_NumSamples - 1] = 0; }
         }
 
+        /// <summary>
+        /// Resets the performance counter that queries CPU usage
+        /// </summary>
         void ResetPerformanceCounter()
         {
-            if (m_Process == null || m_Process.HasExited)
+            if (!Monitorable())
                 return;
 
             m_PerformanceCounter = new PerformanceCounter(
@@ -190,6 +199,15 @@ namespace phoenix
                 "% Processor Time",
                 m_Process.ProcessName,
                 m_Process.MachineName);
+        }
+
+        /// <summary>
+        /// Return true if the Process underneath is in a situation where it can be monitored
+        /// </summary>
+        /// <returns></returns>
+        bool Monitorable()
+        {
+            return !(m_PauseMonitor || m_Process == null || m_Process.HasExited);
         }
 
         /// <summary>
