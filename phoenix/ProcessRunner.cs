@@ -29,6 +29,26 @@ namespace phoenix
         double[]    m_CpuUsage      = new double[m_NumSamples];
         double[]    m_UsageIndices  = new double[m_NumSamples];
 
+        /// <summary>
+        /// event triggered when monitoring starts
+        /// </summary>
+        public Action MonitorStarted;
+        /// <summary>
+        /// event triggered when monitoring stops
+        /// </summary>
+        public Action MonitorStopped;
+
+        protected virtual void OnMonitorStarted()
+        {
+            if (MonitorStarted != null)
+                MonitorStarted();
+        }
+        protected virtual void OnMonitorStopped()
+        {
+            if (MonitorStopped != null)
+                MonitorStopped();
+        }
+
         public ProcessRunner()
         {
             for (int index = 0; index < m_NumSamples; ++index)
@@ -127,6 +147,8 @@ namespace phoenix
 
             m_CurrAttempt = 0;
             ExecuteProcess();
+
+            OnMonitorStarted();
         }
 
         /// <summary>
@@ -143,6 +165,8 @@ namespace phoenix
             m_Process = null;
             m_CurrAttempt = 0;
             m_PauseMonitor = true;
+
+            OnMonitorStopped();
         }
 
         /// <summary>
@@ -275,7 +299,12 @@ namespace phoenix
         void HandleProcessExit(object sender, EventArgs e)
         {
             if (!m_Validated || (m_Attempts > 0 &&  m_CurrAttempt >= m_Attempts))
+            {
+                if (m_CurrAttempt == m_Attempts)
+                    OnMonitorStopped();
+
                 return;
+            }
 
             // Don't monitor till we restart
             m_PauseMonitor = true;

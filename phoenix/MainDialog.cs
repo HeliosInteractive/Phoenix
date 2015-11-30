@@ -30,6 +30,9 @@ namespace phoenix
             m_FormVisible = !start_minimized.Checked;
 
             process_monitor_timer.Start();
+
+            m_ProcessRunner.MonitorStarted += () => { watch_button.Text = "Stop Watching"; };
+            m_ProcessRunner.MonitorStopped += () => { watch_button.Text = "Start Watching"; };
         }
 
         private void ApplySettings()
@@ -191,8 +194,6 @@ namespace phoenix
         {
             if (watch_button.Text.StartsWith("Start"))
             {
-                watch_button.Text = "Stop Watching";
-
                 m_ProcessRunner.DelaySeconds = Int32.Parse(time_delay_before_launch.Text);
                 m_ProcessRunner.ProcessPath = application_to_watch.Text;
                 m_ProcessRunner.CommandLine = command_line_arguments.Text;
@@ -202,8 +203,6 @@ namespace phoenix
             }
             else if(watch_button.Text.StartsWith("Stop"))
             {
-                watch_button.Text = "Start Watching";
-
                 m_ProcessRunner.Stop();
             }
         }
