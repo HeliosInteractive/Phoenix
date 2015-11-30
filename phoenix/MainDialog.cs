@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
@@ -34,6 +35,8 @@ namespace phoenix
             m_ProcessRunner.MonitorStopped += () => { watch_button.Text = "Start Watching"; };
 
             HotkeyManager.Register(Handle);
+
+            ValidateAndStartMonitoring();
         }
 
         private void ApplySettings()
@@ -193,16 +196,41 @@ namespace phoenix
 
         private void watch_button_Click(object sender, EventArgs e)
         {
+            ValidateAndStartMonitoring();
+        }
+
+        private void ValidateAndStartMonitoring()
+        {
             if (watch_button.Text.StartsWith("Start"))
             {
+                bool validated = true;
+
                 m_ProcessRunner.DelaySeconds = Int32.Parse(time_delay_before_launch.Text);
                 m_ProcessRunner.ProcessPath = application_to_watch.Text;
+
+                if (m_ProcessRunner.ProcessPath == string.Empty)
+                    validated = false; // silently
+
+                if (!File.Exists(m_ProcessRunner.ProcessPath))
+                {
+                    MessageBox.Show("The path you specified to watch does not exist.", "Invalid Monitor parameters");
+                    validated = false;
+                }
+
                 m_ProcessRunner.CommandLine = command_line_arguments.Text;
                 m_ProcessRunner.Attempts = Int32.Parse(maximum_retries.Text);
                 m_ProcessRunner.CrashScript = script_to_execute_on_crash.Text;
-                m_ProcessRunner.Start();
+
+                if (m_ProcessRunner.CrashScript != string.Empty && !File.Exists(m_ProcessRunner.CrashScript))
+                {
+                    MessageBox.Show("The path you specified as crash script does not exist.", "Invalid Monitor parameters");
+                    validated = false;
+                }
+
+                if (validated)
+                    m_ProcessRunner.Start();
             }
-            else if(watch_button.Text.StartsWith("Stop"))
+            else if (watch_button.Text.StartsWith("Stop"))
             {
                 m_ProcessRunner.Stop();
             }
