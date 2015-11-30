@@ -24,6 +24,7 @@ namespace phoenix
         bool        m_AlwaysOnTop   = false;
         bool        m_CrashIfUnresp = false;
         bool        m_CrashScrshot  = false;
+        bool        m_Monitoring    = false;
         const int   m_NumSamples    = 100;
         double[]    m_MemoryUsage   = new double[m_NumSamples];
         double[]    m_CpuUsage      = new double[m_NumSamples];
@@ -40,13 +41,22 @@ namespace phoenix
 
         protected virtual void OnMonitorStarted()
         {
+            m_Monitoring = true;
+
             if (MonitorStarted != null)
                 MonitorStarted();
         }
         protected virtual void OnMonitorStopped()
         {
+            m_Monitoring = false;
+
             if (MonitorStopped != null)
                 MonitorStopped();
+        }
+
+        public bool Monitoring
+        {
+            get { return m_Monitoring; }
         }
 
         public ProcessRunner()

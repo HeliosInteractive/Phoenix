@@ -267,7 +267,7 @@
             this.screenshot_button.Name = "screenshot_button";
             this.screenshot_button.Size = new System.Drawing.Size(173, 24);
             this.screenshot_button.TabIndex = 11;
-            this.screenshot_button.Text = "Take a screenshot";
+            this.screenshot_button.Text = "Take a screenshot ( ALT+F9 )";
             this.screenshot_button.UseVisualStyleBackColor = true;
             this.screenshot_button.Click += new System.EventHandler(this.screenshot_button_Click);
             // 
@@ -345,9 +345,9 @@
             this.force_always_on_top.AutoSize = true;
             this.force_always_on_top.Location = new System.Drawing.Point(8, 240);
             this.force_always_on_top.Name = "force_always_on_top";
-            this.force_always_on_top.Size = new System.Drawing.Size(177, 17);
+            this.force_always_on_top.Size = new System.Drawing.Size(164, 17);
             this.force_always_on_top.TabIndex = 7;
-            this.force_always_on_top.Text = "Keep process on top (ALT+F12)";
+            this.force_always_on_top.Text = "Keep app on top ( ALT+F12 )";
             this.force_always_on_top.UseVisualStyleBackColor = true;
             this.force_always_on_top.CheckedChanged += new System.EventHandler(this.force_always_on_top_CheckedChanged);
             // 

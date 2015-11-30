@@ -31,8 +31,8 @@ namespace phoenix
 
             process_monitor_timer.Start();
 
-            m_ProcessRunner.MonitorStarted += () => { watch_button.Text = "Stop Watching"; };
-            m_ProcessRunner.MonitorStopped += () => { watch_button.Text = "Start Watching"; };
+            m_ProcessRunner.MonitorStarted += () => { watch_button.Text = "Stop Watching ( ALT+F10 )"; };
+            m_ProcessRunner.MonitorStopped += () => { watch_button.Text = "Start Watching ( ALT+F10 )"; };
 
             HotkeyManager.Register(Handle);
 
@@ -201,7 +201,7 @@ namespace phoenix
 
         private void ValidateAndStartMonitoring()
         {
-            if (watch_button.Text.StartsWith("Start"))
+            if (!m_ProcessRunner.Monitoring)
             {
                 bool validated = true;
 
@@ -230,7 +230,7 @@ namespace phoenix
                 if (validated)
                     m_ProcessRunner.Start();
             }
-            else if (watch_button.Text.StartsWith("Stop"))
+            else
             {
                 m_ProcessRunner.Stop();
             }
@@ -324,7 +324,11 @@ namespace phoenix
                 if (hotkey_id == HotkeyManager.TOGGLE_FORCE_ALWAYS_ON_TOP_ID)
                     force_always_on_top.Checked = !force_always_on_top.Checked;
                 else if (hotkey_id == HotkeyManager.TOGGLE_CONTROL_PANEL_UI_ID)
-                    toggleUIToolStripMenuItem_Click(null, null); //ugh. FIXME
+                    Visible = !Visible;
+                else if (hotkey_id == HotkeyManager.TOGGLE_MONITORING_ID)
+                    if (m_ProcessRunner.Monitoring) m_ProcessRunner.Stop(); else m_ProcessRunner.Start();
+                else if (hotkey_id == HotkeyManager.TAKE_SCREENSHOT_ID)
+                    ScreenCapture.TakeScreenShot();
             }
 
             base.WndProc(ref m);
