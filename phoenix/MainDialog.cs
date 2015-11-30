@@ -10,7 +10,7 @@ namespace phoenix
         private ProcessRunner   m_ProcessRunner;
         private OpenFileDialog  m_FileDialog;
         private bool            m_PauseMonitor = false;
-        private bool            m_FormVisible = false;
+        private bool            m_FirstVisibleCall = true;
         private Series          m_CpuUsageSeries;
         private Series          m_MemoryUsageSeries;
 
@@ -27,7 +27,6 @@ namespace phoenix
             m_CpuUsageSeries = cpu_chart.Series[0];
 
             notify_icon.Icon = Icon;
-            m_FormVisible = !start_minimized.Checked;
 
             process_monitor_timer.Start();
 
@@ -267,8 +266,7 @@ namespace phoenix
 
         private void toggleUIToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            m_FormVisible = !m_FormVisible;
-            SetVisibleCore(!Visible);
+            Visible = !Visible;
         }
 
         private void exitPhoenixToolStripMenuItem_Click(object sender, EventArgs e)
@@ -278,7 +276,15 @@ namespace phoenix
 
         protected override void SetVisibleCore(bool value)
         {
-            base.SetVisibleCore(m_FormVisible);
+            if (m_FirstVisibleCall)
+            {
+                base.SetVisibleCore(!start_minimized.Checked);
+                m_FirstVisibleCall = false;
+            }
+            else
+            {
+                base.SetVisibleCore(value);
+            }
         }
 
         protected override void WndProc(ref Message m)
