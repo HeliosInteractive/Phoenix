@@ -33,6 +33,8 @@ namespace phoenix
 
             m_ProcessRunner.MonitorStarted += () => { watch_button.Text = "Stop Watching"; };
             m_ProcessRunner.MonitorStopped += () => { watch_button.Text = "Start Watching"; };
+
+            HotkeyManager.Register(Handle);
         }
 
         private void ApplySettings()
@@ -277,6 +279,21 @@ namespace phoenix
         protected override void SetVisibleCore(bool value)
         {
             base.SetVisibleCore(m_FormVisible);
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            if (m.Msg == 0x0312 /* WM_HOTKEY */)
+            {
+                int hotkey_id = m.WParam.ToInt32();
+
+                if (hotkey_id == HotkeyManager.TOGGLE_FORCE_ALWAYS_ON_TOP_ID)
+                    force_always_on_top.Checked = !force_always_on_top.Checked;
+                else if (hotkey_id == HotkeyManager.TOGGLE_CONTROL_PANEL_UI_ID)
+                    toggleUIToolStripMenuItem_Click(null, null); //ugh. FIXME
+            }
+
+            base.WndProc(ref m);
         }
     }
 }
