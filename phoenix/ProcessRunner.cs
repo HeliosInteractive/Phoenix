@@ -15,6 +15,8 @@ namespace phoenix
         int         m_DelaySeconds  = 0;
         int         m_Attempts      = 10;
         int         m_CurrAttempt   = 0;
+        string      m_WorkingDir    = string.Empty;
+        string      m_StartScript   = string.Empty;
         string      m_CrashScript   = string.Empty;
         string      m_ProcessPath   = string.Empty;
         string      m_CommandLine   = string.Empty;
@@ -54,6 +56,9 @@ namespace phoenix
                 MonitorStopped();
         }
 
+        /// <summary>
+        /// Returns true if this instance is actively monitoring
+        /// </summary>
         public bool Monitoring
         {
             get { return m_Monitoring; }
@@ -109,6 +114,16 @@ namespace phoenix
         {
             get { return m_CrashScript; }
             set { m_CrashScript = value; Validate(); }
+        }
+        public string StartScript
+        {
+            get { return m_StartScript; }
+            set { m_StartScript = value; Validate(); }
+        }
+        public string WorkingDirectory
+        {
+            get { return m_WorkingDir; }
+            set { m_WorkingDir = value; Validate(); }
         }
 
         /// <summary>
@@ -256,11 +271,22 @@ namespace phoenix
             m_DelaySeconds = Math.Abs(m_DelaySeconds);
             m_Attempts = Math.Abs(m_Attempts);
 
-            if (m_ProcessPath.Trim() != string.Empty && !Path.IsPathRooted(m_ProcessPath.Trim()))
-                m_ProcessPath = Path.GetFullPath(m_ProcessPath.Trim());
+            m_ProcessPath   = CleanStringAsPath(m_ProcessPath);
+            m_CrashScript   = CleanStringAsPath(m_CrashScript);
+            m_StartScript   = CleanStringAsPath(m_StartScript);
+            m_WorkingDir    = CleanStringAsPath(m_WorkingDir);
 
-            if (m_CrashScript.Trim() != string.Empty && !Path.IsPathRooted(m_CrashScript.Trim()))
-                m_CrashScript = Path.GetFullPath(m_CrashScript.Trim());
+            if (m_ProcessPath != string.Empty && !Path.IsPathRooted(m_ProcessPath))
+                m_ProcessPath = Path.GetFullPath(m_ProcessPath);
+
+            if (m_CrashScript != string.Empty && !Path.IsPathRooted(m_CrashScript))
+                m_CrashScript = Path.GetFullPath(m_CrashScript);
+
+            if (m_StartScript != string.Empty && !Path.IsPathRooted(m_StartScript))
+                m_StartScript = Path.GetFullPath(m_StartScript);
+
+            if (m_WorkingDir != string.Empty && !Path.IsPathRooted(m_WorkingDir))
+                m_WorkingDir = Path.GetFullPath(m_WorkingDir);
 
             if (!File.Exists(m_ProcessPath) || Path.GetExtension(m_ProcessPath) != ".exe")
             {
@@ -273,6 +299,16 @@ namespace phoenix
                 m_CrashScript = string.Empty;
             }
 
+            if (!File.Exists(m_StartScript))
+            {
+                m_StartScript = string.Empty;
+            }
+
+            if (!Directory.Exists(m_WorkingDir))
+            {
+                m_WorkingDir = string.Empty;
+            }
+
             m_Validated = true;
         }
 
@@ -283,13 +319,16 @@ namespace phoenix
         {
             if (!m_Validated) return;
 
+            CallScript(m_StartScript);
+
             ProcessStartInfo process_info = new ProcessStartInfo();
             process_info.FileName = ProcessPath;
-            process_info.WorkingDirectory = Path.GetDirectoryName(ProcessPath);
+            process_info.WorkingDirectory = WorkingDirectory;
             process_info.UseShellExecute = false;
+            process_info.Arguments = CommandLine;
 
-            if (CommandLine != string.Empty)
-                process_info.Arguments = CommandLine;
+            if (m_Process != null)
+                m_Process.Close();
 
             m_Process = new Process();
             m_Process.StartInfo = process_info;
@@ -322,21 +361,7 @@ namespace phoenix
             // Don't monitor till we restart
             m_PauseMonitor = true;
 
-            if (m_CrashScript != string.Empty)
-            {
-                ProcessStartInfo process_info = new ProcessStartInfo();
-                process_info.FileName = CrashScript;
-
-                if (sender as Process != null)
-                {
-                    Process dead_process = (sender as Process);
-                    process_info.Arguments = dead_process.ExitTime.Ticks.ToString();
-                }
-
-                m_Process = new Process();
-                m_Process.StartInfo = process_info;
-                m_Process.Start();
-            }
+            CallScript(m_CrashScript);
 
             if (ScreenShotOnCrash)
             {
@@ -347,6 +372,30 @@ namespace phoenix
                 .ContinueWith( fn => ExecuteProcess() );
 
             m_CurrAttempt++;
+        }
+
+        static void CallScript(string path)
+        {
+            if (path == string.Empty) return;
+
+            ProcessStartInfo process_info = new ProcessStartInfo();
+            process_info.FileName = path;
+
+            using(Process process = new Process())
+            {
+                process.StartInfo = process_info;
+                process.Start();
+            }
+        }
+
+        public static string CleanStringAsPath(string input)
+        {
+            foreach (var c in Path.GetInvalidPathChars())
+            {
+                input = input.Replace(c.ToString(), string.Empty);
+            }
+
+            return input.Trim();
         }
 
         #region IDisposable Support
