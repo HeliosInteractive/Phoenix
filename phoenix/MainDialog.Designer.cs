@@ -39,6 +39,12 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainDialog));
             this.main_tab = new System.Windows.Forms.TabControl();
             this.tab_local = new System.Windows.Forms.TabPage();
+            this.start_script_button = new System.Windows.Forms.Button();
+            this.start_script = new System.Windows.Forms.TextBox();
+            this.start_script_label = new System.Windows.Forms.Label();
+            this.working_directory_button = new System.Windows.Forms.Button();
+            this.working_directory = new System.Windows.Forms.TextBox();
+            this.working_directory_label = new System.Windows.Forms.Label();
             this.memory_chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.cpu_chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.label2 = new System.Windows.Forms.Label();
@@ -87,12 +93,6 @@
             this.context_menu_strip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toggleUIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitPhoenixToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.working_directory_label = new System.Windows.Forms.Label();
-            this.working_directory = new System.Windows.Forms.TextBox();
-            this.working_directory_button = new System.Windows.Forms.Button();
-            this.start_script_button = new System.Windows.Forms.Button();
-            this.start_script = new System.Windows.Forms.TextBox();
-            this.start_script_label = new System.Windows.Forms.Label();
             this.main_tab.SuspendLayout();
             this.tab_local.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.memory_chart)).BeginInit();
@@ -153,6 +153,60 @@
             this.tab_local.TabIndex = 0;
             this.tab_local.Text = "Local";
             this.tab_local.UseVisualStyleBackColor = true;
+            // 
+            // start_script_button
+            // 
+            this.start_script_button.Location = new System.Drawing.Point(337, 80);
+            this.start_script_button.Name = "start_script_button";
+            this.start_script_button.Size = new System.Drawing.Size(30, 24);
+            this.start_script_button.TabIndex = 8;
+            this.start_script_button.Text = "...";
+            this.start_script_button.UseVisualStyleBackColor = true;
+            this.start_script_button.Click += new System.EventHandler(this.start_script_button_Click);
+            // 
+            // start_script
+            // 
+            this.start_script.Location = new System.Drawing.Point(106, 82);
+            this.start_script.Name = "start_script";
+            this.start_script.Size = new System.Drawing.Size(221, 20);
+            this.start_script.TabIndex = 7;
+            this.start_script.TextChanged += new System.EventHandler(this.start_script_TextChanged);
+            // 
+            // start_script_label
+            // 
+            this.start_script_label.AutoSize = true;
+            this.start_script_label.Location = new System.Drawing.Point(8, 85);
+            this.start_script_label.Name = "start_script_label";
+            this.start_script_label.Size = new System.Drawing.Size(98, 13);
+            this.start_script_label.TabIndex = 22;
+            this.start_script_label.Text = "Execute on spawn:";
+            // 
+            // working_directory_button
+            // 
+            this.working_directory_button.Location = new System.Drawing.Point(337, 30);
+            this.working_directory_button.Name = "working_directory_button";
+            this.working_directory_button.Size = new System.Drawing.Size(30, 24);
+            this.working_directory_button.TabIndex = 4;
+            this.working_directory_button.Text = "...";
+            this.working_directory_button.UseVisualStyleBackColor = true;
+            this.working_directory_button.Click += new System.EventHandler(this.working_directory_button_Click);
+            // 
+            // working_directory
+            // 
+            this.working_directory.Location = new System.Drawing.Point(106, 32);
+            this.working_directory.Name = "working_directory";
+            this.working_directory.Size = new System.Drawing.Size(221, 20);
+            this.working_directory.TabIndex = 3;
+            this.working_directory.TextChanged += new System.EventHandler(this.working_directory_TextChanged);
+            // 
+            // working_directory_label
+            // 
+            this.working_directory_label.AutoSize = true;
+            this.working_directory_label.Location = new System.Drawing.Point(8, 35);
+            this.working_directory_label.Name = "working_directory_label";
+            this.working_directory_label.Size = new System.Drawing.Size(93, 13);
+            this.working_directory_label.TabIndex = 17;
+            this.working_directory_label.Text = "Working directory:";
             // 
             // memory_chart
             // 
@@ -242,9 +296,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(285, 110);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(66, 13);
+            this.label2.Size = new System.Drawing.Size(61, 13);
             this.label2.TabIndex = 14;
-            this.label2.Text = "Max Retries:";
+            this.label2.Text = "Max retries:";
             // 
             // maximum_retries
             // 
@@ -370,9 +424,9 @@
             this.time_delay_label.AutoSize = true;
             this.time_delay_label.Location = new System.Drawing.Point(193, 110);
             this.time_delay_label.Name = "time_delay_label";
-            this.time_delay_label.Size = new System.Drawing.Size(76, 13);
+            this.time_delay_label.Size = new System.Drawing.Size(85, 13);
             this.time_delay_label.TabIndex = 4;
-            this.time_delay_label.Text = "Launch Delay:";
+            this.time_delay_label.Text = "Spawn delay (s):";
             // 
             // command_line_arguments
             // 
@@ -387,9 +441,9 @@
             this.cmd_line_label.AutoSize = true;
             this.cmd_line_label.Location = new System.Drawing.Point(8, 110);
             this.cmd_line_label.Name = "cmd_line_label";
-            this.cmd_line_label.Size = new System.Drawing.Size(133, 13);
+            this.cmd_line_label.Size = new System.Drawing.Size(128, 13);
             this.cmd_line_label.TabIndex = 2;
-            this.cmd_line_label.Text = "Command Line Arguments:";
+            this.cmd_line_label.Text = "Command line arguments:";
             // 
             // app_path_label
             // 
@@ -654,75 +708,21 @@
             this.exitPhoenixToolStripMenuItem});
             this.context_menu_strip.Name = "context_menu_strip";
             this.context_menu_strip.ShowImageMargin = false;
-            this.context_menu_strip.Size = new System.Drawing.Size(157, 48);
+            this.context_menu_strip.Size = new System.Drawing.Size(159, 48);
             // 
             // toggleUIToolStripMenuItem
             // 
             this.toggleUIToolStripMenuItem.Name = "toggleUIToolStripMenuItem";
-            this.toggleUIToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.toggleUIToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
             this.toggleUIToolStripMenuItem.Text = "Toggle UI (ALT+F11)";
             this.toggleUIToolStripMenuItem.Click += new System.EventHandler(this.toggleUIToolStripMenuItem_Click);
             // 
             // exitPhoenixToolStripMenuItem
             // 
             this.exitPhoenixToolStripMenuItem.Name = "exitPhoenixToolStripMenuItem";
-            this.exitPhoenixToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.exitPhoenixToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
             this.exitPhoenixToolStripMenuItem.Text = "Exit Phoenix";
             this.exitPhoenixToolStripMenuItem.Click += new System.EventHandler(this.exitPhoenixToolStripMenuItem_Click);
-            // 
-            // working_directory_label
-            // 
-            this.working_directory_label.AutoSize = true;
-            this.working_directory_label.Location = new System.Drawing.Point(8, 35);
-            this.working_directory_label.Name = "working_directory_label";
-            this.working_directory_label.Size = new System.Drawing.Size(93, 13);
-            this.working_directory_label.TabIndex = 17;
-            this.working_directory_label.Text = "Working directory:";
-            // 
-            // working_directory
-            // 
-            this.working_directory.Location = new System.Drawing.Point(106, 32);
-            this.working_directory.Name = "working_directory";
-            this.working_directory.Size = new System.Drawing.Size(221, 20);
-            this.working_directory.TabIndex = 3;
-            this.working_directory.TextChanged += new System.EventHandler(this.working_directory_TextChanged);
-            // 
-            // working_directory_button
-            // 
-            this.working_directory_button.Location = new System.Drawing.Point(337, 30);
-            this.working_directory_button.Name = "working_directory_button";
-            this.working_directory_button.Size = new System.Drawing.Size(30, 24);
-            this.working_directory_button.TabIndex = 4;
-            this.working_directory_button.Text = "...";
-            this.working_directory_button.UseVisualStyleBackColor = true;
-            this.working_directory_button.Click += new System.EventHandler(this.working_directory_button_Click);
-            // 
-            // start_script_button
-            // 
-            this.start_script_button.Location = new System.Drawing.Point(337, 80);
-            this.start_script_button.Name = "start_script_button";
-            this.start_script_button.Size = new System.Drawing.Size(30, 24);
-            this.start_script_button.TabIndex = 8;
-            this.start_script_button.Text = "...";
-            this.start_script_button.UseVisualStyleBackColor = true;
-            this.start_script_button.Click += new System.EventHandler(this.start_script_button_Click);
-            // 
-            // start_script
-            // 
-            this.start_script.Location = new System.Drawing.Point(106, 82);
-            this.start_script.Name = "start_script";
-            this.start_script.Size = new System.Drawing.Size(221, 20);
-            this.start_script.TabIndex = 7;
-            this.start_script.TextChanged += new System.EventHandler(this.start_script_TextChanged);
-            // 
-            // start_script_label
-            // 
-            this.start_script_label.AutoSize = true;
-            this.start_script_label.Location = new System.Drawing.Point(8, 85);
-            this.start_script_label.Name = "start_script_label";
-            this.start_script_label.Size = new System.Drawing.Size(87, 13);
-            this.start_script_label.TabIndex = 22;
-            this.start_script_label.Text = "Execute on start:";
             // 
             // MainDialog
             // 
