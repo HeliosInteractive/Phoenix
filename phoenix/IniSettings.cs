@@ -47,8 +47,7 @@ namespace phoenix
         /// <param name="Value"></param>
         public void Write(string Section, string Key, string Value)
         {
-            if (Value == string.Empty) return;
-            NativeMethods.WritePrivateProfileString(Section, Key, Value, this.m_Path);
+            NativeMethods.WritePrivateProfileString(Section, Key, Value, m_Path);
         }
 
         /// <summary>
@@ -78,7 +77,7 @@ namespace phoenix
         {
             StringBuilder strb = new StringBuilder(2048);
 
-            if (NativeMethods.GetPrivateProfileString(Section, Key, "", strb, strb.Capacity, this.m_Path) > 0
+            if (NativeMethods.GetPrivateProfileString(Section, Key, "", strb, strb.Capacity, m_Path) > 0
                 && CanChangeType(strb.ToString(), typeof(T)))
             {
                 try
@@ -102,9 +101,10 @@ namespace phoenix
         {
             foreach (var keys in m_Settings)
             {
-                foreach (var sections in keys.Value)
+                var section = keys.Key;
+                foreach (var entries in m_Settings[section])
                 {
-                    Write(keys.Key, sections.Key, sections.Value);
+                    Write(section, entries.Key, entries.Value);
                 }
             }
         }
