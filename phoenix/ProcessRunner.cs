@@ -169,6 +169,7 @@ namespace phoenix
             if (m_Process != null)
             {
                 m_Process.EnableRaisingEvents = false;
+                m_Process.CloseMainWindow(); // gently ask to close
                 m_Process.Dispose();
             }
 
@@ -369,6 +370,7 @@ namespace phoenix
         // This code added to correctly implement the disposable pattern.
         public void Dispose()
         {
+            Stop();
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);
         }
