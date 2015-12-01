@@ -10,6 +10,8 @@ namespace phoenix
     /// </summary>
     class ProcessRunner : IDisposable
     {
+        #region Private Members
+
         PerformanceCounter
                     m_PerformanceCounter;
         int         m_DelaySeconds  = 0;
@@ -32,6 +34,10 @@ namespace phoenix
         double[]    m_CpuUsage      = new double[m_NumSamples];
         double[]    m_UsageIndices  = new double[m_NumSamples];
 
+        #endregion
+
+        #region Events
+
         /// <summary>
         /// event triggered when monitoring starts
         /// </summary>
@@ -40,6 +46,14 @@ namespace phoenix
         /// event triggered when monitoring stops
         /// </summary>
         public Action MonitorStopped;
+        /// <summary>
+        /// Event triggered when we spawn the process
+        /// </summary>
+        public Action ProcessStarted;
+        /// <summary>
+        /// Event triggered when process stopped
+        /// </summary>
+        public Action ProcessStopped;
 
         protected virtual void OnMonitorStarted()
         {
@@ -55,14 +69,18 @@ namespace phoenix
             if (MonitorStopped != null)
                 MonitorStopped();
         }
-
-        /// <summary>
-        /// Returns true if this instance is actively monitoring
-        /// </summary>
-        public bool Monitoring
+        protected virtual void OnProcessStarted()
         {
-            get { return m_Monitoring; }
+            if (ProcessStarted != null)
+                ProcessStarted();
         }
+        protected virtual void OnProcessStopped()
+        {
+            if (ProcessStopped != null)
+                ProcessStopped();
+        }
+
+        #endregion
 
         public ProcessRunner()
         {
@@ -74,58 +92,91 @@ namespace phoenix
             }
         }
 
+        #region Property Indexers
+
+        /// <summary>
+        /// Returns true if this instance is actively monitoring
+        /// </summary>
+        public bool Monitoring
+        {
+            get { return m_Monitoring; }
+        }
+        /// <summary>
+        /// An array filled with [0,NumSamples] for charts
+        /// </summary>
         public double[] UsageIndices
         {
             get { return m_UsageIndices; }
         }
+        /// <summary>
+        /// % memory usage (CurrentWorkingSet / PeakWorkingSet)
+        /// </summary>
         public double[] MemoryUsage
         {
             get { return m_MemoryUsage; }
         }
+        /// <summary>
+        /// % CPU usage (queried from PerfMon)
+        /// </summary>
         public double[] CpuUsage
         {
             get { return m_CpuUsage; }
         }
+        /// <summary>
+        /// Number of memory / CPU usage samples to be taken
+        /// </summary>
         public int NumSamples
         {
             get { return m_NumSamples; }
         }
+        /// <summary>
+        /// Assume crashed if process' main window is not responding
+        /// </summary>
         public bool AssumeCrashIfNotResponsive
         {
             get { return m_CrashIfUnresp; }
             set { m_CrashIfUnresp = value; }
         }
+        /// <summary>
+        /// Takes a screen shot on crash
+        /// </summary>
         public bool ScreenShotOnCrash
         {
             get { return m_CrashScrshot; }
             set { m_CrashScrshot = value; }
         }
+        /// <summary>
+        /// Force main window of the process to be always on top
+        /// </summary>
         public bool ForceAlwaysOnTop
         {
             get { return m_AlwaysOnTop; }
             set { m_AlwaysOnTop = value; }
         }
-
         /// <summary>
-        /// A script to be called in case of process exit/crash.
-        /// Process exit code will be passed to the called script
+        /// A script to be called in case of process exit/crash
         /// </summary>
         public string CrashScript
         {
             get { return m_CrashScript; }
             set { m_CrashScript = value; Validate(); }
         }
+        /// <summary>
+        /// A script to be called in case of process start
+        /// </summary>
         public string StartScript
         {
             get { return m_StartScript; }
             set { m_StartScript = value; Validate(); }
         }
+        /// <summary>
+        /// Process' working directory.
+        /// </summary>
         public string WorkingDirectory
         {
             get { return m_WorkingDir; }
             set { m_WorkingDir = value; Validate(); }
         }
-
         /// <summary>
         /// Maximum attempts the process will be restarted before we
         /// give up restarting it. 0 means infinite attempts.
@@ -135,7 +186,6 @@ namespace phoenix
             get { return m_Attempts; }
             set { m_Attempts = value; Validate(); }
         }
-
         /// <summary>
         /// The time delay before re-launching the process (seconds)
         /// </summary>
@@ -144,7 +194,6 @@ namespace phoenix
             get { return m_DelaySeconds; }
             set { m_DelaySeconds = value; Validate(); }
         }
-        
         /// <summary>
         /// Process path (could be an executable or a bat file for example)
         /// </summary>
@@ -153,7 +202,6 @@ namespace phoenix
             get { return m_ProcessPath; }
             set { m_ProcessPath = value; Validate(); }
         }
-        
         /// <summary>
         /// Command line arguments to be passed to the process
         /// </summary>
@@ -162,6 +210,8 @@ namespace phoenix
             get { return m_CommandLine; }
             set { m_CommandLine = value; Validate(); }
         }
+
+        #endregion
 
         /// <summary>
         /// Call this method to reset the counter and monitor the process
@@ -196,7 +246,7 @@ namespace phoenix
         }
 
         /// <summary>
-        /// Monitor the running process
+        /// Monitor the running process (should be called frequently)
         /// </summary>
         public void Monitor()
         {
@@ -218,7 +268,7 @@ namespace phoenix
         }
 
         /// <summary>
-        /// Update the metrics data.
+        /// Update the metrics data (should be called frequently)
         /// </summary>
         public void UpdateMetrics()
         {
@@ -244,6 +294,9 @@ namespace phoenix
             if (!Monitorable())
                 return;
 
+            if (m_PerformanceCounter != null)
+                m_PerformanceCounter.Close();
+
             m_PerformanceCounter = new PerformanceCounter(
                 "Process",
                 "% Processor Time",
@@ -268,8 +321,8 @@ namespace phoenix
         {
             m_Validated = false;
 
-            m_DelaySeconds = Math.Abs(m_DelaySeconds);
-            m_Attempts = Math.Abs(m_Attempts);
+            m_DelaySeconds  = Math.Abs(m_DelaySeconds);
+            m_Attempts      = Math.Abs(m_Attempts);
 
             m_ProcessPath   = CleanStringAsPath(m_ProcessPath);
             m_CrashScript   = CleanStringAsPath(m_CrashScript);
@@ -336,6 +389,8 @@ namespace phoenix
             m_Process.Exited += new EventHandler(HandleProcessExit);
             m_Process.Start();
 
+            OnProcessStarted();
+
             // resume process monitoring
             m_PauseMonitor = false;
 
@@ -361,6 +416,7 @@ namespace phoenix
             // Don't monitor till we restart
             m_PauseMonitor = true;
 
+            OnProcessStopped();
             CallScript(m_CrashScript);
 
             if (ScreenShotOnCrash)
@@ -374,6 +430,10 @@ namespace phoenix
             m_CurrAttempt++;
         }
 
+        /// <summary>
+        /// Calls a script and forgets about it. Used to call start/stop scripts
+        /// </summary>
+        /// <param name="path"></param>
         static void CallScript(string path)
         {
             if (path == string.Empty) return;
@@ -387,7 +447,12 @@ namespace phoenix
                 process.Start();
             }
         }
-
+        
+        /// <summary>
+        /// Clean a script and returns it as a clean file/folder path
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public static string CleanStringAsPath(string input)
         {
             foreach (var c in Path.GetInvalidPathChars())
