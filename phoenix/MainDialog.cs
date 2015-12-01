@@ -34,8 +34,19 @@ namespace phoenix
 
             process_monitor_timer.Start();
 
-            m_ProcessRunner.MonitorStarted += () => { watch_button.Text = "Stop Watching ( ALT+F10 )"; };
-            m_ProcessRunner.MonitorStopped += () => { watch_button.Text = "Start Watching ( ALT+F10 )"; };
+            // This is executed in a separate thread
+            m_ProcessRunner.MonitorStarted += () => {
+                watch_button.Invoke((MethodInvoker)(() => {
+                    watch_button.Text = "Stop Watching ( ALT+F10 )";
+                }));
+            };
+
+            // This is executed in a separate thread
+            m_ProcessRunner.MonitorStopped += () => {
+                watch_button.Invoke((MethodInvoker)(() => {
+                    watch_button.Text = "Start Watching ( ALT+F10 )";
+                }));
+            };
 
             HotkeyManager.Register(Handle);
 

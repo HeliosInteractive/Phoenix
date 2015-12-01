@@ -87,6 +87,9 @@
             this.context_menu_strip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toggleUIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitPhoenixToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label1 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.main_tab.SuspendLayout();
             this.tab_local.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.memory_chart)).BeginInit();
@@ -114,6 +117,9 @@
             // 
             // tab_local
             // 
+            this.tab_local.Controls.Add(this.button1);
+            this.tab_local.Controls.Add(this.textBox1);
+            this.tab_local.Controls.Add(this.label1);
             this.tab_local.Controls.Add(this.memory_chart);
             this.tab_local.Controls.Add(this.cpu_chart);
             this.tab_local.Controls.Add(this.label2);
@@ -304,7 +310,7 @@
             // 
             // app_path_button
             // 
-            this.app_path_button.Location = new System.Drawing.Point(337, 28);
+            this.app_path_button.Location = new System.Drawing.Point(337, 5);
             this.app_path_button.Name = "app_path_button";
             this.app_path_button.Size = new System.Drawing.Size(30, 24);
             this.app_path_button.TabIndex = 1;
@@ -382,15 +388,15 @@
             this.app_path_label.AutoSize = true;
             this.app_path_label.Location = new System.Drawing.Point(8, 10);
             this.app_path_label.Name = "app_path_label";
-            this.app_path_label.Size = new System.Drawing.Size(221, 13);
+            this.app_path_label.Size = new System.Drawing.Size(92, 13);
             this.app_path_label.TabIndex = 1;
-            this.app_path_label.Text = "Application to watch (only .EXE executables):";
+            this.app_path_label.Text = "Process to watch:";
             // 
             // application_to_watch
             // 
-            this.application_to_watch.Location = new System.Drawing.Point(8, 30);
+            this.application_to_watch.Location = new System.Drawing.Point(106, 7);
             this.application_to_watch.Name = "application_to_watch";
-            this.application_to_watch.Size = new System.Drawing.Size(319, 20);
+            this.application_to_watch.Size = new System.Drawing.Size(221, 20);
             this.application_to_watch.TabIndex = 0;
             this.application_to_watch.TextChanged += new System.EventHandler(this.application_to_watch_TextChanged);
             // 
@@ -656,6 +662,31 @@
             this.exitPhoenixToolStripMenuItem.Text = "Exit Phoenix";
             this.exitPhoenixToolStripMenuItem.Click += new System.EventHandler(this.exitPhoenixToolStripMenuItem_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(8, 35);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(95, 13);
+            this.label1.TabIndex = 17;
+            this.label1.Text = "Working Directory:";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(106, 33);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(221, 20);
+            this.textBox1.TabIndex = 18;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(337, 31);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(30, 24);
+            this.button1.TabIndex = 19;
+            this.button1.Text = "...";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
             // MainDialog
             // 
             this.AccessibleDescription = "Monitors and restarts crashed applications.";
@@ -739,6 +770,9 @@
         private System.Windows.Forms.ContextMenuStrip context_menu_strip;
         private System.Windows.Forms.ToolStripMenuItem toggleUIToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitPhoenixToolStripMenuItem;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 
