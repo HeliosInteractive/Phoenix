@@ -255,11 +255,11 @@ namespace phoenix
             m_DelaySeconds = Math.Abs(m_DelaySeconds);
             m_Attempts = Math.Abs(m_Attempts);
 
-            if (m_ProcessPath != string.Empty && !Path.IsPathRooted(m_ProcessPath))
-                m_ProcessPath = Path.GetFullPath(m_ProcessPath);
+            if (m_ProcessPath.Trim() != string.Empty && !Path.IsPathRooted(m_ProcessPath.Trim()))
+                m_ProcessPath = Path.GetFullPath(m_ProcessPath.Trim());
 
-            if (m_CrashScript != string.Empty && !Path.IsPathRooted(m_CrashScript))
-                m_CrashScript = Path.GetFullPath(m_CrashScript);
+            if (m_CrashScript.Trim() != string.Empty && !Path.IsPathRooted(m_CrashScript.Trim()))
+                m_CrashScript = Path.GetFullPath(m_CrashScript.Trim());
 
             if (!File.Exists(m_ProcessPath))
             {
