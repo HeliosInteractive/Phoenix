@@ -262,7 +262,7 @@ namespace phoenix
             if (m_CrashScript.Trim() != string.Empty && !Path.IsPathRooted(m_CrashScript.Trim()))
                 m_CrashScript = Path.GetFullPath(m_CrashScript.Trim());
 
-            if (!File.Exists(m_ProcessPath))
+            if (!File.Exists(m_ProcessPath) || Path.GetExtension(m_ProcessPath) != ".exe")
             {
                 m_ProcessPath = string.Empty;
                 return;
@@ -285,6 +285,8 @@ namespace phoenix
 
             ProcessStartInfo process_info = new ProcessStartInfo();
             process_info.FileName = ProcessPath;
+            process_info.WorkingDirectory = Path.GetDirectoryName(ProcessPath);
+            process_info.UseShellExecute = false;
 
             if (CommandLine != string.Empty)
                 process_info.Arguments = CommandLine;
