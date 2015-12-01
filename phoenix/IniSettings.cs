@@ -62,7 +62,13 @@ namespace phoenix
             if (!m_Settings.ContainsKey(Section))
                 m_Settings[Section] = new Dictionary<string, string>();
 
-            m_Settings[Section][Key] = value.ToString();
+            string to_be_stored = value.ToString();
+
+            // http://www.askingbox.com/question/windows-api-getprofilestring-and-getprivateprofilestring-clears-quotes
+            if (to_be_stored.StartsWith("\"") && to_be_stored.EndsWith("\""))
+                to_be_stored = string.Format("\"{0}\"", to_be_stored);
+
+            m_Settings[Section][Key] = to_be_stored;
         }
 
         /// <summary>
