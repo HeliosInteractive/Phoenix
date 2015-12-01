@@ -87,9 +87,12 @@
             this.context_menu_strip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toggleUIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitPhoenixToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.working_directory_label = new System.Windows.Forms.Label();
+            this.working_directory = new System.Windows.Forms.TextBox();
+            this.working_directory_button = new System.Windows.Forms.Button();
+            this.start_script_button = new System.Windows.Forms.Button();
+            this.start_script = new System.Windows.Forms.TextBox();
+            this.start_script_label = new System.Windows.Forms.Label();
             this.main_tab.SuspendLayout();
             this.tab_local.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.memory_chart)).BeginInit();
@@ -117,9 +120,12 @@
             // 
             // tab_local
             // 
-            this.tab_local.Controls.Add(this.button1);
-            this.tab_local.Controls.Add(this.textBox1);
-            this.tab_local.Controls.Add(this.label1);
+            this.tab_local.Controls.Add(this.start_script_button);
+            this.tab_local.Controls.Add(this.start_script);
+            this.tab_local.Controls.Add(this.start_script_label);
+            this.tab_local.Controls.Add(this.working_directory_button);
+            this.tab_local.Controls.Add(this.working_directory);
+            this.tab_local.Controls.Add(this.working_directory_label);
             this.tab_local.Controls.Add(this.memory_chart);
             this.tab_local.Controls.Add(this.cpu_chart);
             this.tab_local.Controls.Add(this.label2);
@@ -175,7 +181,7 @@
             legend1.DockedToChartArea = "metrics_chart_area";
             legend1.Name = "mem_legend";
             this.memory_chart.Legends.Add(legend1);
-            this.memory_chart.Location = new System.Drawing.Point(193, 157);
+            this.memory_chart.Location = new System.Drawing.Point(193, 158);
             this.memory_chart.Name = "memory_chart";
             this.memory_chart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Berry;
             series1.ChartArea = "metrics_chart_area";
@@ -185,8 +191,9 @@
             series1.LegendText = "% Memory Usage";
             series1.Name = "memory_usage_series";
             this.memory_chart.Series.Add(series1);
-            this.memory_chart.Size = new System.Drawing.Size(173, 77);
-            this.memory_chart.TabIndex = 16;
+            this.memory_chart.Size = new System.Drawing.Size(173, 76);
+            this.memory_chart.TabIndex = 0;
+            this.memory_chart.TabStop = false;
             // 
             // cpu_chart
             // 
@@ -216,7 +223,7 @@
             legend2.IsTextAutoFit = false;
             legend2.Name = "cpu_legend";
             this.cpu_chart.Legends.Add(legend2);
-            this.cpu_chart.Location = new System.Drawing.Point(8, 157);
+            this.cpu_chart.Location = new System.Drawing.Point(8, 158);
             this.cpu_chart.Name = "cpu_chart";
             this.cpu_chart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.SeaGreen;
             series2.ChartArea = "metrics_chart_area";
@@ -226,13 +233,14 @@
             series2.LegendText = "% CPU Usage";
             series2.Name = "cpu_usage_series";
             this.cpu_chart.Series.Add(series2);
-            this.cpu_chart.Size = new System.Drawing.Size(173, 77);
-            this.cpu_chart.TabIndex = 15;
+            this.cpu_chart.Size = new System.Drawing.Size(173, 76);
+            this.cpu_chart.TabIndex = 0;
+            this.cpu_chart.TabStop = false;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(254, 60);
+            this.label2.Location = new System.Drawing.Point(285, 110);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(66, 13);
             this.label2.TabIndex = 14;
@@ -240,19 +248,19 @@
             // 
             // maximum_retries
             // 
-            this.maximum_retries.Location = new System.Drawing.Point(254, 80);
+            this.maximum_retries.Location = new System.Drawing.Point(285, 130);
             this.maximum_retries.Name = "maximum_retries";
-            this.maximum_retries.Size = new System.Drawing.Size(112, 20);
-            this.maximum_retries.TabIndex = 4;
+            this.maximum_retries.Size = new System.Drawing.Size(81, 20);
+            this.maximum_retries.TabIndex = 11;
             this.maximum_retries.TextChanged += new System.EventHandler(this.maximum_retries_TextChanged);
             this.maximum_retries.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.maximum_retries_KeyPress);
             // 
             // time_delay_before_launch
             // 
-            this.time_delay_before_launch.Location = new System.Drawing.Point(131, 80);
+            this.time_delay_before_launch.Location = new System.Drawing.Point(193, 130);
             this.time_delay_before_launch.Name = "time_delay_before_launch";
-            this.time_delay_before_launch.Size = new System.Drawing.Size(112, 20);
-            this.time_delay_before_launch.TabIndex = 3;
+            this.time_delay_before_launch.Size = new System.Drawing.Size(81, 20);
+            this.time_delay_before_launch.TabIndex = 10;
             this.time_delay_before_launch.TextChanged += new System.EventHandler(this.time_delay_before_launch_TextChanged);
             this.time_delay_before_launch.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.time_delay_before_launch_KeyPress);
             // 
@@ -262,7 +270,7 @@
             this.assume_crash_if_not_responsive.Location = new System.Drawing.Point(8, 258);
             this.assume_crash_if_not_responsive.Name = "assume_crash_if_not_responsive";
             this.assume_crash_if_not_responsive.Size = new System.Drawing.Size(172, 17);
-            this.assume_crash_if_not_responsive.TabIndex = 8;
+            this.assume_crash_if_not_responsive.TabIndex = 14;
             this.assume_crash_if_not_responsive.Text = "Assume crash if not responsive";
             this.assume_crash_if_not_responsive.UseVisualStyleBackColor = true;
             this.assume_crash_if_not_responsive.CheckedChanged += new System.EventHandler(this.assume_crash_if_not_responsive_CheckedChanged);
@@ -272,7 +280,7 @@
             this.screenshot_button.Location = new System.Drawing.Point(8, 280);
             this.screenshot_button.Name = "screenshot_button";
             this.screenshot_button.Size = new System.Drawing.Size(173, 24);
-            this.screenshot_button.TabIndex = 11;
+            this.screenshot_button.TabIndex = 16;
             this.screenshot_button.Text = "Take a screenshot ( ALT+F9 )";
             this.screenshot_button.UseVisualStyleBackColor = true;
             this.screenshot_button.Click += new System.EventHandler(this.screenshot_button_Click);
@@ -283,7 +291,7 @@
             this.enable_screenshot_on_crash.Location = new System.Drawing.Point(193, 258);
             this.enable_screenshot_on_crash.Name = "enable_screenshot_on_crash";
             this.enable_screenshot_on_crash.Size = new System.Drawing.Size(158, 17);
-            this.enable_screenshot_on_crash.TabIndex = 10;
+            this.enable_screenshot_on_crash.TabIndex = 15;
             this.enable_screenshot_on_crash.Text = "Enable screenshot on crash";
             this.enable_screenshot_on_crash.UseVisualStyleBackColor = true;
             this.enable_screenshot_on_crash.CheckedChanged += new System.EventHandler(this.enable_screenshot_on_crash_CheckedChanged);
@@ -293,14 +301,14 @@
             this.watch_button.Location = new System.Drawing.Point(192, 280);
             this.watch_button.Name = "watch_button";
             this.watch_button.Size = new System.Drawing.Size(173, 24);
-            this.watch_button.TabIndex = 12;
+            this.watch_button.TabIndex = 17;
             this.watch_button.Text = "Start Watching";
             this.watch_button.UseVisualStyleBackColor = true;
             this.watch_button.Click += new System.EventHandler(this.watch_button_Click);
             // 
             // crash_script_button
             // 
-            this.crash_script_button.Location = new System.Drawing.Point(337, 128);
+            this.crash_script_button.Location = new System.Drawing.Point(337, 55);
             this.crash_script_button.Name = "crash_script_button";
             this.crash_script_button.Size = new System.Drawing.Size(30, 24);
             this.crash_script_button.TabIndex = 6;
@@ -313,27 +321,27 @@
             this.app_path_button.Location = new System.Drawing.Point(337, 5);
             this.app_path_button.Name = "app_path_button";
             this.app_path_button.Size = new System.Drawing.Size(30, 24);
-            this.app_path_button.TabIndex = 1;
+            this.app_path_button.TabIndex = 2;
             this.app_path_button.Text = "...";
             this.app_path_button.UseVisualStyleBackColor = true;
             this.app_path_button.Click += new System.EventHandler(this.app_path_button_Click);
             // 
             // script_to_execute_on_crash
             // 
-            this.script_to_execute_on_crash.Location = new System.Drawing.Point(8, 130);
+            this.script_to_execute_on_crash.Location = new System.Drawing.Point(106, 57);
             this.script_to_execute_on_crash.Name = "script_to_execute_on_crash";
-            this.script_to_execute_on_crash.Size = new System.Drawing.Size(319, 20);
+            this.script_to_execute_on_crash.Size = new System.Drawing.Size(221, 20);
             this.script_to_execute_on_crash.TabIndex = 5;
             this.script_to_execute_on_crash.TextChanged += new System.EventHandler(this.script_to_execute_on_crash_TextChanged);
             // 
             // crash_script_label
             // 
             this.crash_script_label.AutoSize = true;
-            this.crash_script_label.Location = new System.Drawing.Point(8, 110);
+            this.crash_script_label.Location = new System.Drawing.Point(8, 60);
             this.crash_script_label.Name = "crash_script_label";
-            this.crash_script_label.Size = new System.Drawing.Size(311, 13);
+            this.crash_script_label.Size = new System.Drawing.Size(93, 13);
             this.crash_script_label.TabIndex = 10;
-            this.crash_script_label.Text = "Script to execute on crash (exit time will be passed as argument):";
+            this.crash_script_label.Text = "Execute on crash:";
             // 
             // start_minimized
             // 
@@ -341,7 +349,7 @@
             this.start_minimized.Location = new System.Drawing.Point(193, 238);
             this.start_minimized.Name = "start_minimized";
             this.start_minimized.Size = new System.Drawing.Size(97, 17);
-            this.start_minimized.TabIndex = 9;
+            this.start_minimized.TabIndex = 13;
             this.start_minimized.Text = "Start Minimized";
             this.start_minimized.UseVisualStyleBackColor = true;
             this.start_minimized.CheckedChanged += new System.EventHandler(this.start_minimized_CheckedChanged);
@@ -352,7 +360,7 @@
             this.force_always_on_top.Location = new System.Drawing.Point(8, 240);
             this.force_always_on_top.Name = "force_always_on_top";
             this.force_always_on_top.Size = new System.Drawing.Size(164, 17);
-            this.force_always_on_top.TabIndex = 7;
+            this.force_always_on_top.TabIndex = 12;
             this.force_always_on_top.Text = "Keep app on top ( ALT+F12 )";
             this.force_always_on_top.UseVisualStyleBackColor = true;
             this.force_always_on_top.CheckedChanged += new System.EventHandler(this.force_always_on_top_CheckedChanged);
@@ -360,28 +368,28 @@
             // time_delay_label
             // 
             this.time_delay_label.AutoSize = true;
-            this.time_delay_label.Location = new System.Drawing.Point(131, 60);
+            this.time_delay_label.Location = new System.Drawing.Point(193, 110);
             this.time_delay_label.Name = "time_delay_label";
-            this.time_delay_label.Size = new System.Drawing.Size(103, 13);
+            this.time_delay_label.Size = new System.Drawing.Size(76, 13);
             this.time_delay_label.TabIndex = 4;
-            this.time_delay_label.Text = "Re-launch Delay (s):";
+            this.time_delay_label.Text = "Launch Delay:";
             // 
             // command_line_arguments
             // 
-            this.command_line_arguments.Location = new System.Drawing.Point(8, 80);
+            this.command_line_arguments.Location = new System.Drawing.Point(8, 130);
             this.command_line_arguments.Name = "command_line_arguments";
-            this.command_line_arguments.Size = new System.Drawing.Size(112, 20);
-            this.command_line_arguments.TabIndex = 2;
+            this.command_line_arguments.Size = new System.Drawing.Size(173, 20);
+            this.command_line_arguments.TabIndex = 9;
             this.command_line_arguments.TextChanged += new System.EventHandler(this.command_line_arguments_TextChanged);
             // 
             // cmd_line_label
             // 
             this.cmd_line_label.AutoSize = true;
-            this.cmd_line_label.Location = new System.Drawing.Point(8, 60);
+            this.cmd_line_label.Location = new System.Drawing.Point(8, 110);
             this.cmd_line_label.Name = "cmd_line_label";
-            this.cmd_line_label.Size = new System.Drawing.Size(80, 13);
+            this.cmd_line_label.Size = new System.Drawing.Size(133, 13);
             this.cmd_line_label.TabIndex = 2;
-            this.cmd_line_label.Text = "Command Line:";
+            this.cmd_line_label.Text = "Command Line Arguments:";
             // 
             // app_path_label
             // 
@@ -397,7 +405,7 @@
             this.application_to_watch.Location = new System.Drawing.Point(106, 7);
             this.application_to_watch.Name = "application_to_watch";
             this.application_to_watch.Size = new System.Drawing.Size(221, 20);
-            this.application_to_watch.TabIndex = 0;
+            this.application_to_watch.TabIndex = 1;
             this.application_to_watch.TextChanged += new System.EventHandler(this.application_to_watch_TextChanged);
             // 
             // remote_tab
@@ -662,30 +670,55 @@
             this.exitPhoenixToolStripMenuItem.Text = "Exit Phoenix";
             this.exitPhoenixToolStripMenuItem.Click += new System.EventHandler(this.exitPhoenixToolStripMenuItem_Click);
             // 
-            // label1
+            // working_directory_label
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(8, 35);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(95, 13);
-            this.label1.TabIndex = 17;
-            this.label1.Text = "Working Directory:";
+            this.working_directory_label.AutoSize = true;
+            this.working_directory_label.Location = new System.Drawing.Point(8, 35);
+            this.working_directory_label.Name = "working_directory_label";
+            this.working_directory_label.Size = new System.Drawing.Size(93, 13);
+            this.working_directory_label.TabIndex = 17;
+            this.working_directory_label.Text = "Working directory:";
             // 
-            // textBox1
+            // working_directory
             // 
-            this.textBox1.Location = new System.Drawing.Point(106, 33);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(221, 20);
-            this.textBox1.TabIndex = 18;
+            this.working_directory.Location = new System.Drawing.Point(106, 32);
+            this.working_directory.Name = "working_directory";
+            this.working_directory.Size = new System.Drawing.Size(221, 20);
+            this.working_directory.TabIndex = 3;
             // 
-            // button1
+            // working_directory_button
             // 
-            this.button1.Location = new System.Drawing.Point(337, 31);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(30, 24);
-            this.button1.TabIndex = 19;
-            this.button1.Text = "...";
-            this.button1.UseVisualStyleBackColor = true;
+            this.working_directory_button.Location = new System.Drawing.Point(337, 30);
+            this.working_directory_button.Name = "working_directory_button";
+            this.working_directory_button.Size = new System.Drawing.Size(30, 24);
+            this.working_directory_button.TabIndex = 4;
+            this.working_directory_button.Text = "...";
+            this.working_directory_button.UseVisualStyleBackColor = true;
+            // 
+            // start_script_button
+            // 
+            this.start_script_button.Location = new System.Drawing.Point(337, 80);
+            this.start_script_button.Name = "start_script_button";
+            this.start_script_button.Size = new System.Drawing.Size(30, 24);
+            this.start_script_button.TabIndex = 8;
+            this.start_script_button.Text = "...";
+            this.start_script_button.UseVisualStyleBackColor = true;
+            // 
+            // start_script
+            // 
+            this.start_script.Location = new System.Drawing.Point(106, 82);
+            this.start_script.Name = "start_script";
+            this.start_script.Size = new System.Drawing.Size(221, 20);
+            this.start_script.TabIndex = 7;
+            // 
+            // start_script_label
+            // 
+            this.start_script_label.AutoSize = true;
+            this.start_script_label.Location = new System.Drawing.Point(8, 85);
+            this.start_script_label.Name = "start_script_label";
+            this.start_script_label.Size = new System.Drawing.Size(87, 13);
+            this.start_script_label.TabIndex = 22;
+            this.start_script_label.Text = "Execute on start:";
             // 
             // MainDialog
             // 
@@ -770,9 +803,12 @@
         private System.Windows.Forms.ContextMenuStrip context_menu_strip;
         private System.Windows.Forms.ToolStripMenuItem toggleUIToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitPhoenixToolStripMenuItem;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label working_directory_label;
+        private System.Windows.Forms.Button working_directory_button;
+        private System.Windows.Forms.TextBox working_directory;
+        private System.Windows.Forms.Button start_script_button;
+        private System.Windows.Forms.TextBox start_script;
+        private System.Windows.Forms.Label start_script_label;
     }
 }
 
