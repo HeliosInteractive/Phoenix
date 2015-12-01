@@ -36,23 +36,26 @@ namespace phoenix
 
             process_monitor_timer.Start();
 
-            // This is executed in a separate thread
-            m_ProcessRunner.MonitorStarted += () => {
-                watch_button.Invoke((MethodInvoker)(() => {
-                    watch_button.Text = "Stop Watching ( ALT+F10 )";
-                }));
-            };
-
-            // This is executed in a separate thread
-            m_ProcessRunner.MonitorStopped += () => {
-                watch_button.Invoke((MethodInvoker)(() => {
-                    watch_button.Text = "Start Watching ( ALT+F10 )";
-                }));
-            };
+            // These are executed in a separate thread
+            m_ProcessRunner.MonitorStarted += ResetWatchButtonLabel;
+            m_ProcessRunner.MonitorStopped += ResetWatchButtonLabel;
+            m_ProcessRunner.ProcessStarted += ResetWatchButtonLabel;
+            m_ProcessRunner.ProcessStopped += ResetWatchButtonLabel;
 
             HotkeyManager.Register(Handle);
 
             ValidateAndStartMonitoring();
+        }
+
+        private void ResetWatchButtonLabel()
+        {
+            watch_button.Invoke((MethodInvoker)(() =>
+            {
+                if (m_ProcessRunner.Monitoring)
+                    watch_button.Text = "Stop Watching ( ALT+F10 )";
+                else
+                    watch_button.Text = "Start Watching ( ALT+F10 )";
+            }));
         }
 
         private bool EnsureSingleInstanceMode()
@@ -118,14 +121,16 @@ namespace phoenix
             start_minimized.Checked                 = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Local.StartMinimized),             Defaults.Local.StartMinimized);
             assume_crash_if_not_responsive.Checked  = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Local.AssumeCrashIfNotResponsive), Defaults.Local.AssumeCrashIfNotResponsive);
             enable_screenshot_on_crash.Checked      = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Local.EnableScreenshotOnCrash),    Defaults.Local.EnableScreenshotOnCrash);
+            start_script.Text                       = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Local.ScriptToExecuteOnStart),     Defaults.Local.ScriptToExecuteOnStart);
+            working_directory.Text                  = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Local.WorkingDirectory),           Defaults.Local.WorkingDirectory);
 
             section = "Remote";
 
-            update_server_address.Text              = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.UpdateServerAddress),        Defaults.Remote.UpdateServerAddress);
-            update_channel.Text                     = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.UpdateChannel),              Defaults.Remote.UpdateChannel);
-            receive_anonymous_updates.Checked       = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.ReceiveAnonymousUpdates),    Defaults.Remote.ReceiveAnonymousUpdates);
-            update_hash.Text                        = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.UpdateHash),                 Defaults.Remote.UpdateHash);
-            username.Text                           = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.Username),                   Defaults.Remote.Username);
+            update_server_address.Text              = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.UpdateServerAddress),       Defaults.Remote.UpdateServerAddress);
+            update_channel.Text                     = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.UpdateChannel),             Defaults.Remote.UpdateChannel);
+            receive_anonymous_updates.Checked       = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.ReceiveAnonymousUpdates),   Defaults.Remote.ReceiveAnonymousUpdates);
+            update_hash.Text                        = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.UpdateHash),                Defaults.Remote.UpdateHash);
+            username.Text                           = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.Username),                  Defaults.Remote.Username);
         }
 
         private void time_delay_before_launch_KeyPress(object sender, KeyPressEventArgs e)
@@ -140,7 +145,8 @@ namespace phoenix
                 ProcessRunner.CleanStringAsPath(application_to_watch.Text);
 
             if (application_to_watch.Text != string.Empty &&
-                File.Exists(application_to_watch.Text))
+                File.Exists(application_to_watch.Text) &&
+                !m_FirstVisibleCall)
             {
                 working_directory.Text =
                     Path.GetDirectoryName(application_to_watch.Text);
