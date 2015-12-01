@@ -2,8 +2,8 @@
 {
     class HotkeyManager
     {
-        static uint MOD_NOREPEAT    = 0x4000;
-        static uint MOD_ALT         = 0x0001;
+        const uint MOD_NOREPEAT    = 0x4000;
+        const uint MOD_ALT         = 0x0001;
 
         public const int TOGGLE_FORCE_ALWAYS_ON_TOP_ID  = 1;
         public const int TOGGLE_CONTROL_PANEL_UI_ID     = 2;
