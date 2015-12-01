@@ -44,6 +44,9 @@ namespace phoenix
 
         private bool EnsureSingleInstanceMode()
         {
+            if (application_to_watch.Text == string.Empty)
+                return false;
+
             try
             {
                 if (m_SingleInstanceMutex != null)
@@ -251,8 +254,11 @@ namespace phoenix
 
         private void ValidateAndStartMonitoring()
         {
-            if (!m_ProcessRunner.Monitoring && EnsureSingleInstanceMode())
+            if (!m_ProcessRunner.Monitoring)
             {
+                if (!EnsureSingleInstanceMode())
+                    return; // silently
+
                 bool validated = true;
 
                 m_ProcessRunner.DelaySeconds = Int32.Parse(time_delay_before_launch.Text);
