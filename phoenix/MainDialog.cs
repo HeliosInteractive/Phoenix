@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
+using System.Security.Cryptography;
 using System.Windows.Forms.DataVisualization.Charting;
 
 namespace phoenix
@@ -14,6 +16,7 @@ namespace phoenix
         private bool            m_FirstVisibleCall = true;
         private Series          m_CpuUsageSeries;
         private Series          m_MemoryUsageSeries;
+        static Mutex            m_SingleInstanceMutex;
 
         public MainDialog()
         {
@@ -37,6 +40,53 @@ namespace phoenix
             HotkeyManager.Register(Handle);
 
             ValidateAndStartMonitoring();
+        }
+
+        private bool EnsureSingleInstanceMode()
+        {
+            try
+            {
+                if (m_SingleInstanceMutex != null)
+                {
+                    m_SingleInstanceMutex.ReleaseMutex();
+                    m_SingleInstanceMutex.Dispose();
+                    m_SingleInstanceMutex = null;
+                }
+
+                using (var md5 = MD5.Create())
+                {
+                    string app_hash =
+                        BitConverter.ToString(md5.ComputeHash(
+                            System.Text.Encoding.UTF8.GetBytes(
+                                application_to_watch.Text)))
+                                .Replace("-", string.Empty)
+                                .ToLower();
+
+                    bool result;
+                    m_SingleInstanceMutex = new Mutex(true, "phoenix-" + app_hash, out result);
+
+                    if (!result)
+                    {
+                        MessageBox.Show(string.Format(
+                            "Another instance is already watching {0}.", application_to_watch.Text),
+                            "Multiple instances detected!");
+
+                        m_SingleInstanceMutex.Dispose();
+                        m_SingleInstanceMutex = null;
+                        return false;
+                    }
+                }
+            }
+            catch
+            {
+                MessageBox.Show(
+                    "Could not properly ensure single instance mode.\n" +
+                    "This can cause multi-instance issues.\n" +
+                    "Try running as Administrator.",
+                    "Failed to ensure single instance mode");
+            }
+
+            return true;
         }
 
         private void ApplySettings()
@@ -201,7 +251,7 @@ namespace phoenix
 
         private void ValidateAndStartMonitoring()
         {
-            if (!m_ProcessRunner.Monitoring)
+            if (!m_ProcessRunner.Monitoring && EnsureSingleInstanceMode())
             {
                 bool validated = true;
 
