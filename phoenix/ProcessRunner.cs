@@ -218,6 +218,8 @@ namespace phoenix
         /// </summary>
         public void Start()
         {
+            Validate();
+
             if (!m_Validated) return;
 
             m_CurrAttempt = 0;
@@ -234,7 +236,14 @@ namespace phoenix
             if (m_Process != null)
             {
                 m_Process.EnableRaisingEvents = false;
-                m_Process.CloseMainWindow(); // gently ask to close
+
+                try
+                {
+                    if (HasMainWindow())
+                        m_Process.CloseMainWindow(); // gently ask to close
+                }
+                catch( InvalidOperationException ) { /* no-op */ }
+
                 m_Process.Dispose();
             }
 
@@ -257,10 +266,11 @@ namespace phoenix
 
             if (AssumeCrashIfNotResponsive && !m_Process.Responding)
             {
+                // This will raise the Exited event.
                 try { m_Process.Kill(); } catch { /* no-op */ }
             }
 
-            if (ForceAlwaysOnTop && m_Process.MainWindowHandle != IntPtr.Zero)
+            if (ForceAlwaysOnTop && HasMainWindow())
             {
                 if (NativeMethods.GetForegroundWindow() != m_Process.MainWindowHandle)
                     NativeMethods.SetForegroundWindow(m_Process.MainWindowHandle);
@@ -311,6 +321,14 @@ namespace phoenix
         bool Monitorable()
         {
             return !(m_PauseMonitor || m_Process == null || m_Process.HasExited);
+        }
+
+        bool HasMainWindow()
+        {
+            bool has = false;
+            try { has = (m_Process != null && !m_Process.HasExited && m_Process.MainWindowHandle != IntPtr.Zero); }
+            catch { has = false; }
+            return has;
         }
 
         /// <summary>
