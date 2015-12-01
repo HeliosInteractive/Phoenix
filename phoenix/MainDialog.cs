@@ -9,26 +9,28 @@ namespace phoenix
 {
     public partial class MainDialog : Form
     {
-        private IniSettings     m_AppSettings;
-        private ProcessRunner   m_ProcessRunner;
-        private OpenFileDialog  m_FileDialog;
-        private bool            m_PauseMonitor = false;
-        private bool            m_FirstVisibleCall = true;
-        private Series          m_CpuUsageSeries;
-        private Series          m_MemoryUsageSeries;
-        static Mutex            m_SingleInstanceMutex;
+        private IniSettings         m_AppSettings;
+        private ProcessRunner       m_ProcessRunner;
+        private OpenFileDialog      m_FileDialog;
+        private FolderBrowserDialog m_FolderDialog;
+        private bool                m_PauseMonitor = false;
+        private bool                m_FirstVisibleCall = true;
+        private Series              m_CpuUsageSeries;
+        private Series              m_MemoryUsageSeries;
+        static Mutex                m_SingleInstanceMutex;
 
         public MainDialog()
         {
-            m_AppSettings = new IniSettings("phoenix.ini");
+            m_AppSettings   = new IniSettings("phoenix.ini");
             m_ProcessRunner = new ProcessRunner();
-            m_FileDialog = new OpenFileDialog();
+            m_FileDialog    = new OpenFileDialog();
+            m_FolderDialog  = new FolderBrowserDialog();
 
             InitializeComponent();
             ApplySettings();
 
             m_MemoryUsageSeries = memory_chart.Series[0];
-            m_CpuUsageSeries = cpu_chart.Series[0];
+            m_CpuUsageSeries    = cpu_chart.Series[0];
 
             notify_icon.Icon = Icon;
 
@@ -134,6 +136,16 @@ namespace phoenix
 
         private void application_to_watch_TextChanged(object sender, EventArgs e)
         {
+            application_to_watch.Text = 
+                ProcessRunner.CleanStringAsPath(application_to_watch.Text);
+
+            if (application_to_watch.Text != string.Empty &&
+                File.Exists(application_to_watch.Text))
+            {
+                working_directory.Text =
+                    Path.GetDirectoryName(application_to_watch.Text);
+            }
+
             m_AppSettings.Store(
                 Helpers.GetClassName(() => Defaults.Local.ApplicationToWtach),
                 Helpers.GetPropertyName(() => Defaults.Local.ApplicationToWtach),
@@ -194,6 +206,9 @@ namespace phoenix
 
         private void script_to_execute_on_crash_TextChanged(object sender, EventArgs e)
         {
+            script_to_execute_on_crash.Text =
+                ProcessRunner.CleanStringAsPath(script_to_execute_on_crash.Text);
+
             m_AppSettings.Store(
                 Helpers.GetClassName(() => Defaults.Local.ScriptToExecuteOnCrash),
                 Helpers.GetPropertyName(() => Defaults.Local.ScriptToExecuteOnCrash),
@@ -305,6 +320,9 @@ namespace phoenix
 
         private void app_path_button_Click(object sender, EventArgs e)
         {
+            m_FileDialog.Filter = "Windows Executable (*.exe)|*.exe";
+            m_FileDialog.Title = "Select application to watch";
+
             if (m_FileDialog.ShowDialog() == DialogResult.OK)
             {
                 application_to_watch.Text = m_FileDialog.FileName;
@@ -313,6 +331,9 @@ namespace phoenix
 
         private void crash_script_button_Click(object sender, EventArgs e)
         {
+            m_FileDialog.Filter = string.Empty;
+            m_FileDialog.Title = "Select crash script";
+
             if (m_FileDialog.ShowDialog() == DialogResult.OK)
             {
                 script_to_execute_on_crash.Text = m_FileDialog.FileName;
@@ -399,6 +420,53 @@ namespace phoenix
             }
 
             base.WndProc(ref m);
+        }
+
+        private void working_directory_TextChanged(object sender, EventArgs e)
+        {
+            working_directory.Text =
+                ProcessRunner.CleanStringAsPath(working_directory.Text);
+
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Local.WorkingDirectory),
+                Helpers.GetPropertyName(() => Defaults.Local.WorkingDirectory),
+                (sender as TextBox).Text);
+
+            m_ProcessRunner.WorkingDirectory = working_directory.Text;
+        }
+
+        private void start_script_TextChanged(object sender, EventArgs e)
+        {
+            start_script.Text =
+                ProcessRunner.CleanStringAsPath(start_script.Text);
+
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Local.ScriptToExecuteOnStart),
+                Helpers.GetPropertyName(() => Defaults.Local.ScriptToExecuteOnStart),
+                (sender as TextBox).Text);
+
+            m_ProcessRunner.StartScript = start_script.Text;
+        }
+
+        private void working_directory_button_Click(object sender, EventArgs e)
+        {
+            m_FolderDialog.Description = "Select working directory";
+
+            if (m_FolderDialog.ShowDialog() == DialogResult.OK)
+            {
+                working_directory.Text = m_FolderDialog.SelectedPath;
+            }
+        }
+
+        private void start_script_button_Click(object sender, EventArgs e)
+        {
+            m_FileDialog.Filter = string.Empty;
+            m_FileDialog.Title = "Select start script";
+
+            if (m_FileDialog.ShowDialog() == DialogResult.OK)
+            {
+                start_script.Text = m_FileDialog.FileName;
+            }
         }
     }
 }

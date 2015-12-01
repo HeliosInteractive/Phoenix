@@ -685,6 +685,7 @@
             this.working_directory.Name = "working_directory";
             this.working_directory.Size = new System.Drawing.Size(221, 20);
             this.working_directory.TabIndex = 3;
+            this.working_directory.TextChanged += new System.EventHandler(this.working_directory_TextChanged);
             // 
             // working_directory_button
             // 
@@ -694,6 +695,7 @@
             this.working_directory_button.TabIndex = 4;
             this.working_directory_button.Text = "...";
             this.working_directory_button.UseVisualStyleBackColor = true;
+            this.working_directory_button.Click += new System.EventHandler(this.working_directory_button_Click);
             // 
             // start_script_button
             // 
@@ -703,6 +705,7 @@
             this.start_script_button.TabIndex = 8;
             this.start_script_button.Text = "...";
             this.start_script_button.UseVisualStyleBackColor = true;
+            this.start_script_button.Click += new System.EventHandler(this.start_script_button_Click);
             // 
             // start_script
             // 
@@ -710,6 +713,7 @@
             this.start_script.Name = "start_script";
             this.start_script.Size = new System.Drawing.Size(221, 20);
             this.start_script.TabIndex = 7;
+            this.start_script.TextChanged += new System.EventHandler(this.start_script_TextChanged);
             // 
             // start_script_label
             // 
