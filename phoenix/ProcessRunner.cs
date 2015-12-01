@@ -445,6 +445,7 @@ namespace phoenix
             {
                 process.StartInfo = process_info;
                 process.Start();
+                process.WaitForExit();
             }
         }
         
