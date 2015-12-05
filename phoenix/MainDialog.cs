@@ -45,6 +45,9 @@ namespace phoenix
             HotkeyManager.Register(Handle);
 
             ValidateAndStartMonitoring();
+
+            if (!RsyncClient.ClientExtracted)
+                RsyncClient.Extract();
         }
 
         private void ResetWatchButtonLabel()
