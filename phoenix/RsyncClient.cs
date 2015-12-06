@@ -41,10 +41,27 @@ namespace phoenix
             get
             {
                 bool keys_exist =
-                    File.Exists(string.Format("{0}{1}", ClientDirectory, Environment.MachineName)) &&
-                    File.Exists(string.Format("{0}{1}.pub", ClientDirectory, Environment.MachineName));
+                    File.Exists(string.Format("{0}{1}", ClientDirectory, MachineIdentity)) &&
+                    File.Exists(string.Format("{0}{1}.pub", ClientDirectory, MachineIdentity));
 
                 return keys_exist;
+            }
+        }
+        static string MachineIdentity
+        {
+            get
+            {
+                string machine_name = Environment.MachineName;
+
+                foreach (var c in Path.GetInvalidPathChars())
+                    machine_name = machine_name.Replace(c.ToString(), string.Empty);
+
+                foreach (var c in Path.GetInvalidFileNameChars())
+                    machine_name = machine_name.Replace(c.ToString(), string.Empty);
+
+                machine_name.Replace(' ', '_');
+
+                return machine_name.Trim();
             }
         }
         public static void Extract()
@@ -78,7 +95,7 @@ namespace phoenix
                 Extract();
 
             ProcessStartInfo process_info = new ProcessStartInfo();
-            process_info.Arguments = string.Format("-q -t rsa -f '{0}' -N ''", Environment.MachineName);
+            process_info.Arguments = string.Format("-q -t rsa -f '{0}' -N ''", MachineIdentity);
             process_info.FileName = string.Format("{0}ssh-keygen.exe", ClientDirectory);
             process_info.WorkingDirectory = ClientDirectory;
             process_info.UseShellExecute = false;
@@ -115,7 +132,7 @@ namespace phoenix
             start_info.Arguments = string.Format(
                 "-ravz -e \"ssh -p {0} -i '{1}' -o StrictHostKeyChecking=no\" {2}@{3}:{4} {5}",
                 port,
-                Environment.MachineName,
+                MachineIdentity,
                 username,
                 address,
                 remote,
@@ -129,7 +146,6 @@ namespace phoenix
                 rsync_process.StartInfo = start_info;
                 rsync_process.OutputDataReceived += new DataReceivedEventHandler((sender, e) =>
                 {
-                    // Prepend line numbers to each line of the output.
                     if (!String.IsNullOrEmpty(e.Data))
                     {
                         Debug.WriteLine(e.Data);
@@ -137,7 +153,6 @@ namespace phoenix
                 });
                 rsync_process.ErrorDataReceived += new DataReceivedEventHandler((sender, e) =>
                 {
-                    // Prepend line numbers to each line of the output.
                     if (!String.IsNullOrEmpty(e.Data))
                     {
                         Debug.WriteLine(e.Data);
