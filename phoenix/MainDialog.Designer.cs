@@ -456,6 +456,7 @@
             this.local_directory.Name = "local_directory";
             this.local_directory.Size = new System.Drawing.Size(173, 20);
             this.local_directory.TabIndex = 8;
+            this.local_directory.TextChanged += new System.EventHandler(this.local_directory_TextChanged);
             // 
             // remote_directory
             // 
@@ -463,6 +464,7 @@
             this.remote_directory.Name = "remote_directory";
             this.remote_directory.Size = new System.Drawing.Size(173, 20);
             this.remote_directory.TabIndex = 7;
+            this.remote_directory.TextChanged += new System.EventHandler(this.remote_directory_TextChanged);
             // 
             // local_directory_label
             // 
@@ -581,6 +583,7 @@
             this.rsync_server_password.Name = "rsync_server_password";
             this.rsync_server_password.Size = new System.Drawing.Size(81, 20);
             this.rsync_server_password.TabIndex = 6;
+            this.rsync_server_password.TextChanged += new System.EventHandler(this.rsync_server_password_TextChanged);
             // 
             // rsync_server_username
             // 
@@ -588,6 +591,7 @@
             this.rsync_server_username.Name = "rsync_server_username";
             this.rsync_server_username.Size = new System.Drawing.Size(81, 20);
             this.rsync_server_username.TabIndex = 5;
+            this.rsync_server_username.TextChanged += new System.EventHandler(this.rsync_server_username_TextChanged);
             // 
             // rabbitmq_server_password
             // 
@@ -595,6 +599,7 @@
             this.rabbitmq_server_password.Name = "rabbitmq_server_password";
             this.rabbitmq_server_password.Size = new System.Drawing.Size(81, 20);
             this.rabbitmq_server_password.TabIndex = 3;
+            this.rabbitmq_server_password.TextChanged += new System.EventHandler(this.rabbitmq_server_password_TextChanged);
             // 
             // rabbitmq_server_username
             // 
@@ -602,6 +607,7 @@
             this.rabbitmq_server_username.Name = "rabbitmq_server_username";
             this.rabbitmq_server_username.Size = new System.Drawing.Size(81, 20);
             this.rabbitmq_server_username.TabIndex = 2;
+            this.rabbitmq_server_username.TextChanged += new System.EventHandler(this.rabbitmq_server_username_TextChanged);
             // 
             // rsync_server_address
             // 
@@ -609,6 +615,7 @@
             this.rsync_server_address.Name = "rsync_server_address";
             this.rsync_server_address.Size = new System.Drawing.Size(173, 20);
             this.rsync_server_address.TabIndex = 4;
+            this.rsync_server_address.TextChanged += new System.EventHandler(this.rsync_server_address_TextChanged);
             // 
             // rsync_server_address_label
             // 
@@ -625,6 +632,7 @@
             this.rabbitmq_server_address.Name = "rabbitmq_server_address";
             this.rabbitmq_server_address.Size = new System.Drawing.Size(173, 20);
             this.rabbitmq_server_address.TabIndex = 1;
+            this.rabbitmq_server_address.TextChanged += new System.EventHandler(this.rabbitmq_server_address_TextChanged);
             // 
             // rabbitmq_server_address_label
             // 

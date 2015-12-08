@@ -451,5 +451,69 @@ namespace phoenix
             RsyncClient.RegenerateKey();
             UpdateKeyPair();
         }
+
+        private void rabbitmq_server_address_TextChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Remote.RabbitMQServerAddress),
+                Helpers.GetPropertyName(() => Defaults.Remote.RabbitMQServerAddress),
+                (sender as TextBox).Text);
+        }
+
+        private void rabbitmq_server_username_TextChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Remote.RabbitMQServerUsername),
+                Helpers.GetPropertyName(() => Defaults.Remote.RabbitMQServerUsername),
+                (sender as TextBox).Text);
+        }
+
+        private void rabbitmq_server_password_TextChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Remote.RabbitMQServerPassword),
+                Helpers.GetPropertyName(() => Defaults.Remote.RabbitMQServerPassword),
+                (sender as TextBox).Text);
+        }
+
+        private void rsync_server_address_TextChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Remote.RSyncServerAddress),
+                Helpers.GetPropertyName(() => Defaults.Remote.RSyncServerAddress),
+                (sender as TextBox).Text);
+        }
+
+        private void rsync_server_username_TextChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Remote.RSyncServerUsername),
+                Helpers.GetPropertyName(() => Defaults.Remote.RSyncServerUsername),
+                (sender as TextBox).Text);
+        }
+
+        private void rsync_server_password_TextChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Remote.RSyncServerPassword),
+                Helpers.GetPropertyName(() => Defaults.Remote.RSyncServerPassword),
+                (sender as TextBox).Text);
+        }
+
+        private void remote_directory_TextChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Remote.RemoteDirectory),
+                Helpers.GetPropertyName(() => Defaults.Remote.RemoteDirectory),
+                (sender as TextBox).Text);
+        }
+
+        private void local_directory_TextChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Remote.LocalDirectory),
+                Helpers.GetPropertyName(() => Defaults.Remote.LocalDirectory),
+                (sender as TextBox).Text);
+        }
     }
 }
