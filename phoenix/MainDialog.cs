@@ -280,28 +280,6 @@ namespace phoenix
             }
         }
 
-        private void app_path_button_Click(object sender, EventArgs e)
-        {
-            m_FileDialog.Filter = "Windows Executable (*.exe)|*.exe";
-            m_FileDialog.Title = "Select application to watch";
-
-            if (m_FileDialog.ShowDialog() == DialogResult.OK)
-            {
-                application_to_watch.Text = m_FileDialog.FileName;
-            }
-        }
-
-        private void crash_script_button_Click(object sender, EventArgs e)
-        {
-            m_FileDialog.Filter = string.Empty;
-            m_FileDialog.Title = "Select crash script";
-
-            if (m_FileDialog.ShowDialog() == DialogResult.OK)
-            {
-                script_to_execute_on_crash.Text = m_FileDialog.FileName;
-            }
-        }
-
         private void process_monitor_timer_Tick(object sender, EventArgs e)
         {
             if (!m_PauseMonitor)
@@ -410,7 +388,18 @@ namespace phoenix
             m_ProcessRunner.StartScript = start_script.Text;
         }
 
-        private void working_directory_button_Click(object sender, EventArgs e)
+        private void application_to_watch_DoubleClick(object sender, EventArgs e)
+        {
+            m_FileDialog.Filter = "Windows Executable (*.exe)|*.exe";
+            m_FileDialog.Title = "Select application to watch";
+
+            if (m_FileDialog.ShowDialog() == DialogResult.OK)
+            {
+                application_to_watch.Text = m_FileDialog.FileName;
+            }
+        }
+
+        private void working_directory_DoubleClick(object sender, EventArgs e)
         {
             m_FolderDialog.Description = "Select working directory";
 
@@ -420,7 +409,18 @@ namespace phoenix
             }
         }
 
-        private void start_script_button_Click(object sender, EventArgs e)
+        private void script_to_execute_on_crash_DoubleClick(object sender, EventArgs e)
+        {
+            m_FileDialog.Filter = string.Empty;
+            m_FileDialog.Title = "Select crash script";
+
+            if (m_FileDialog.ShowDialog() == DialogResult.OK)
+            {
+                script_to_execute_on_crash.Text = m_FileDialog.FileName;
+            }
+        }
+
+        private void start_script_DoubleClick(object sender, EventArgs e)
         {
             m_FileDialog.Filter = string.Empty;
             m_FileDialog.Title = "Select start script";
