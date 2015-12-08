@@ -66,40 +66,41 @@
             this.app_path_label = new System.Windows.Forms.Label();
             this.application_to_watch = new System.Windows.Forms.TextBox();
             this.remote_tab = new System.Windows.Forms.TabPage();
-            this.receive_anonymous_updates = new System.Windows.Forms.CheckBox();
-            this.release_button = new System.Windows.Forms.Button();
-            this.password = new System.Windows.Forms.TextBox();
-            this.password_label = new System.Windows.Forms.Label();
-            this.username = new System.Windows.Forms.TextBox();
-            this.username_label = new System.Windows.Forms.Label();
-            this.update_location_button = new System.Windows.Forms.Button();
-            this.update_package_location = new System.Windows.Forms.TextBox();
-            this.update_location_label = new System.Windows.Forms.Label();
-            this.update_hash = new System.Windows.Forms.TextBox();
-            this.update_hash_label = new System.Windows.Forms.Label();
-            this.update_save_button = new System.Windows.Forms.Button();
-            this.update_password = new System.Windows.Forms.TextBox();
-            this.update_password_label = new System.Windows.Forms.Label();
-            this.update_channel = new System.Windows.Forms.TextBox();
-            this.update_channel_label = new System.Windows.Forms.Label();
-            this.update_server_address = new System.Windows.Forms.TextBox();
-            this.update_server_label = new System.Windows.Forms.Label();
+            this.rsync_server_address = new System.Windows.Forms.TextBox();
+            this.rsync_server_address_label = new System.Windows.Forms.Label();
+            this.rabbitmq_server_address = new System.Windows.Forms.TextBox();
+            this.rabbitmq_server_address_label = new System.Windows.Forms.Label();
             this.log = new System.Windows.Forms.TabPage();
             this.log_box = new System.Windows.Forms.RichTextBox();
-            this.about_tab = new System.Windows.Forms.TabPage();
-            this.about_text_box = new System.Windows.Forms.RichTextBox();
             this.process_monitor_timer = new System.Windows.Forms.Timer(this.components);
             this.notify_icon = new System.Windows.Forms.NotifyIcon(this.components);
             this.context_menu_strip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toggleUIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitPhoenixToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rabbitmq_server_username = new System.Windows.Forms.TextBox();
+            this.rabbitmq_server_password = new System.Windows.Forms.TextBox();
+            this.rsync_server_password = new System.Windows.Forms.TextBox();
+            this.rsync_server_username = new System.Windows.Forms.TextBox();
+            this.rabbitmq_server_username_label = new System.Windows.Forms.Label();
+            this.rabbitmq_server_password_label = new System.Windows.Forms.Label();
+            this.rsync_server_password_label = new System.Windows.Forms.Label();
+            this.rsync_server_username_label = new System.Windows.Forms.Label();
+            this.public_key = new System.Windows.Forms.RichTextBox();
+            this.private_key = new System.Windows.Forms.RichTextBox();
+            this.public_key_label = new System.Windows.Forms.Label();
+            this.private_key_label = new System.Windows.Forms.Label();
+            this.generate_new_keys = new System.Windows.Forms.Button();
+            this.pull_update = new System.Windows.Forms.Button();
+            this.remote_directory_label = new System.Windows.Forms.Label();
+            this.local_directory_label = new System.Windows.Forms.Label();
+            this.remote_directory = new System.Windows.Forms.TextBox();
+            this.local_directory = new System.Windows.Forms.TextBox();
             this.main_tab.SuspendLayout();
             this.tab_local.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.memory_chart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cpu_chart)).BeginInit();
             this.remote_tab.SuspendLayout();
             this.log.SuspendLayout();
-            this.about_tab.SuspendLayout();
             this.context_menu_strip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -108,7 +109,6 @@
             this.main_tab.Controls.Add(this.tab_local);
             this.main_tab.Controls.Add(this.remote_tab);
             this.main_tab.Controls.Add(this.log);
-            this.main_tab.Controls.Add(this.about_tab);
             this.main_tab.Dock = System.Windows.Forms.DockStyle.Fill;
             this.main_tab.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.main_tab.Location = new System.Drawing.Point(0, 0);
@@ -464,24 +464,28 @@
             // 
             // remote_tab
             // 
-            this.remote_tab.Controls.Add(this.receive_anonymous_updates);
-            this.remote_tab.Controls.Add(this.release_button);
-            this.remote_tab.Controls.Add(this.password);
-            this.remote_tab.Controls.Add(this.password_label);
-            this.remote_tab.Controls.Add(this.username);
-            this.remote_tab.Controls.Add(this.username_label);
-            this.remote_tab.Controls.Add(this.update_location_button);
-            this.remote_tab.Controls.Add(this.update_package_location);
-            this.remote_tab.Controls.Add(this.update_location_label);
-            this.remote_tab.Controls.Add(this.update_hash);
-            this.remote_tab.Controls.Add(this.update_hash_label);
-            this.remote_tab.Controls.Add(this.update_save_button);
-            this.remote_tab.Controls.Add(this.update_password);
-            this.remote_tab.Controls.Add(this.update_password_label);
-            this.remote_tab.Controls.Add(this.update_channel);
-            this.remote_tab.Controls.Add(this.update_channel_label);
-            this.remote_tab.Controls.Add(this.update_server_address);
-            this.remote_tab.Controls.Add(this.update_server_label);
+            this.remote_tab.Controls.Add(this.local_directory);
+            this.remote_tab.Controls.Add(this.remote_directory);
+            this.remote_tab.Controls.Add(this.local_directory_label);
+            this.remote_tab.Controls.Add(this.remote_directory_label);
+            this.remote_tab.Controls.Add(this.pull_update);
+            this.remote_tab.Controls.Add(this.generate_new_keys);
+            this.remote_tab.Controls.Add(this.private_key_label);
+            this.remote_tab.Controls.Add(this.public_key_label);
+            this.remote_tab.Controls.Add(this.private_key);
+            this.remote_tab.Controls.Add(this.public_key);
+            this.remote_tab.Controls.Add(this.rsync_server_password_label);
+            this.remote_tab.Controls.Add(this.rsync_server_username_label);
+            this.remote_tab.Controls.Add(this.rabbitmq_server_password_label);
+            this.remote_tab.Controls.Add(this.rabbitmq_server_username_label);
+            this.remote_tab.Controls.Add(this.rsync_server_password);
+            this.remote_tab.Controls.Add(this.rsync_server_username);
+            this.remote_tab.Controls.Add(this.rabbitmq_server_password);
+            this.remote_tab.Controls.Add(this.rabbitmq_server_username);
+            this.remote_tab.Controls.Add(this.rsync_server_address);
+            this.remote_tab.Controls.Add(this.rsync_server_address_label);
+            this.remote_tab.Controls.Add(this.rabbitmq_server_address);
+            this.remote_tab.Controls.Add(this.rabbitmq_server_address_label);
             this.remote_tab.Location = new System.Drawing.Point(4, 22);
             this.remote_tab.Name = "remote_tab";
             this.remote_tab.Padding = new System.Windows.Forms.Padding(3);
@@ -490,164 +494,37 @@
             this.remote_tab.Text = "Remote";
             this.remote_tab.UseVisualStyleBackColor = true;
             // 
-            // receive_anonymous_updates
+            // rsync_server_address
             // 
-            this.receive_anonymous_updates.AutoSize = true;
-            this.receive_anonymous_updates.Location = new System.Drawing.Point(104, 109);
-            this.receive_anonymous_updates.Name = "receive_anonymous_updates";
-            this.receive_anonymous_updates.Size = new System.Drawing.Size(165, 17);
-            this.receive_anonymous_updates.TabIndex = 4;
-            this.receive_anonymous_updates.Text = "receive anonymous updates?";
-            this.receive_anonymous_updates.UseVisualStyleBackColor = true;
-            this.receive_anonymous_updates.CheckedChanged += new System.EventHandler(this.receive_anonymous_updates_CheckedChanged);
+            this.rsync_server_address.Location = new System.Drawing.Point(8, 80);
+            this.rsync_server_address.Name = "rsync_server_address";
+            this.rsync_server_address.Size = new System.Drawing.Size(173, 20);
+            this.rsync_server_address.TabIndex = 4;
             // 
-            // release_button
+            // rsync_server_address_label
             // 
-            this.release_button.Location = new System.Drawing.Point(255, 278);
-            this.release_button.Name = "release_button";
-            this.release_button.Size = new System.Drawing.Size(112, 24);
-            this.release_button.TabIndex = 11;
-            this.release_button.Text = "Release update";
-            this.release_button.UseVisualStyleBackColor = true;
+            this.rsync_server_address_label.AutoSize = true;
+            this.rsync_server_address_label.Location = new System.Drawing.Point(8, 60);
+            this.rsync_server_address_label.Name = "rsync_server_address_label";
+            this.rsync_server_address_label.Size = new System.Drawing.Size(114, 13);
+            this.rsync_server_address_label.TabIndex = 4;
+            this.rsync_server_address_label.Text = "RSync server address:";
             // 
-            // password
+            // rabbitmq_server_address
             // 
-            this.password.Location = new System.Drawing.Point(132, 280);
-            this.password.Name = "password";
-            this.password.Size = new System.Drawing.Size(112, 20);
-            this.password.TabIndex = 10;
-            this.password.UseSystemPasswordChar = true;
+            this.rabbitmq_server_address.Location = new System.Drawing.Point(8, 30);
+            this.rabbitmq_server_address.Name = "rabbitmq_server_address";
+            this.rabbitmq_server_address.Size = new System.Drawing.Size(173, 20);
+            this.rabbitmq_server_address.TabIndex = 1;
             // 
-            // password_label
+            // rabbitmq_server_address_label
             // 
-            this.password_label.AutoSize = true;
-            this.password_label.Location = new System.Drawing.Point(132, 260);
-            this.password_label.Name = "password_label";
-            this.password_label.Size = new System.Drawing.Size(56, 13);
-            this.password_label.TabIndex = 17;
-            this.password_label.Text = "Password:";
-            // 
-            // username
-            // 
-            this.username.Location = new System.Drawing.Point(8, 280);
-            this.username.Name = "username";
-            this.username.Size = new System.Drawing.Size(112, 20);
-            this.username.TabIndex = 9;
-            this.username.TextChanged += new System.EventHandler(this.username_TextChanged);
-            // 
-            // username_label
-            // 
-            this.username_label.AutoSize = true;
-            this.username_label.Location = new System.Drawing.Point(8, 260);
-            this.username_label.Name = "username_label";
-            this.username_label.Size = new System.Drawing.Size(58, 13);
-            this.username_label.TabIndex = 15;
-            this.username_label.Text = "Username:";
-            // 
-            // update_location_button
-            // 
-            this.update_location_button.Location = new System.Drawing.Point(337, 228);
-            this.update_location_button.Name = "update_location_button";
-            this.update_location_button.Size = new System.Drawing.Size(30, 24);
-            this.update_location_button.TabIndex = 8;
-            this.update_location_button.Text = "...";
-            this.update_location_button.UseVisualStyleBackColor = true;
-            // 
-            // update_package_location
-            // 
-            this.update_package_location.Location = new System.Drawing.Point(8, 230);
-            this.update_package_location.Name = "update_package_location";
-            this.update_package_location.Size = new System.Drawing.Size(319, 20);
-            this.update_package_location.TabIndex = 7;
-            // 
-            // update_location_label
-            // 
-            this.update_location_label.AutoSize = true;
-            this.update_location_label.Location = new System.Drawing.Point(8, 210);
-            this.update_location_label.Name = "update_location_label";
-            this.update_location_label.Size = new System.Drawing.Size(130, 13);
-            this.update_location_label.TabIndex = 11;
-            this.update_location_label.Text = "Update package location:";
-            // 
-            // update_hash
-            // 
-            this.update_hash.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.update_hash.Location = new System.Drawing.Point(8, 180);
-            this.update_hash.Name = "update_hash";
-            this.update_hash.ReadOnly = true;
-            this.update_hash.Size = new System.Drawing.Size(358, 22);
-            this.update_hash.TabIndex = 6;
-            this.update_hash.Text = "b3d97746dbb45e92dc083db205e1fd14";
-            this.update_hash.TextChanged += new System.EventHandler(this.update_hash_TextChanged);
-            // 
-            // update_hash_label
-            // 
-            this.update_hash_label.AutoSize = true;
-            this.update_hash_label.Location = new System.Drawing.Point(8, 160);
-            this.update_hash_label.Name = "update_hash_label";
-            this.update_hash_label.Size = new System.Drawing.Size(71, 13);
-            this.update_hash_label.TabIndex = 9;
-            this.update_hash_label.Text = "Update hash:";
-            // 
-            // update_save_button
-            // 
-            this.update_save_button.Location = new System.Drawing.Point(314, 128);
-            this.update_save_button.Name = "update_save_button";
-            this.update_save_button.Size = new System.Drawing.Size(53, 24);
-            this.update_save_button.TabIndex = 5;
-            this.update_save_button.Text = "Save";
-            this.update_save_button.UseVisualStyleBackColor = true;
-            // 
-            // update_password
-            // 
-            this.update_password.Location = new System.Drawing.Point(8, 130);
-            this.update_password.Name = "update_password";
-            this.update_password.Size = new System.Drawing.Size(296, 20);
-            this.update_password.TabIndex = 3;
-            this.update_password.UseSystemPasswordChar = true;
-            // 
-            // update_password_label
-            // 
-            this.update_password_label.AutoSize = true;
-            this.update_password_label.Location = new System.Drawing.Point(8, 110);
-            this.update_password_label.Name = "update_password_label";
-            this.update_password_label.Size = new System.Drawing.Size(267, 13);
-            this.update_password_label.TabIndex = 6;
-            this.update_password_label.Text = "Update password (                                                        )";
-            // 
-            // update_channel
-            // 
-            this.update_channel.Location = new System.Drawing.Point(8, 80);
-            this.update_channel.Name = "update_channel";
-            this.update_channel.Size = new System.Drawing.Size(358, 20);
-            this.update_channel.TabIndex = 2;
-            this.update_channel.TextChanged += new System.EventHandler(this.update_channel_TextChanged);
-            // 
-            // update_channel_label
-            // 
-            this.update_channel_label.AutoSize = true;
-            this.update_channel_label.Location = new System.Drawing.Point(8, 60);
-            this.update_channel_label.Name = "update_channel_label";
-            this.update_channel_label.Size = new System.Drawing.Size(86, 13);
-            this.update_channel_label.TabIndex = 4;
-            this.update_channel_label.Text = "Update channel:";
-            // 
-            // update_server_address
-            // 
-            this.update_server_address.Location = new System.Drawing.Point(8, 30);
-            this.update_server_address.Name = "update_server_address";
-            this.update_server_address.Size = new System.Drawing.Size(358, 20);
-            this.update_server_address.TabIndex = 1;
-            this.update_server_address.TextChanged += new System.EventHandler(this.update_server_address_TextChanged);
-            // 
-            // update_server_label
-            // 
-            this.update_server_label.AutoSize = true;
-            this.update_server_label.Location = new System.Drawing.Point(8, 10);
-            this.update_server_label.Name = "update_server_label";
-            this.update_server_label.Size = new System.Drawing.Size(117, 13);
-            this.update_server_label.TabIndex = 2;
-            this.update_server_label.Text = "Update server address:";
+            this.rabbitmq_server_address_label.AutoSize = true;
+            this.rabbitmq_server_address_label.Location = new System.Drawing.Point(8, 10);
+            this.rabbitmq_server_address_label.Name = "rabbitmq_server_address_label";
+            this.rabbitmq_server_address_label.Size = new System.Drawing.Size(130, 13);
+            this.rabbitmq_server_address_label.TabIndex = 2;
+            this.rabbitmq_server_address_label.Text = "RabbitMQ server address:";
             // 
             // log
             // 
@@ -669,28 +546,6 @@
             this.log_box.TabIndex = 0;
             this.log_box.Text = "";
             // 
-            // about_tab
-            // 
-            this.about_tab.Controls.Add(this.about_text_box);
-            this.about_tab.Location = new System.Drawing.Point(4, 22);
-            this.about_tab.Name = "about_tab";
-            this.about_tab.Padding = new System.Windows.Forms.Padding(3);
-            this.about_tab.Size = new System.Drawing.Size(376, 312);
-            this.about_tab.TabIndex = 3;
-            this.about_tab.Text = "About";
-            this.about_tab.UseVisualStyleBackColor = true;
-            // 
-            // about_text_box
-            // 
-            this.about_text_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.about_text_box.Location = new System.Drawing.Point(20, 20);
-            this.about_text_box.Margin = new System.Windows.Forms.Padding(0);
-            this.about_text_box.Name = "about_text_box";
-            this.about_text_box.Size = new System.Drawing.Size(335, 270);
-            this.about_text_box.TabIndex = 1;
-            this.about_text_box.Text = "Helios Phoenix Control Panel\nversion 0.1.0\n© 2015 Helios Interactive\nAll rights r" +
-    "eserved.";
-            // 
             // process_monitor_timer
             // 
             this.process_monitor_timer.Interval = 60;
@@ -708,21 +563,169 @@
             this.exitPhoenixToolStripMenuItem});
             this.context_menu_strip.Name = "context_menu_strip";
             this.context_menu_strip.ShowImageMargin = false;
-            this.context_menu_strip.Size = new System.Drawing.Size(159, 48);
+            this.context_menu_strip.Size = new System.Drawing.Size(157, 48);
             // 
             // toggleUIToolStripMenuItem
             // 
             this.toggleUIToolStripMenuItem.Name = "toggleUIToolStripMenuItem";
-            this.toggleUIToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.toggleUIToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.toggleUIToolStripMenuItem.Text = "Toggle UI (ALT+F11)";
             this.toggleUIToolStripMenuItem.Click += new System.EventHandler(this.toggleUIToolStripMenuItem_Click);
             // 
             // exitPhoenixToolStripMenuItem
             // 
             this.exitPhoenixToolStripMenuItem.Name = "exitPhoenixToolStripMenuItem";
-            this.exitPhoenixToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.exitPhoenixToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.exitPhoenixToolStripMenuItem.Text = "Exit Phoenix";
             this.exitPhoenixToolStripMenuItem.Click += new System.EventHandler(this.exitPhoenixToolStripMenuItem_Click);
+            // 
+            // rabbitmq_server_username
+            // 
+            this.rabbitmq_server_username.Location = new System.Drawing.Point(193, 30);
+            this.rabbitmq_server_username.Name = "rabbitmq_server_username";
+            this.rabbitmq_server_username.Size = new System.Drawing.Size(81, 20);
+            this.rabbitmq_server_username.TabIndex = 2;
+            // 
+            // rabbitmq_server_password
+            // 
+            this.rabbitmq_server_password.Location = new System.Drawing.Point(285, 30);
+            this.rabbitmq_server_password.Name = "rabbitmq_server_password";
+            this.rabbitmq_server_password.Size = new System.Drawing.Size(81, 20);
+            this.rabbitmq_server_password.TabIndex = 3;
+            // 
+            // rsync_server_password
+            // 
+            this.rsync_server_password.Location = new System.Drawing.Point(285, 80);
+            this.rsync_server_password.Name = "rsync_server_password";
+            this.rsync_server_password.Size = new System.Drawing.Size(81, 20);
+            this.rsync_server_password.TabIndex = 6;
+            // 
+            // rsync_server_username
+            // 
+            this.rsync_server_username.Location = new System.Drawing.Point(193, 80);
+            this.rsync_server_username.Name = "rsync_server_username";
+            this.rsync_server_username.Size = new System.Drawing.Size(81, 20);
+            this.rsync_server_username.TabIndex = 5;
+            // 
+            // rabbitmq_server_username_label
+            // 
+            this.rabbitmq_server_username_label.AutoSize = true;
+            this.rabbitmq_server_username_label.Location = new System.Drawing.Point(193, 10);
+            this.rabbitmq_server_username_label.Name = "rabbitmq_server_username_label";
+            this.rabbitmq_server_username_label.Size = new System.Drawing.Size(58, 13);
+            this.rabbitmq_server_username_label.TabIndex = 22;
+            this.rabbitmq_server_username_label.Text = "Username:";
+            // 
+            // rabbitmq_server_password_label
+            // 
+            this.rabbitmq_server_password_label.AutoSize = true;
+            this.rabbitmq_server_password_label.Location = new System.Drawing.Point(285, 10);
+            this.rabbitmq_server_password_label.Name = "rabbitmq_server_password_label";
+            this.rabbitmq_server_password_label.Size = new System.Drawing.Size(56, 13);
+            this.rabbitmq_server_password_label.TabIndex = 23;
+            this.rabbitmq_server_password_label.Text = "Password:";
+            // 
+            // rsync_server_password_label
+            // 
+            this.rsync_server_password_label.AutoSize = true;
+            this.rsync_server_password_label.Location = new System.Drawing.Point(285, 60);
+            this.rsync_server_password_label.Name = "rsync_server_password_label";
+            this.rsync_server_password_label.Size = new System.Drawing.Size(56, 13);
+            this.rsync_server_password_label.TabIndex = 25;
+            this.rsync_server_password_label.Text = "Password:";
+            // 
+            // rsync_server_username_label
+            // 
+            this.rsync_server_username_label.AutoSize = true;
+            this.rsync_server_username_label.Location = new System.Drawing.Point(193, 60);
+            this.rsync_server_username_label.Name = "rsync_server_username_label";
+            this.rsync_server_username_label.Size = new System.Drawing.Size(58, 13);
+            this.rsync_server_username_label.TabIndex = 24;
+            this.rsync_server_username_label.Text = "Username:";
+            // 
+            // public_key
+            // 
+            this.public_key.Location = new System.Drawing.Point(8, 180);
+            this.public_key.Name = "public_key";
+            this.public_key.Size = new System.Drawing.Size(173, 90);
+            this.public_key.TabIndex = 9;
+            this.public_key.Text = "";
+            // 
+            // private_key
+            // 
+            this.private_key.Location = new System.Drawing.Point(193, 180);
+            this.private_key.Name = "private_key";
+            this.private_key.Size = new System.Drawing.Size(173, 90);
+            this.private_key.TabIndex = 10;
+            this.private_key.Text = "";
+            // 
+            // public_key_label
+            // 
+            this.public_key_label.AutoSize = true;
+            this.public_key_label.Location = new System.Drawing.Point(8, 160);
+            this.public_key_label.Name = "public_key_label";
+            this.public_key_label.Size = new System.Drawing.Size(59, 13);
+            this.public_key_label.TabIndex = 28;
+            this.public_key_label.Text = "Public key:";
+            // 
+            // private_key_label
+            // 
+            this.private_key_label.AutoSize = true;
+            this.private_key_label.Location = new System.Drawing.Point(193, 160);
+            this.private_key_label.Name = "private_key_label";
+            this.private_key_label.Size = new System.Drawing.Size(63, 13);
+            this.private_key_label.TabIndex = 29;
+            this.private_key_label.Text = "Private key:";
+            // 
+            // generate_new_keys
+            // 
+            this.generate_new_keys.Location = new System.Drawing.Point(8, 280);
+            this.generate_new_keys.Name = "generate_new_keys";
+            this.generate_new_keys.Size = new System.Drawing.Size(173, 24);
+            this.generate_new_keys.TabIndex = 11;
+            this.generate_new_keys.Text = "Generate new key pair";
+            this.generate_new_keys.UseVisualStyleBackColor = true;
+            // 
+            // pull_update
+            // 
+            this.pull_update.Location = new System.Drawing.Point(192, 280);
+            this.pull_update.Name = "pull_update";
+            this.pull_update.Size = new System.Drawing.Size(173, 24);
+            this.pull_update.TabIndex = 12;
+            this.pull_update.Text = "Pull update manually";
+            this.pull_update.UseVisualStyleBackColor = true;
+            // 
+            // remote_directory_label
+            // 
+            this.remote_directory_label.AutoSize = true;
+            this.remote_directory_label.Location = new System.Drawing.Point(8, 110);
+            this.remote_directory_label.Name = "remote_directory_label";
+            this.remote_directory_label.Size = new System.Drawing.Size(90, 13);
+            this.remote_directory_label.TabIndex = 32;
+            this.remote_directory_label.Text = "Remote directory:";
+            // 
+            // local_directory_label
+            // 
+            this.local_directory_label.AutoSize = true;
+            this.local_directory_label.Location = new System.Drawing.Point(193, 110);
+            this.local_directory_label.Name = "local_directory_label";
+            this.local_directory_label.Size = new System.Drawing.Size(79, 13);
+            this.local_directory_label.TabIndex = 33;
+            this.local_directory_label.Text = "Local directory:";
+            // 
+            // remote_directory
+            // 
+            this.remote_directory.Location = new System.Drawing.Point(8, 130);
+            this.remote_directory.Name = "remote_directory";
+            this.remote_directory.Size = new System.Drawing.Size(173, 20);
+            this.remote_directory.TabIndex = 7;
+            // 
+            // local_directory
+            // 
+            this.local_directory.Location = new System.Drawing.Point(193, 130);
+            this.local_directory.Name = "local_directory";
+            this.local_directory.Size = new System.Drawing.Size(173, 20);
+            this.local_directory.TabIndex = 8;
             // 
             // MainDialog
             // 
@@ -749,7 +752,6 @@
             this.remote_tab.ResumeLayout(false);
             this.remote_tab.PerformLayout();
             this.log.ResumeLayout(false);
-            this.about_tab.ResumeLayout(false);
             this.context_menu_strip.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -760,7 +762,6 @@
         private System.Windows.Forms.TabControl main_tab;
         private System.Windows.Forms.TabPage tab_local;
         private System.Windows.Forms.TabPage remote_tab;
-        private System.Windows.Forms.TabPage about_tab;
         private System.Windows.Forms.TextBox application_to_watch;
         private System.Windows.Forms.Label app_path_label;
         private System.Windows.Forms.Label cmd_line_label;
@@ -772,26 +773,11 @@
         private System.Windows.Forms.Label crash_script_label;
         private System.Windows.Forms.Button app_path_button;
         private System.Windows.Forms.Button crash_script_button;
-        private System.Windows.Forms.Label update_server_label;
-        private System.Windows.Forms.TextBox update_server_address;
-        private System.Windows.Forms.Label update_channel_label;
-        private System.Windows.Forms.TextBox update_channel;
-        private System.Windows.Forms.Label update_password_label;
-        private System.Windows.Forms.TextBox update_password;
-        private System.Windows.Forms.Button update_save_button;
-        private System.Windows.Forms.Label update_hash_label;
-        private System.Windows.Forms.TextBox update_hash;
-        private System.Windows.Forms.Label update_location_label;
-        private System.Windows.Forms.Button update_location_button;
-        private System.Windows.Forms.TextBox update_package_location;
-        private System.Windows.Forms.Label username_label;
-        private System.Windows.Forms.TextBox username;
-        private System.Windows.Forms.TextBox password;
-        private System.Windows.Forms.Label password_label;
-        private System.Windows.Forms.Button release_button;
+        private System.Windows.Forms.Label rabbitmq_server_address_label;
+        private System.Windows.Forms.TextBox rabbitmq_server_address;
+        private System.Windows.Forms.Label rsync_server_address_label;
+        private System.Windows.Forms.TextBox rsync_server_address;
         private System.Windows.Forms.Button watch_button;
-        private System.Windows.Forms.CheckBox receive_anonymous_updates;
-        private System.Windows.Forms.RichTextBox about_text_box;
         private System.Windows.Forms.CheckBox enable_screenshot_on_crash;
         private System.Windows.Forms.TabPage log;
         private System.Windows.Forms.RichTextBox log_box;
@@ -813,6 +799,24 @@
         private System.Windows.Forms.Button start_script_button;
         private System.Windows.Forms.TextBox start_script;
         private System.Windows.Forms.Label start_script_label;
+        private System.Windows.Forms.TextBox rabbitmq_server_password;
+        private System.Windows.Forms.TextBox rabbitmq_server_username;
+        private System.Windows.Forms.TextBox rsync_server_password;
+        private System.Windows.Forms.TextBox rsync_server_username;
+        private System.Windows.Forms.Label rabbitmq_server_username_label;
+        private System.Windows.Forms.Label rabbitmq_server_password_label;
+        private System.Windows.Forms.Label rsync_server_password_label;
+        private System.Windows.Forms.Label rsync_server_username_label;
+        private System.Windows.Forms.RichTextBox public_key;
+        private System.Windows.Forms.RichTextBox private_key;
+        private System.Windows.Forms.Label public_key_label;
+        private System.Windows.Forms.Label private_key_label;
+        private System.Windows.Forms.Button generate_new_keys;
+        private System.Windows.Forms.Button pull_update;
+        private System.Windows.Forms.Label remote_directory_label;
+        private System.Windows.Forms.Label local_directory_label;
+        private System.Windows.Forms.TextBox remote_directory;
+        private System.Windows.Forms.TextBox local_directory;
     }
 }
 

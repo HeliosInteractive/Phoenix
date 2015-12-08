@@ -19,11 +19,7 @@
 
         public class Remote
         {
-            public static string UpdateServerAddress = "";
-            public static string UpdateChannel = "#app";
-            public static bool ReceiveAnonymousUpdates = false;
-            public static string UpdateHash = "-- no hash --";
-            public static string Username = "";
+            // TO DO
         }
     }
 }

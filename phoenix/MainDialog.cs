@@ -45,9 +45,6 @@ namespace phoenix
             HotkeyManager.Register(Handle);
 
             ValidateAndStartMonitoring();
-
-            if (!RsyncClient.ClientExtracted)
-                RsyncClient.Extract();
         }
 
         private void ResetWatchButtonLabel()
@@ -129,11 +126,7 @@ namespace phoenix
 
             section = "Remote";
 
-            update_server_address.Text              = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.UpdateServerAddress),       Defaults.Remote.UpdateServerAddress);
-            update_channel.Text                     = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.UpdateChannel),             Defaults.Remote.UpdateChannel);
-            receive_anonymous_updates.Checked       = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.ReceiveAnonymousUpdates),   Defaults.Remote.ReceiveAnonymousUpdates);
-            update_hash.Text                        = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.UpdateHash),                Defaults.Remote.UpdateHash);
-            username.Text                           = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.Username),                  Defaults.Remote.Username);
+            // TO DO
         }
 
         private void time_delay_before_launch_KeyPress(object sender, KeyPressEventArgs e)
@@ -224,46 +217,6 @@ namespace phoenix
                 (sender as TextBox).Text);
 
             m_ProcessRunner.CrashScript = script_to_execute_on_crash.Text;
-        }
-
-        private void update_server_address_TextChanged(object sender, EventArgs e)
-        {
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Remote.UpdateServerAddress),
-                Helpers.GetPropertyName(() => Defaults.Remote.UpdateServerAddress),
-                (sender as TextBox).Text);
-        }
-
-        private void update_channel_TextChanged(object sender, EventArgs e)
-        {
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Remote.UpdateChannel),
-                Helpers.GetPropertyName(() => Defaults.Remote.UpdateChannel),
-                (sender as TextBox).Text);
-        }
-
-        private void receive_anonymous_updates_CheckedChanged(object sender, EventArgs e)
-        {
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Remote.ReceiveAnonymousUpdates),
-                Helpers.GetPropertyName(() => Defaults.Remote.ReceiveAnonymousUpdates),
-                (sender as CheckBox).Checked);
-        }
-
-        private void update_hash_TextChanged(object sender, EventArgs e)
-        {
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Remote.UpdateHash),
-                Helpers.GetPropertyName(() => Defaults.Remote.UpdateHash),
-                (sender as TextBox).Text);
-        }
-
-        private void username_TextChanged(object sender, EventArgs e)
-        {
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Remote.Username),
-                Helpers.GetPropertyName(() => Defaults.Remote.Username),
-                (sender as TextBox).Text);
         }
 
         private void maximum_retries_KeyPress(object sender, KeyPressEventArgs e)
