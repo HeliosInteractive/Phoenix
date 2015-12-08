@@ -126,7 +126,13 @@ namespace phoenix
 
             section = "Remote";
 
-            // TO DO
+            UpdateKeyPair();
+        }
+
+        private void UpdateKeyPair()
+        {
+            public_key.Text = RsyncClient.PublicKey;
+            private_key.Text = RsyncClient.PrivateKey;
         }
 
         private void time_delay_before_launch_KeyPress(object sender, KeyPressEventArgs e)
@@ -429,6 +435,12 @@ namespace phoenix
             {
                 start_script.Text = m_FileDialog.FileName;
             }
+        }
+
+        private void generate_new_keys_Click(object sender, EventArgs e)
+        {
+            RsyncClient.RegenerateKey();
+            UpdateKeyPair();
         }
     }
 }

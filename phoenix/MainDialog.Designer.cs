@@ -499,6 +499,7 @@
             this.generate_new_keys.TabIndex = 11;
             this.generate_new_keys.Text = "Generate new key pair";
             this.generate_new_keys.UseVisualStyleBackColor = true;
+            this.generate_new_keys.Click += new System.EventHandler(this.generate_new_keys_Click);
             // 
             // private_key_label
             // 

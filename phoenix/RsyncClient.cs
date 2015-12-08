@@ -9,6 +9,8 @@ namespace phoenix
     {
         private static string s_ClientDirectory = string.Format("{0}phoenix{1}", Path.GetTempPath(), Path.DirectorySeparatorChar);
         private static string s_PackagePath     = string.Format("{0}rsync.zip", ClientDirectory);
+        private static string s_PrivateKeyPath  = string.Format("{0}{1}", ClientDirectory, MachineIdentity);
+        private static string s_PublicKeyPath   = string.Format("{0}{1}.pub", ClientDirectory, MachineIdentity);
 
         public static string ClientDirectory
         {
@@ -17,6 +19,28 @@ namespace phoenix
         public static string PackagePath
         {
             get { return s_PackagePath; }
+        }
+        public static string PrivateKey
+        {
+            get
+            {
+                if (!KeysExist)
+                    GenerateKey();
+
+                try { return File.ReadAllText(s_PrivateKeyPath); }
+                catch { return "Private Key cannot be read"; }
+            }
+        }
+        public static string PublicKey
+        {
+            get
+            {
+                if (!KeysExist)
+                    GenerateKey();
+
+                try { return File.ReadAllText(s_PublicKeyPath); }
+                catch { return "Public Key cannot be read"; }
+            }
         }
         public static bool ClientExtracted
         {
@@ -107,6 +131,17 @@ namespace phoenix
                 process.Start();
                 process.WaitForExit();
             }
+        }
+
+        public static void RegenerateKey()
+        {
+            if (KeysExist)
+            {
+                File.Delete(s_PublicKeyPath);
+                File.Delete(s_PrivateKeyPath);
+            }
+
+            GenerateKey();
         }
 
         public static void Execute(string remote, string local, string username, string address, short port)
