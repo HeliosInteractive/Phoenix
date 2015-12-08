@@ -126,6 +126,15 @@ namespace phoenix
 
             section = "Remote";
 
+            rabbitmq_server_address.Text            = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.RabbitMQServerAddress),     Defaults.Remote.RabbitMQServerAddress);
+            rabbitmq_server_username.Text           = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.RabbitMQServerUsername),    Defaults.Remote.RabbitMQServerUsername);
+            rabbitmq_server_password.Text           = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.RabbitMQServerPassword),    Defaults.Remote.RabbitMQServerPassword);
+            rsync_server_address.Text               = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.RSyncServerAddress),        Defaults.Remote.RSyncServerAddress);
+            rsync_server_username.Text              = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.RSyncServerUsername),       Defaults.Remote.RSyncServerUsername);
+            rsync_server_password.Text              = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.RSyncServerPassword),       Defaults.Remote.RSyncServerPassword);
+            remote_directory.Text                   = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.RemoteDirectory),           Defaults.Remote.RemoteDirectory);
+            local_directory.Text                    = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.LocalDirectory),            Defaults.Remote.LocalDirectory);
+
             UpdateKeyPair();
         }
 

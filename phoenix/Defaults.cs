@@ -19,7 +19,14 @@
 
         public class Remote
         {
-            // TO DO
+            public static string RabbitMQServerAddress = "";
+            public static string RabbitMQServerUsername = "";
+            public static string RabbitMQServerPassword = "";
+            public static string RSyncServerAddress = "";
+            public static string RSyncServerUsername = "";
+            public static string RSyncServerPassword = "";
+            public static string RemoteDirectory = "";
+            public static string LocalDirectory = "";
         }
     }
 }
