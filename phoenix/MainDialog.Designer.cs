@@ -520,6 +520,8 @@
             // 
             // private_key
             // 
+            this.private_key.DetectUrls = false;
+            this.private_key.Font = new System.Drawing.Font("Consolas", 8.25F);
             this.private_key.Location = new System.Drawing.Point(193, 180);
             this.private_key.Name = "private_key";
             this.private_key.Size = new System.Drawing.Size(173, 90);
@@ -528,6 +530,8 @@
             // 
             // public_key
             // 
+            this.public_key.DetectUrls = false;
+            this.public_key.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.public_key.Location = new System.Drawing.Point(8, 180);
             this.public_key.Name = "public_key";
             this.public_key.Size = new System.Drawing.Size(173, 90);
