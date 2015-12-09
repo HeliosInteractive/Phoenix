@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using System.Diagnostics;
 using System.IO.Compression;
 
@@ -8,17 +9,13 @@ namespace phoenix
     class RsyncClient
     {
         private static string s_ClientDirectory = string.Format("{0}phoenix{1}", Path.GetTempPath(), Path.DirectorySeparatorChar);
-        private static string s_PackagePath     = string.Format("{0}rsync.zip", ClientDirectory);
         private static string s_PrivateKeyPath  = string.Format("{0}{1}", ClientDirectory, MachineIdentity);
         private static string s_PublicKeyPath   = string.Format("{0}{1}.pub", ClientDirectory, MachineIdentity);
+        private static string s_ResourceUri     = "phoenix.Resources.rsync.zip";
 
         public static string ClientDirectory
         {
             get { return s_ClientDirectory; }
-        }
-        public static string PackagePath
-        {
-            get { return s_PackagePath; }
         }
         public static string PrivateKey
         {
@@ -93,13 +90,13 @@ namespace phoenix
             if (!Directory.Exists(ClientDirectory))
                 Directory.CreateDirectory(ClientDirectory);
 
-            if (!File.Exists(PackagePath))
-                File.WriteAllBytes(PackagePath, Properties.Resources.rsync);
-
             if (ClientExtracted)
                 return;
 
-            using (ZipArchive archive = ZipFile.OpenRead(PackagePath))
+            using (ZipArchive archive = new ZipArchive(
+                Assembly.
+                GetExecutingAssembly().
+                GetManifestResourceStream(s_ResourceUri)))
             {
                 foreach (ZipArchiveEntry entry in archive.Entries)
                 {
