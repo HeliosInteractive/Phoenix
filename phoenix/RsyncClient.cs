@@ -25,7 +25,7 @@ namespace phoenix
                     GenerateKey();
 
                 try { return File.ReadAllText(s_PrivateKeyPath); }
-                catch { return "Private Key cannot be read"; }
+                catch { return "Private Key cannot be read."; }
             }
         }
         public static string PublicKey
@@ -36,7 +36,7 @@ namespace phoenix
                     GenerateKey();
 
                 try { return File.ReadAllText(s_PublicKeyPath); }
-                catch { return "Public Key cannot be read"; }
+                catch { return "Public Key cannot be read."; }
             }
         }
         public static bool ClientExtracted
@@ -62,8 +62,8 @@ namespace phoenix
             get
             {
                 bool keys_exist =
-                    File.Exists(string.Format("{0}{1}", ClientDirectory, MachineIdentity)) &&
-                    File.Exists(string.Format("{0}{1}.pub", ClientDirectory, MachineIdentity));
+                    File.Exists(s_PublicKeyPath) &&
+                    File.Exists(s_PrivateKeyPath);
 
                 return keys_exist;
             }
