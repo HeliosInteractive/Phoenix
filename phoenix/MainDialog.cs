@@ -458,6 +458,8 @@ namespace phoenix
                 Helpers.GetClassName(() => Defaults.Remote.RabbitMQServerAddress),
                 Helpers.GetPropertyName(() => Defaults.Remote.RabbitMQServerAddress),
                 (sender as TextBox).Text);
+
+            ValidateAsServerAddress(sender);
         }
 
         private void rabbitmq_server_username_TextChanged(object sender, EventArgs e)
@@ -482,6 +484,8 @@ namespace phoenix
                 Helpers.GetClassName(() => Defaults.Remote.RSyncServerAddress),
                 Helpers.GetPropertyName(() => Defaults.Remote.RSyncServerAddress),
                 (sender as TextBox).Text);
+
+            ValidateAsServerAddress(sender);
         }
 
         private void rsync_server_username_TextChanged(object sender, EventArgs e)
@@ -514,6 +518,29 @@ namespace phoenix
                 Helpers.GetClassName(() => Defaults.Remote.LocalDirectory),
                 Helpers.GetPropertyName(() => Defaults.Remote.LocalDirectory),
                 (sender as TextBox).Text);
+        }
+
+        private bool ServerAdressValid(string address)
+        {
+            if (address == string.Empty) return false;
+            try
+            {
+                Uri uri = new Uri("dummy://" + address);
+                return uri.DnsSafeHost != string.Empty && uri.Port > 0;
+            }
+            catch { /* no-op */ }
+            return false;
+        }
+
+        private void ValidateAsServerAddress(object sender)
+        {
+            TextBox tb = (sender as TextBox);
+            if (tb == null) return;
+
+            if (!ServerAdressValid(tb.Text))
+                tb.BackColor = System.Drawing.Color.Salmon;
+            else
+                tb.BackColor = System.Drawing.Color.LightGreen;
         }
     }
 }

@@ -622,12 +622,13 @@
             this.rsync_server_address_label.AutoSize = true;
             this.rsync_server_address_label.Location = new System.Drawing.Point(8, 60);
             this.rsync_server_address_label.Name = "rsync_server_address_label";
-            this.rsync_server_address_label.Size = new System.Drawing.Size(114, 13);
+            this.rsync_server_address_label.Size = new System.Drawing.Size(156, 13);
             this.rsync_server_address_label.TabIndex = 4;
-            this.rsync_server_address_label.Text = "RSync server address:";
+            this.rsync_server_address_label.Text = "RSync server address and port:";
             // 
             // rabbitmq_server_address
             // 
+            this.rabbitmq_server_address.BackColor = System.Drawing.Color.LightGreen;
             this.rabbitmq_server_address.Location = new System.Drawing.Point(8, 30);
             this.rabbitmq_server_address.Name = "rabbitmq_server_address";
             this.rabbitmq_server_address.Size = new System.Drawing.Size(173, 20);
@@ -639,9 +640,9 @@
             this.rabbitmq_server_address_label.AutoSize = true;
             this.rabbitmq_server_address_label.Location = new System.Drawing.Point(8, 10);
             this.rabbitmq_server_address_label.Name = "rabbitmq_server_address_label";
-            this.rabbitmq_server_address_label.Size = new System.Drawing.Size(130, 13);
+            this.rabbitmq_server_address_label.Size = new System.Drawing.Size(172, 13);
             this.rabbitmq_server_address_label.TabIndex = 2;
-            this.rabbitmq_server_address_label.Text = "RabbitMQ server address:";
+            this.rabbitmq_server_address_label.Text = "RabbitMQ server address and port:";
             // 
             // log
             // 
