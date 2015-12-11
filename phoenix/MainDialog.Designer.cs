@@ -457,6 +457,7 @@
             this.local_directory.Size = new System.Drawing.Size(173, 20);
             this.local_directory.TabIndex = 8;
             this.local_directory.TextChanged += new System.EventHandler(this.local_directory_TextChanged);
+            this.local_directory.DoubleClick += new System.EventHandler(this.local_directory_DoubleClick);
             // 
             // remote_directory
             // 

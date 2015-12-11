@@ -506,6 +506,9 @@ namespace phoenix
 
         private void remote_directory_TextChanged(object sender, EventArgs e)
         {
+            remote_directory.Text =
+                ProcessRunner.CleanStringAsPath(remote_directory.Text);
+
             m_AppSettings.Store(
                 Helpers.GetClassName(() => Defaults.Remote.RemoteDirectory),
                 Helpers.GetPropertyName(() => Defaults.Remote.RemoteDirectory),
@@ -514,6 +517,9 @@ namespace phoenix
 
         private void local_directory_TextChanged(object sender, EventArgs e)
         {
+            local_directory.Text =
+                ProcessRunner.CleanStringAsPath(local_directory.Text);
+
             m_AppSettings.Store(
                 Helpers.GetClassName(() => Defaults.Remote.LocalDirectory),
                 Helpers.GetPropertyName(() => Defaults.Remote.LocalDirectory),
@@ -553,6 +559,16 @@ namespace phoenix
         {
             if (private_key.Text != RsyncClient.PrivateKey)
                 RsyncClient.PrivateKey = private_key.Text;
+        }
+
+        private void local_directory_DoubleClick(object sender, EventArgs e)
+        {
+            m_FolderDialog.Description = "Select local directory to synchronize";
+
+            if (m_FolderDialog.ShowDialog() == DialogResult.OK)
+            {
+                local_directory.Text = m_FolderDialog.SelectedPath;
+            }
         }
     }
 }
