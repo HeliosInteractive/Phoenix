@@ -530,6 +530,7 @@
             this.private_key.Size = new System.Drawing.Size(173, 90);
             this.private_key.TabIndex = 10;
             this.private_key.Text = "";
+            this.private_key.TextChanged += new System.EventHandler(this.private_key_TextChanged);
             // 
             // public_key
             // 
@@ -540,6 +541,7 @@
             this.public_key.Size = new System.Drawing.Size(173, 90);
             this.public_key.TabIndex = 9;
             this.public_key.Text = "";
+            this.public_key.TextChanged += new System.EventHandler(this.public_key_TextChanged);
             // 
             // rsync_server_password_label
             // 

@@ -542,5 +542,17 @@ namespace phoenix
             else
                 tb.BackColor = System.Drawing.Color.LightGreen;
         }
+
+        private void public_key_TextChanged(object sender, EventArgs e)
+        {
+            if (public_key.Text != RsyncClient.PublicKey)
+                RsyncClient.PublicKey = public_key.Text;
+        }
+
+        private void private_key_TextChanged(object sender, EventArgs e)
+        {
+            if (private_key.Text != RsyncClient.PrivateKey)
+                RsyncClient.PrivateKey = private_key.Text;
+        }
     }
 }

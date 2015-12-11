@@ -27,6 +27,12 @@ namespace phoenix
                 try { return File.ReadAllText(s_PrivateKeyPath); }
                 catch { return "Private Key cannot be read."; }
             }
+
+            set
+            {
+                try { File.WriteAllText(s_PrivateKeyPath, value); }
+                catch { /* no-op */ }
+            }
         }
         public static string PublicKey
         {
@@ -37,6 +43,12 @@ namespace phoenix
 
                 try { return File.ReadAllText(s_PublicKeyPath); }
                 catch { return "Public Key cannot be read."; }
+            }
+
+            set
+            {
+                try { File.WriteAllText(s_PublicKeyPath, value); }
+                catch { /* no-op */ }
             }
         }
         public static bool ClientExtracted
