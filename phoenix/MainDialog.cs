@@ -520,6 +520,9 @@ namespace phoenix
             local_directory.Text =
                 ProcessRunner.CleanStringAsPath(local_directory.Text);
 
+            local_directory.Text = 
+                RsyncClient.PathToCygwinPath(local_directory.Text);
+
             m_AppSettings.Store(
                 Helpers.GetClassName(() => Defaults.Remote.LocalDirectory),
                 Helpers.GetPropertyName(() => Defaults.Remote.LocalDirectory),

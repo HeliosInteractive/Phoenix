@@ -13,6 +13,17 @@ namespace phoenix
         private static string s_PublicKeyPath   = string.Format("{0}{1}.pub", ClientDirectory, MachineIdentity);
         private static string s_ResourceUri     = "phoenix.Resources.rsync.zip";
 
+        public static string PathToCygwinPath(string path)
+        {
+            if (path == string.Empty || path.StartsWith("cygdrive/")) return path;
+            if (Directory.Exists(path) && Path.IsPathRooted(path))
+            {
+                path = path.Replace("\\", "/");
+                path = path.Replace(":", string.Empty);
+                path = string.Format("cygdrive/{0}", path);
+            }
+            return path;
+        }
         public static string ClientDirectory
         {
             get { return s_ClientDirectory; }
