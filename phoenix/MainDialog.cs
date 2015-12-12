@@ -448,7 +448,7 @@ namespace phoenix
 
         private void generate_new_keys_Click(object sender, EventArgs e)
         {
-            RsyncClient.RegenerateKey();
+            RsyncClient.RegenerateKeys();
             UpdateKeyPair();
         }
 

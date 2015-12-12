@@ -9,8 +9,8 @@ namespace phoenix
     class RsyncClient
     {
         private static string s_ClientDirectory = string.Format("{0}phoenix{1}", Path.GetTempPath(), Path.DirectorySeparatorChar);
-        private static string s_PrivateKeyPath  = string.Format("{0}{1}", ClientDirectory, MachineIdentity);
-        private static string s_PublicKeyPath   = string.Format("{0}{1}.pub", ClientDirectory, MachineIdentity);
+        private static string s_PrivateKeyPath  = string.Format("{0}{1}", s_ClientDirectory, MachineIdentity);
+        private static string s_PublicKeyPath   = string.Format("{0}{1}.pub", s_ClientDirectory, MachineIdentity);
         private static string s_ResourceUri     = "phoenix.Resources.rsync.zip";
 
         public static string PathToCygwinPath(string path)
@@ -24,16 +24,12 @@ namespace phoenix
             }
             return path;
         }
-        public static string ClientDirectory
-        {
-            get { return s_ClientDirectory; }
-        }
         public static string PrivateKey
         {
             get
             {
                 if (!KeysExist)
-                    GenerateKey();
+                    GenerateKeys();
 
                 try { return File.ReadAllText(s_PrivateKeyPath); }
                 catch { return "Private Key cannot be read."; }
@@ -50,7 +46,7 @@ namespace phoenix
             get
             {
                 if (!KeysExist)
-                    GenerateKey();
+                    GenerateKeys();
 
                 try { return File.ReadAllText(s_PublicKeyPath); }
                 catch { return "Public Key cannot be read."; }
@@ -62,33 +58,29 @@ namespace phoenix
                 catch { /* no-op */ }
             }
         }
-        public static bool ClientExtracted
+        private static bool ClientExtracted
         {
             get
             {
-                bool files_exist =
-                    File.Exists(string.Format("{0}ssh.exe", ClientDirectory)) &&
-                    File.Exists(string.Format("{0}rsync.exe", ClientDirectory)) &&
-                    File.Exists(string.Format("{0}ssh-keygen.exe", ClientDirectory)) &&
-                    File.Exists(string.Format("{0}cygz.dll", ClientDirectory)) &&
-                    File.Exists(string.Format("{0}cygwin1.dll", ClientDirectory)) &&
-                    File.Exists(string.Format("{0}cygssp-0.dll", ClientDirectory)) &&
-                    File.Exists(string.Format("{0}cygiconv-2.dll", ClientDirectory)) &&
-                    File.Exists(string.Format("{0}cyggcc_s-1.dll", ClientDirectory)) &&
-                    File.Exists(string.Format("{0}cygcrypto-1.0.0.dll", ClientDirectory));
-
-                return files_exist;
+                return
+                    File.Exists(string.Format("{0}ssh.exe", s_ClientDirectory)) &&
+                    File.Exists(string.Format("{0}rsync.exe", s_ClientDirectory)) &&
+                    File.Exists(string.Format("{0}ssh-keygen.exe", s_ClientDirectory)) &&
+                    File.Exists(string.Format("{0}cygz.dll", s_ClientDirectory)) &&
+                    File.Exists(string.Format("{0}cygwin1.dll", s_ClientDirectory)) &&
+                    File.Exists(string.Format("{0}cygssp-0.dll", s_ClientDirectory)) &&
+                    File.Exists(string.Format("{0}cygiconv-2.dll", s_ClientDirectory)) &&
+                    File.Exists(string.Format("{0}cyggcc_s-1.dll", s_ClientDirectory)) &&
+                    File.Exists(string.Format("{0}cygcrypto-1.0.0.dll", s_ClientDirectory));
             }
         }
-        public static bool KeysExist
+        private static bool KeysExist
         {
             get
             {
-                bool keys_exist =
+                return
                     File.Exists(s_PublicKeyPath) &&
                     File.Exists(s_PrivateKeyPath);
-
-                return keys_exist;
             }
         }
         static string MachineIdentity
@@ -103,15 +95,15 @@ namespace phoenix
                 foreach (var c in Path.GetInvalidFileNameChars())
                     machine_name = machine_name.Replace(c.ToString(), string.Empty);
 
-                machine_name.Replace(' ', '_');
+                machine_name = machine_name.Replace(" ", "_");
 
                 return machine_name.Trim();
             }
         }
-        public static void Extract()
+        private static void ExtractClient()
         {
-            if (!Directory.Exists(ClientDirectory))
-                Directory.CreateDirectory(ClientDirectory);
+            if (!Directory.Exists(s_ClientDirectory))
+                Directory.CreateDirectory(s_ClientDirectory);
 
             if (ClientExtracted)
                 return;
@@ -123,7 +115,7 @@ namespace phoenix
             {
                 foreach (ZipArchiveEntry entry in archive.Entries)
                 {
-                    var extract_path = string.Format("{0}{1}", ClientDirectory, entry.Name);
+                    var extract_path = string.Format("{0}{1}", s_ClientDirectory, entry.Name);
                     
                     if (!File.Exists(extract_path))
                     {
@@ -133,15 +125,15 @@ namespace phoenix
             }
         }
 
-        public static void GenerateKey()
+        private static void GenerateKeys()
         {
             if (!ClientExtracted)
-                Extract();
+                ExtractClient();
 
             ProcessStartInfo process_info = new ProcessStartInfo();
             process_info.Arguments = string.Format("-q -t rsa -f '{0}' -N ''", MachineIdentity);
-            process_info.FileName = string.Format("{0}ssh-keygen.exe", ClientDirectory);
-            process_info.WorkingDirectory = ClientDirectory;
+            process_info.FileName = string.Format("{0}ssh-keygen.exe", s_ClientDirectory);
+            process_info.WorkingDirectory = s_ClientDirectory;
             process_info.UseShellExecute = false;
             process_info.CreateNoWindow = true;
 
@@ -153,7 +145,7 @@ namespace phoenix
             }
         }
 
-        public static void RegenerateKey()
+        public static void RegenerateKeys()
         {
             if (KeysExist)
             {
@@ -161,28 +153,28 @@ namespace phoenix
                 File.Delete(s_PrivateKeyPath);
             }
 
-            GenerateKey();
+            GenerateKeys();
         }
 
-        public static void Execute(string remote, string local, string username, string address, short port)
+        private static void Execute(string remote, string local, string username, string address, ushort port)
         {
             if (!ClientExtracted)
-                Extract();
+                ExtractClient();
 
             if (!KeysExist)
-                GenerateKey();
+                GenerateKeys();
 
             // Make sure we have an established home directory for SSH
-            string home_directory = string.Format("{0}home", ClientDirectory);
+            string home_directory = string.Format("{0}home", s_ClientDirectory);
 
             if (!Directory.Exists(home_directory))
                 Directory.CreateDirectory(home_directory);
 
             ProcessStartInfo start_info = new ProcessStartInfo();
-            start_info.FileName = string.Format("{0}rsync.exe", ClientDirectory);
+            start_info.FileName = string.Format("{0}rsync.exe", s_ClientDirectory);
             start_info.EnvironmentVariables["HOME"] = home_directory;
-            start_info.EnvironmentVariables["PATH"] = ClientDirectory;
-            start_info.WorkingDirectory = ClientDirectory;
+            start_info.EnvironmentVariables["PATH"] = s_ClientDirectory;
+            start_info.WorkingDirectory = s_ClientDirectory;
             start_info.UseShellExecute = false;
             start_info.Arguments = string.Format(
                 "-ravz -e \"ssh -p {0} -i '{1}' -o StrictHostKeyChecking=no\" {2}@{3}:{4} {5}",
