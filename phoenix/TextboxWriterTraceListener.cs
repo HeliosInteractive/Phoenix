@@ -16,6 +16,7 @@ namespace phoenix
 
         public override void Write(string message)
         {
+            if (logbox == null || logbox.IsDisposed) return;
             logbox.AppendText(message + Environment.NewLine);
         }
 
