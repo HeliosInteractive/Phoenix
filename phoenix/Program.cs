@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace phoenix
@@ -17,6 +14,7 @@ namespace phoenix
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainDialog());
+            System.Diagnostics.Trace.Flush();
         }
     }
 }

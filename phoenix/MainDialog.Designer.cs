@@ -663,6 +663,7 @@
             this.log_box.Dock = System.Windows.Forms.DockStyle.Fill;
             this.log_box.Location = new System.Drawing.Point(3, 3);
             this.log_box.Name = "log_box";
+            this.log_box.ReadOnly = true;
             this.log_box.Size = new System.Drawing.Size(370, 306);
             this.log_box.TabIndex = 0;
             this.log_box.Text = "";

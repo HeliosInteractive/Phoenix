@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
+using System.Diagnostics;
 using System.Windows.Forms;
 using System.Security.Cryptography;
 using System.Windows.Forms.DataVisualization.Charting;
@@ -21,12 +22,14 @@ namespace phoenix
 
         public MainDialog()
         {
+            InitializeComponent();
+            SetupTracer();
+
             m_AppSettings   = new IniSettings("phoenix.ini");
             m_ProcessRunner = new ProcessRunner();
             m_FileDialog    = new OpenFileDialog();
             m_FolderDialog  = new FolderBrowserDialog();
 
-            InitializeComponent();
             ApplySettings();
 
             m_MemoryUsageSeries = memory_chart.Series[0];
@@ -45,6 +48,15 @@ namespace phoenix
             HotkeyManager.Register(Handle);
 
             ValidateAndStartMonitoring();
+        }
+
+        private void SetupTracer()
+        {
+            Trace.Listeners.Add(new TextboxWriterTraceListener(log_box, "PhoenixTextboxLog"));
+            Trace.Listeners.Add(new TextWriterTraceListener("phoenix.log", "PhoneixFileLog"));
+            Trace.Listeners["PhoneixFileLog"].TraceOutputOptions |= TraceOptions.DateTime;
+
+            Trace.TraceInformation("Phoenix Tracer setup finished.");
         }
 
         private void ResetWatchButtonLabel()
