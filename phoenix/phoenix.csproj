@@ -55,6 +55,7 @@
     <Compile Include="Helpers.cs" />
     <Compile Include="HotkeyManager.cs" />
     <Compile Include="IniSettings.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="TextboxWriterTraceListener.cs" />
     <Compile Include="MainDialog.cs">
       <SubType>Form</SubType>
