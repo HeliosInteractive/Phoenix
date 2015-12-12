@@ -236,7 +236,6 @@
             chartArea2.AxisY.LineWidth = 0;
             chartArea2.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
             chartArea2.AxisY.MajorTickMark.Enabled = false;
-            chartArea2.AxisY.Maximum = 1D;
             chartArea2.AxisY.Minimum = 0D;
             chartArea2.BackColor = System.Drawing.Color.Snow;
             chartArea2.BorderWidth = 0;
