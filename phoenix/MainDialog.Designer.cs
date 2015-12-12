@@ -667,6 +667,7 @@
             this.log_box.Size = new System.Drawing.Size(370, 306);
             this.log_box.TabIndex = 0;
             this.log_box.Text = "";
+            this.log_box.WordWrap = false;
             // 
             // process_monitor_timer
             // 
