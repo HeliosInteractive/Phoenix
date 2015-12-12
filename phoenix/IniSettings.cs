@@ -31,6 +31,8 @@ namespace phoenix
             // Create an empty INI file if it does not exist.
             if (!File.Exists(m_Path))
                 File.Create(m_Path).Dispose();
+
+            Logger.Info(string.Format("path to settings files is: {0}", m_Path));
         }
 
         ~IniSettings()
@@ -47,7 +49,14 @@ namespace phoenix
         /// <param name="Value"></param>
         public void Write(string Section, string Key, string Value)
         {
-            NativeMethods.WritePrivateProfileString(Section, Key, Value, m_Path);
+            if (!NativeMethods.WritePrivateProfileString(Section, Key, Value, m_Path))
+            {
+                Logger.Error(string.Format(
+                    "Failed to write INI entry in section {0} with key {1} and value {2}",
+                    Section,
+                    Key,
+                    Value));
+            }
         }
 
         /// <summary>
@@ -93,7 +102,20 @@ namespace phoenix
                     return temp_val;
                 }
                 catch
-                { /* no-op */ }
+                {
+                    Logger.Warn(string.Format(
+                        "Failed to change INI entry type in section {0} and key {1}. Default value: {1}",
+                        Section,
+                        Key,
+                        DefaultValue));
+                }
+            }
+            else
+            {
+                Logger.Warn(string.Format(
+                    "Failed to read INI entry in section {0} and key {1} or entry is empty.",
+                    Section,
+                    Key));
             }
 
             Store(Section, Key, DefaultValue);
@@ -105,6 +127,8 @@ namespace phoenix
         /// </summary>
         public void SaveReadEntries()
         {
+            Logger.Info("Saving INI entries back to settings file.");
+
             foreach (var keys in m_Settings)
             {
                 var section = keys.Key;
