@@ -48,6 +48,8 @@ namespace phoenix
             HotkeyManager.Register(Handle);
 
             ValidateAndStartMonitoring();
+
+            Logger.Info("Phoenix is up and running.");
         }
 
         private void SetupTracer()
@@ -55,8 +57,6 @@ namespace phoenix
             Trace.Listeners.Add(new TextboxWriterTraceListener(log_box, "PhoenixTextboxLog"));
             Trace.Listeners.Add(new TextWriterTraceListener("phoenix.log", "PhoneixFileLog"));
             Trace.Listeners["PhoneixFileLog"].TraceOutputOptions |= TraceOptions.DateTime;
-
-            Trace.TraceInformation("Phoenix Tracer setup finished.");
         }
 
         private void ResetWatchButtonLabel()
