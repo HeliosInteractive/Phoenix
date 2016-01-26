@@ -24,5 +24,10 @@ namespace phoenix
         {
             Write(message);
         }
+
+        public override void TraceEvent(TraceEventCache eventCache, string source, TraceEventType eventType, int id, string message)
+        {
+            Write(message);
+        }
     }
 }
