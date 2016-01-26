@@ -19,6 +19,7 @@ namespace phoenix
         private Series              m_CpuUsageSeries;
         private Series              m_MemoryUsageSeries;
         static Mutex                m_SingleInstanceMutex;
+        private UpdateManager       m_UpdateManager;
 
         public MainDialog()
         {
@@ -29,6 +30,7 @@ namespace phoenix
             m_ProcessRunner = new ProcessRunner();
             m_FileDialog    = new OpenFileDialog();
             m_FolderDialog  = new FolderBrowserDialog();
+            m_UpdateManager = new UpdateManager("http://localhost/helios/feed.xml");
 
             ApplySettings();
 
