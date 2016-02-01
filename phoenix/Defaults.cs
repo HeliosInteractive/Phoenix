@@ -19,7 +19,7 @@
 
         public class Remote
         {
-            public static string MqttServerAddress = "test.mosquitto.org:1883";
+            public static string MqttServerAddress = "test.mosquitto.org";
             public static string RSyncServerAddress = "";
             public static string RSyncServerUsername = "";
             public static string RSyncServerPassword = "";

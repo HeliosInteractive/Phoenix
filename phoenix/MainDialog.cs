@@ -20,17 +20,24 @@ namespace phoenix
         private Series              m_MemoryUsageSeries;
         static Mutex                m_SingleInstanceMutex;
         private UpdateManager       m_UpdateManager;
+        private RemoteManager       m_RemoteManager;
 
         public MainDialog()
         {
             InitializeComponent();
             SetupTracer();
 
+            HandleCreated += MainDialog_HandleCreated;
+        }
+
+        private void MainDialog_HandleCreated(object sender, EventArgs e)
+        {
             m_AppSettings   = new IniSettings("phoenix.ini");
             m_ProcessRunner = new ProcessRunner();
             m_FileDialog    = new OpenFileDialog();
             m_FolderDialog  = new FolderBrowserDialog();
             m_UpdateManager = new UpdateManager("http://localhost/helios/feed.xml");
+            m_RemoteManager = new RemoteManager();
 
             ApplySettings();
 
@@ -46,10 +53,14 @@ namespace phoenix
             m_ProcessRunner.MonitorStopped += ResetWatchButtonLabel;
             m_ProcessRunner.ProcessStarted += ResetWatchButtonLabel;
             m_ProcessRunner.ProcessStopped += ResetWatchButtonLabel;
+            m_RemoteManager.OnConnectionOpened += ResetMqttConnectionLabel;
+            m_RemoteManager.OnConnectionClosed += ResetMqttConnectionLabel;
 
             HotkeyManager.Register(Handle);
 
             ValidateAndStartMonitoring();
+            ResetMqttConnectionLabel();
+            ResetWatchButtonLabel();
 
             Logger.Info("Phoenix is up and running.");
         }
@@ -59,6 +70,27 @@ namespace phoenix
             Trace.Listeners.Add(new TextboxWriterTraceListener(log_box, "PhoenixTextboxLog"));
             Trace.Listeners.Add(new TextWriterTraceListener("phoenix.log", "PhoneixFileLog"));
             Trace.Listeners["PhoneixFileLog"].TraceOutputOptions |= TraceOptions.DateTime;
+        }
+
+        private void ResetMqttConnectionLabel()
+        {
+            if (mqtt_connection_status == null ||
+                mqtt_connection_status.IsDisposed ||
+                m_RemoteManager == null)
+                return;
+
+            try {
+                mqtt_connection_status.Invoke((MethodInvoker)(() =>
+                {
+                    if (m_RemoteManager.Connected)
+                        mqtt_connection_status.Text = "CONNECTED";
+                    else
+                        mqtt_connection_status.Text = "DISCONNECTED";
+                }));
+            } catch {
+                /* shrug */
+                return;
+            }
         }
 
         private void ResetWatchButtonLabel()
@@ -140,7 +172,7 @@ namespace phoenix
 
             section = "Remote";
 
-            mqtt_server_address.Text                = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.MqttServerAddress),     Defaults.Remote.MqttServerAddress);
+            mqtt_server_address.Text                = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.MqttServerAddress),         Defaults.Remote.MqttServerAddress);
             rsync_server_address.Text               = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.RSyncServerAddress),        Defaults.Remote.RSyncServerAddress);
             rsync_server_username.Text              = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.RSyncServerUsername),       Defaults.Remote.RSyncServerUsername);
             rsync_server_password.Text              = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.RSyncServerPassword),       Defaults.Remote.RSyncServerPassword);
@@ -471,7 +503,7 @@ namespace phoenix
                 Helpers.GetPropertyName(() => Defaults.Remote.MqttServerAddress),
                 (sender as TextBox).Text);
 
-            ValidateAsServerAddress(sender);
+            m_RemoteManager.Connect((sender as TextBox).Text, "/helios/phoenix");
         }
 
         private void rsync_server_address_TextChanged(object sender, EventArgs e)

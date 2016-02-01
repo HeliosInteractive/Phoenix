@@ -16,6 +16,7 @@
             if (disposing && (components != null))
             {
                 m_ProcessRunner.Dispose();
+                m_RemoteManager.Dispose();
                 components.Dispose();
             }
             base.Dispose(disposing);
@@ -87,6 +88,8 @@
             this.context_menu_strip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toggleUIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitPhoenixToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mqtt_connection_status_label = new System.Windows.Forms.Label();
+            this.mqtt_connection_status = new System.Windows.Forms.Label();
             this.main_tab.SuspendLayout();
             this.tab_local.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.memory_chart)).BeginInit();
@@ -415,6 +418,8 @@
             // 
             // remote_tab
             // 
+            this.remote_tab.Controls.Add(this.mqtt_connection_status);
+            this.remote_tab.Controls.Add(this.mqtt_connection_status_label);
             this.remote_tab.Controls.Add(this.local_directory);
             this.remote_tab.Controls.Add(this.remote_directory);
             this.remote_tab.Controls.Add(this.local_directory_label);
@@ -586,11 +591,11 @@
             this.rsync_server_address_label.TabIndex = 4;
             this.rsync_server_address_label.Text = "RSYNC server address and port:";
             // 
-            // rabbitmq_server_address
+            // mqtt_server_address
             // 
             this.mqtt_server_address.BackColor = System.Drawing.Color.White;
             this.mqtt_server_address.Location = new System.Drawing.Point(8, 30);
-            this.mqtt_server_address.Name = "rabbitmq_server_address";
+            this.mqtt_server_address.Name = "mqtt_server_address";
             this.mqtt_server_address.Size = new System.Drawing.Size(173, 20);
             this.mqtt_server_address.TabIndex = 1;
             this.mqtt_server_address.TextChanged += new System.EventHandler(this.mqtt_server_address_TextChanged);
@@ -658,6 +663,25 @@
             this.exitPhoenixToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
             this.exitPhoenixToolStripMenuItem.Text = "Exit Phoenix";
             this.exitPhoenixToolStripMenuItem.Click += new System.EventHandler(this.exitPhoenixToolStripMenuItem_Click);
+            // 
+            // mqtt_connection_status_label
+            // 
+            this.mqtt_connection_status_label.AutoSize = true;
+            this.mqtt_connection_status_label.Location = new System.Drawing.Point(193, 10);
+            this.mqtt_connection_status_label.Name = "mqtt_connection_status_label";
+            this.mqtt_connection_status_label.Size = new System.Drawing.Size(128, 13);
+            this.mqtt_connection_status_label.TabIndex = 13;
+            this.mqtt_connection_status_label.Text = "MQTT connection status:";
+            // 
+            // mqtt_connection_status
+            // 
+            this.mqtt_connection_status.AutoSize = true;
+            this.mqtt_connection_status.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mqtt_connection_status.Location = new System.Drawing.Point(193, 33);
+            this.mqtt_connection_status.Name = "mqtt_connection_status";
+            this.mqtt_connection_status.Size = new System.Drawing.Size(104, 13);
+            this.mqtt_connection_status.TabIndex = 34;
+            this.mqtt_connection_status.Text = "DISCONNECTED";
             // 
             // MainDialog
             // 
@@ -741,6 +765,8 @@
         private System.Windows.Forms.Label local_directory_label;
         private System.Windows.Forms.TextBox remote_directory;
         private System.Windows.Forms.TextBox local_directory;
+        private System.Windows.Forms.Label mqtt_connection_status_label;
+        private System.Windows.Forms.Label mqtt_connection_status;
     }
 }
 
