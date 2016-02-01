@@ -8,6 +8,11 @@ namespace phoenix
 {
     class ScreenCapture
     {
+        public static string ScreenShotDirectory
+        {
+            get { return "captures"; }
+        }
+
         public static void TakeScreenShot()
         {
             using (Bitmap bmp = new Bitmap(
@@ -23,14 +28,14 @@ namespace phoenix
                         bmp.Size,
                         CopyPixelOperation.SourceCopy);
 
-                    if (!Directory.Exists("captures"))
+                    if (!Directory.Exists(ScreenShotDirectory))
                     {
-                        Directory.CreateDirectory("captures");
+                        Directory.CreateDirectory(ScreenShotDirectory);
                     }
 
-                    if (Directory.Exists("captures"))
+                    if (Directory.Exists(ScreenShotDirectory))
                     {
-                        bmp.Save(string.Format("captures\\{0}.png", DateTime.Now.Ticks), ImageFormat.Png);
+                        bmp.Save(string.Format("{0}\\{1}.png", ScreenShotDirectory, DateTime.Now.Ticks), ImageFormat.Png);
                     }
                 }
             }
