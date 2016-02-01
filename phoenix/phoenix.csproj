@@ -78,6 +78,7 @@
     <Compile Include="IniSettings.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="RemoteManager.cs" />
+    <Compile Include="ReportManager.cs" />
     <Compile Include="TextboxWriterTraceListener.cs" />
     <Compile Include="MainDialog.cs">
       <SubType>Form</SubType>

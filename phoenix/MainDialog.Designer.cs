@@ -51,7 +51,7 @@
             this.time_delay_before_launch = new System.Windows.Forms.TextBox();
             this.assume_crash_if_not_responsive = new System.Windows.Forms.CheckBox();
             this.screenshot_button = new System.Windows.Forms.Button();
-            this.enable_screenshot_on_crash = new System.Windows.Forms.CheckBox();
+            this.enable_email_report_on_crash = new System.Windows.Forms.CheckBox();
             this.watch_button = new System.Windows.Forms.Button();
             this.script_to_execute_on_crash = new System.Windows.Forms.TextBox();
             this.crash_script_label = new System.Windows.Forms.Label();
@@ -85,32 +85,32 @@
             this.rabbitmq_server_address_label = new System.Windows.Forms.Label();
             this.log = new System.Windows.Forms.TabPage();
             this.log_box = new System.Windows.Forms.RichTextBox();
+            this.report_tab = new System.Windows.Forms.TabPage();
+            this.attachment_label = new System.Windows.Forms.Label();
+            this.attachment = new System.Windows.Forms.TextBox();
+            this.email_body = new System.Windows.Forms.RichTextBox();
+            this.email_body_label = new System.Windows.Forms.Label();
+            this.email_subject_label = new System.Windows.Forms.Label();
+            this.email_subject = new System.Windows.Forms.TextBox();
+            this.gmail_password = new System.Windows.Forms.TextBox();
+            this.gmail_password_label = new System.Windows.Forms.Label();
+            this.email_address = new System.Windows.Forms.TextBox();
+            this.email_address_label = new System.Windows.Forms.Label();
+            this.gmail_address = new System.Windows.Forms.TextBox();
+            this.gmail_address_label = new System.Windows.Forms.Label();
             this.process_monitor_timer = new System.Windows.Forms.Timer(this.components);
             this.notify_icon = new System.Windows.Forms.NotifyIcon(this.components);
             this.context_menu_strip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toggleUIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitPhoenixToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.report_tab = new System.Windows.Forms.TabPage();
-            this.gmail_address_label = new System.Windows.Forms.Label();
-            this.gmail_address = new System.Windows.Forms.TextBox();
-            this.email_address_label = new System.Windows.Forms.Label();
-            this.email_address = new System.Windows.Forms.TextBox();
-            this.gmail_password_label = new System.Windows.Forms.Label();
-            this.gmail_password = new System.Windows.Forms.TextBox();
-            this.email_subject = new System.Windows.Forms.TextBox();
-            this.email_subject_label = new System.Windows.Forms.Label();
-            this.email_body_label = new System.Windows.Forms.Label();
-            this.email_body = new System.Windows.Forms.RichTextBox();
-            this.attachment = new System.Windows.Forms.TextBox();
-            this.attachment_label = new System.Windows.Forms.Label();
             this.main_tab.SuspendLayout();
             this.tab_local.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.memory_chart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cpu_chart)).BeginInit();
             this.remote_tab.SuspendLayout();
             this.log.SuspendLayout();
-            this.context_menu_strip.SuspendLayout();
             this.report_tab.SuspendLayout();
+            this.context_menu_strip.SuspendLayout();
             this.SuspendLayout();
             // 
             // main_tab
@@ -141,7 +141,7 @@
             this.tab_local.Controls.Add(this.time_delay_before_launch);
             this.tab_local.Controls.Add(this.assume_crash_if_not_responsive);
             this.tab_local.Controls.Add(this.screenshot_button);
-            this.tab_local.Controls.Add(this.enable_screenshot_on_crash);
+            this.tab_local.Controls.Add(this.enable_email_report_on_crash);
             this.tab_local.Controls.Add(this.watch_button);
             this.tab_local.Controls.Add(this.script_to_execute_on_crash);
             this.tab_local.Controls.Add(this.crash_script_label);
@@ -326,16 +326,16 @@
             this.screenshot_button.UseVisualStyleBackColor = true;
             this.screenshot_button.Click += new System.EventHandler(this.screenshot_button_Click);
             // 
-            // enable_screenshot_on_crash
+            // enable_email_report_on_crash
             // 
-            this.enable_screenshot_on_crash.AutoSize = true;
-            this.enable_screenshot_on_crash.Location = new System.Drawing.Point(193, 258);
-            this.enable_screenshot_on_crash.Name = "enable_screenshot_on_crash";
-            this.enable_screenshot_on_crash.Size = new System.Drawing.Size(158, 17);
-            this.enable_screenshot_on_crash.TabIndex = 15;
-            this.enable_screenshot_on_crash.Text = "Enable screenshot on crash";
-            this.enable_screenshot_on_crash.UseVisualStyleBackColor = true;
-            this.enable_screenshot_on_crash.CheckedChanged += new System.EventHandler(this.enable_screenshot_on_crash_CheckedChanged);
+            this.enable_email_report_on_crash.AutoSize = true;
+            this.enable_email_report_on_crash.Location = new System.Drawing.Point(193, 258);
+            this.enable_email_report_on_crash.Name = "enable_email_report_on_crash";
+            this.enable_email_report_on_crash.Size = new System.Drawing.Size(160, 17);
+            this.enable_email_report_on_crash.TabIndex = 15;
+            this.enable_email_report_on_crash.Text = "Enable email report on crash";
+            this.enable_email_report_on_crash.UseVisualStyleBackColor = true;
+            this.enable_email_report_on_crash.CheckedChanged += new System.EventHandler(this.enable_report_on_crash_CheckedChanged);
             // 
             // watch_button
             // 
@@ -665,6 +665,137 @@
             this.log_box.Text = "";
             this.log_box.WordWrap = false;
             // 
+            // report_tab
+            // 
+            this.report_tab.Controls.Add(this.attachment_label);
+            this.report_tab.Controls.Add(this.attachment);
+            this.report_tab.Controls.Add(this.email_body);
+            this.report_tab.Controls.Add(this.email_body_label);
+            this.report_tab.Controls.Add(this.email_subject_label);
+            this.report_tab.Controls.Add(this.email_subject);
+            this.report_tab.Controls.Add(this.gmail_password);
+            this.report_tab.Controls.Add(this.gmail_password_label);
+            this.report_tab.Controls.Add(this.email_address);
+            this.report_tab.Controls.Add(this.email_address_label);
+            this.report_tab.Controls.Add(this.gmail_address);
+            this.report_tab.Controls.Add(this.gmail_address_label);
+            this.report_tab.Location = new System.Drawing.Point(4, 22);
+            this.report_tab.Name = "report_tab";
+            this.report_tab.Padding = new System.Windows.Forms.Padding(3);
+            this.report_tab.Size = new System.Drawing.Size(376, 312);
+            this.report_tab.TabIndex = 5;
+            this.report_tab.Text = "Report";
+            this.report_tab.UseVisualStyleBackColor = true;
+            // 
+            // attachment_label
+            // 
+            this.attachment_label.AutoSize = true;
+            this.attachment_label.Location = new System.Drawing.Point(8, 110);
+            this.attachment_label.Name = "attachment_label";
+            this.attachment_label.Size = new System.Drawing.Size(326, 13);
+            this.attachment_label.TabIndex = 9;
+            this.attachment_label.Text = "File to attach: (NOTE: use crash script to upload it if file is too large!)";
+            // 
+            // attachment
+            // 
+            this.attachment.BackColor = System.Drawing.Color.White;
+            this.attachment.Location = new System.Drawing.Point(8, 130);
+            this.attachment.Name = "attachment";
+            this.attachment.Size = new System.Drawing.Size(358, 20);
+            this.attachment.TabIndex = 10;
+            this.attachment.TextChanged += new System.EventHandler(this.attachment_TextChanged);
+            // 
+            // email_body
+            // 
+            this.email_body.Location = new System.Drawing.Point(8, 178);
+            this.email_body.Name = "email_body";
+            this.email_body.Size = new System.Drawing.Size(358, 127);
+            this.email_body.TabIndex = 12;
+            this.email_body.Text = resources.GetString("email_body.Text");
+            this.email_body.TextChanged += new System.EventHandler(this.email_body_TextChanged);
+            // 
+            // email_body_label
+            // 
+            this.email_body_label.AutoSize = true;
+            this.email_body_label.Location = new System.Drawing.Point(8, 158);
+            this.email_body_label.Name = "email_body_label";
+            this.email_body_label.Size = new System.Drawing.Size(61, 13);
+            this.email_body_label.TabIndex = 11;
+            this.email_body_label.Text = "Email body:";
+            // 
+            // email_subject_label
+            // 
+            this.email_subject_label.AutoSize = true;
+            this.email_subject_label.Location = new System.Drawing.Point(193, 60);
+            this.email_subject_label.Name = "email_subject_label";
+            this.email_subject_label.Size = new System.Drawing.Size(72, 13);
+            this.email_subject_label.TabIndex = 7;
+            this.email_subject_label.Text = "Email subject:";
+            // 
+            // email_subject
+            // 
+            this.email_subject.BackColor = System.Drawing.Color.White;
+            this.email_subject.Location = new System.Drawing.Point(193, 80);
+            this.email_subject.Name = "email_subject";
+            this.email_subject.Size = new System.Drawing.Size(173, 20);
+            this.email_subject.TabIndex = 8;
+            this.email_subject.TextChanged += new System.EventHandler(this.email_subject_TextChanged);
+            // 
+            // gmail_password
+            // 
+            this.gmail_password.BackColor = System.Drawing.Color.White;
+            this.gmail_password.Location = new System.Drawing.Point(8, 80);
+            this.gmail_password.Name = "gmail_password";
+            this.gmail_password.PasswordChar = '*';
+            this.gmail_password.Size = new System.Drawing.Size(173, 20);
+            this.gmail_password.TabIndex = 6;
+            this.gmail_password.TextChanged += new System.EventHandler(this.gmail_password_TextChanged);
+            // 
+            // gmail_password_label
+            // 
+            this.gmail_password_label.AutoSize = true;
+            this.gmail_password_label.Location = new System.Drawing.Point(8, 60);
+            this.gmail_password_label.Name = "gmail_password_label";
+            this.gmail_password_label.Size = new System.Drawing.Size(131, 13);
+            this.gmail_password_label.TabIndex = 5;
+            this.gmail_password_label.Text = "GMAIL password [FROM]:";
+            // 
+            // email_address
+            // 
+            this.email_address.BackColor = System.Drawing.Color.White;
+            this.email_address.Location = new System.Drawing.Point(193, 30);
+            this.email_address.Name = "email_address";
+            this.email_address.Size = new System.Drawing.Size(173, 20);
+            this.email_address.TabIndex = 4;
+            this.email_address.TextChanged += new System.EventHandler(this.email_address_TextChanged);
+            // 
+            // email_address_label
+            // 
+            this.email_address_label.AutoSize = true;
+            this.email_address_label.Location = new System.Drawing.Point(193, 10);
+            this.email_address_label.Name = "email_address_label";
+            this.email_address_label.Size = new System.Drawing.Size(134, 13);
+            this.email_address_label.TabIndex = 3;
+            this.email_address_label.Text = "GMAIL email address [TO]:";
+            // 
+            // gmail_address
+            // 
+            this.gmail_address.BackColor = System.Drawing.Color.White;
+            this.gmail_address.Location = new System.Drawing.Point(8, 30);
+            this.gmail_address.Name = "gmail_address";
+            this.gmail_address.Size = new System.Drawing.Size(173, 20);
+            this.gmail_address.TabIndex = 2;
+            this.gmail_address.TextChanged += new System.EventHandler(this.gmail_address_TextChanged);
+            // 
+            // gmail_address_label
+            // 
+            this.gmail_address_label.AutoSize = true;
+            this.gmail_address_label.Location = new System.Drawing.Point(8, 10);
+            this.gmail_address_label.Name = "gmail_address_label";
+            this.gmail_address_label.Size = new System.Drawing.Size(150, 13);
+            this.gmail_address_label.TabIndex = 1;
+            this.gmail_address_label.Text = "GMAIL email address [FROM]:";
+            // 
             // process_monitor_timer
             // 
             this.process_monitor_timer.Interval = 60;
@@ -698,130 +829,6 @@
             this.exitPhoenixToolStripMenuItem.Text = "Exit Phoenix";
             this.exitPhoenixToolStripMenuItem.Click += new System.EventHandler(this.exitPhoenixToolStripMenuItem_Click);
             // 
-            // report_tab
-            // 
-            this.report_tab.Controls.Add(this.attachment_label);
-            this.report_tab.Controls.Add(this.attachment);
-            this.report_tab.Controls.Add(this.email_body);
-            this.report_tab.Controls.Add(this.email_body_label);
-            this.report_tab.Controls.Add(this.email_subject_label);
-            this.report_tab.Controls.Add(this.email_subject);
-            this.report_tab.Controls.Add(this.gmail_password);
-            this.report_tab.Controls.Add(this.gmail_password_label);
-            this.report_tab.Controls.Add(this.email_address);
-            this.report_tab.Controls.Add(this.email_address_label);
-            this.report_tab.Controls.Add(this.gmail_address);
-            this.report_tab.Controls.Add(this.gmail_address_label);
-            this.report_tab.Location = new System.Drawing.Point(4, 22);
-            this.report_tab.Name = "report_tab";
-            this.report_tab.Padding = new System.Windows.Forms.Padding(3);
-            this.report_tab.Size = new System.Drawing.Size(376, 312);
-            this.report_tab.TabIndex = 5;
-            this.report_tab.Text = "Report";
-            this.report_tab.UseVisualStyleBackColor = true;
-            // 
-            // gmail_address_label
-            // 
-            this.gmail_address_label.AutoSize = true;
-            this.gmail_address_label.Location = new System.Drawing.Point(8, 10);
-            this.gmail_address_label.Name = "gmail_address_label";
-            this.gmail_address_label.Size = new System.Drawing.Size(150, 13);
-            this.gmail_address_label.TabIndex = 1;
-            this.gmail_address_label.Text = "GMAIL email address [FROM]:";
-            // 
-            // gmail_address
-            // 
-            this.gmail_address.BackColor = System.Drawing.Color.White;
-            this.gmail_address.Location = new System.Drawing.Point(8, 30);
-            this.gmail_address.Name = "gmail_address";
-            this.gmail_address.Size = new System.Drawing.Size(173, 20);
-            this.gmail_address.TabIndex = 2;
-            // 
-            // email_address_label
-            // 
-            this.email_address_label.AutoSize = true;
-            this.email_address_label.Location = new System.Drawing.Point(193, 10);
-            this.email_address_label.Name = "email_address_label";
-            this.email_address_label.Size = new System.Drawing.Size(99, 13);
-            this.email_address_label.TabIndex = 3;
-            this.email_address_label.Text = "Email address [TO]:";
-            // 
-            // email_address
-            // 
-            this.email_address.BackColor = System.Drawing.Color.White;
-            this.email_address.Location = new System.Drawing.Point(193, 30);
-            this.email_address.Name = "email_address";
-            this.email_address.Size = new System.Drawing.Size(173, 20);
-            this.email_address.TabIndex = 4;
-            // 
-            // gmail_password_label
-            // 
-            this.gmail_password_label.AutoSize = true;
-            this.gmail_password_label.Location = new System.Drawing.Point(8, 60);
-            this.gmail_password_label.Name = "gmail_password_label";
-            this.gmail_password_label.Size = new System.Drawing.Size(131, 13);
-            this.gmail_password_label.TabIndex = 5;
-            this.gmail_password_label.Text = "GMAIL password [FROM]:";
-            // 
-            // gmail_password
-            // 
-            this.gmail_password.BackColor = System.Drawing.Color.White;
-            this.gmail_password.Location = new System.Drawing.Point(8, 80);
-            this.gmail_password.Name = "gmail_password";
-            this.gmail_password.Size = new System.Drawing.Size(173, 20);
-            this.gmail_password.TabIndex = 6;
-            // 
-            // email_subject
-            // 
-            this.email_subject.BackColor = System.Drawing.Color.White;
-            this.email_subject.Location = new System.Drawing.Point(193, 80);
-            this.email_subject.Name = "email_subject";
-            this.email_subject.Size = new System.Drawing.Size(173, 20);
-            this.email_subject.TabIndex = 8;
-            // 
-            // email_subject_label
-            // 
-            this.email_subject_label.AutoSize = true;
-            this.email_subject_label.Location = new System.Drawing.Point(193, 60);
-            this.email_subject_label.Name = "email_subject_label";
-            this.email_subject_label.Size = new System.Drawing.Size(96, 13);
-            this.email_subject_label.TabIndex = 7;
-            this.email_subject_label.Text = "Email subject [TO]:";
-            // 
-            // email_body_label
-            // 
-            this.email_body_label.AutoSize = true;
-            this.email_body_label.Location = new System.Drawing.Point(8, 158);
-            this.email_body_label.Name = "email_body_label";
-            this.email_body_label.Size = new System.Drawing.Size(61, 13);
-            this.email_body_label.TabIndex = 11;
-            this.email_body_label.Text = "Email body:";
-            // 
-            // email_body
-            // 
-            this.email_body.Location = new System.Drawing.Point(8, 178);
-            this.email_body.Name = "email_body";
-            this.email_body.Size = new System.Drawing.Size(358, 127);
-            this.email_body.TabIndex = 12;
-            this.email_body.Text = resources.GetString("email_body.Text");
-            // 
-            // attachment
-            // 
-            this.attachment.BackColor = System.Drawing.Color.White;
-            this.attachment.Location = new System.Drawing.Point(8, 130);
-            this.attachment.Name = "attachment";
-            this.attachment.Size = new System.Drawing.Size(358, 20);
-            this.attachment.TabIndex = 10;
-            // 
-            // attachment_label
-            // 
-            this.attachment_label.AutoSize = true;
-            this.attachment_label.Location = new System.Drawing.Point(8, 110);
-            this.attachment_label.Name = "attachment_label";
-            this.attachment_label.Size = new System.Drawing.Size(326, 13);
-            this.attachment_label.TabIndex = 9;
-            this.attachment_label.Text = "File to attach: (NOTE: use crash script to upload it if file is too large!)";
-            // 
             // MainDialog
             // 
             this.AccessibleDescription = "Monitors and restarts crashed applications.";
@@ -847,9 +854,9 @@
             this.remote_tab.ResumeLayout(false);
             this.remote_tab.PerformLayout();
             this.log.ResumeLayout(false);
-            this.context_menu_strip.ResumeLayout(false);
             this.report_tab.ResumeLayout(false);
             this.report_tab.PerformLayout();
+            this.context_menu_strip.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -873,7 +880,7 @@
         private System.Windows.Forms.Label rsync_server_address_label;
         private System.Windows.Forms.TextBox rsync_server_address;
         private System.Windows.Forms.Button watch_button;
-        private System.Windows.Forms.CheckBox enable_screenshot_on_crash;
+        private System.Windows.Forms.CheckBox enable_email_report_on_crash;
         private System.Windows.Forms.TabPage log;
         private System.Windows.Forms.RichTextBox log_box;
         private System.Windows.Forms.Button screenshot_button;

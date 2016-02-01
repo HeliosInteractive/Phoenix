@@ -14,7 +14,7 @@
             public static bool ForceAlwaysOnTop = false;
             public static bool StartMinimized = false;
             public static bool AssumeCrashIfNotResponsive = true;
-            public static bool EnableScreenshotOnCrash = true;
+            public static bool EnableReportOnCrash = true;
         }
 
         public class Remote
@@ -25,6 +25,15 @@
             public static string RSyncServerPassword = "";
             public static string RemoteDirectory = "";
             public static string LocalDirectory = "";
+        }
+        public class Report
+        {
+            public static string FromEmailAddress = "phoenix-crash-report@heliosinteractive.com";
+            public static string FromEmailPassword = "";
+            public static string ToEmailAddress = "";
+            public static string EmailSubject = "(#MACHINE_IDENTITY#) Helios Phoenix crash report";
+            public static string EmailBody = "Helios Phoenix crash report,<br><br>Instance of #MACHINE_IDENTITY# has encountered a crash. Attached are a screen shot of this machine at the time of crash and optionally a log file (if specified before).<br>This machine is set to fetch updates from #RSYNC_ADDRESS# and obtain commands from #MQTT_ADDRESS#.<br><br>This is an automated message, please do not respond.";
+            public static string EmailAttachment = "";
         }
     }
 }

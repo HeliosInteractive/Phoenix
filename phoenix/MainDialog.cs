@@ -16,6 +16,7 @@ namespace phoenix
         private FolderBrowserDialog m_FolderDialog;
         private bool                m_PauseMonitor = false;
         private bool                m_FirstVisibleCall = true;
+        private bool                m_ReportOnCrash = true;
         private Series              m_CpuUsageSeries;
         private Series              m_MemoryUsageSeries;
         static Mutex                m_SingleInstanceMutex;
@@ -53,6 +54,7 @@ namespace phoenix
             m_ProcessRunner.MonitorStopped += ResetWatchButtonLabel;
             m_ProcessRunner.ProcessStarted += ResetWatchButtonLabel;
             m_ProcessRunner.ProcessStopped += ResetWatchButtonLabel;
+            m_ProcessRunner.ProcessStopped += SendCrashEmail;
             m_RemoteManager.OnConnectionOpened += ResetMqttConnectionLabel;
             m_RemoteManager.OnConnectionClosed += ResetMqttConnectionLabel;
 
@@ -63,6 +65,21 @@ namespace phoenix
             ResetWatchButtonLabel();
 
             Logger.Info("Phoenix is up and running.");
+        }
+
+        private void SendCrashEmail()
+        {
+            ReportManager.Send(
+                gmail_address.Text,
+                gmail_password.Text,
+                email_address.Text,
+                email_subject.Text
+                    .Replace("#MACHINE_IDENTITY#", RsyncClient.MachineIdentity),
+                email_body.Text
+                    .Replace("#MACHINE_IDENTITY#", RsyncClient.MachineIdentity)
+                    .Replace("#RSYNC_ADDRESS#", rsync_server_address.Text)
+                    .Replace("#MQTT_ADDRESS#", mqtt_server_address.Text),
+                attachment.Text);
         }
 
         private void SetupTracer()
@@ -166,7 +183,7 @@ namespace phoenix
             force_always_on_top.Checked             = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Local.ForceAlwaysOnTop),           Defaults.Local.ForceAlwaysOnTop);
             start_minimized.Checked                 = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Local.StartMinimized),             Defaults.Local.StartMinimized);
             assume_crash_if_not_responsive.Checked  = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Local.AssumeCrashIfNotResponsive), Defaults.Local.AssumeCrashIfNotResponsive);
-            enable_screenshot_on_crash.Checked      = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Local.EnableScreenshotOnCrash),    Defaults.Local.EnableScreenshotOnCrash);
+            enable_email_report_on_crash.Checked    = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Local.EnableReportOnCrash),        Defaults.Local.EnableReportOnCrash);
             start_script.Text                       = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Local.ScriptToExecuteOnStart),     Defaults.Local.ScriptToExecuteOnStart);
             working_directory.Text                  = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Local.WorkingDirectory),           Defaults.Local.WorkingDirectory);
 
@@ -178,6 +195,15 @@ namespace phoenix
             rsync_server_password.Text              = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.RSyncServerPassword),       Defaults.Remote.RSyncServerPassword);
             remote_directory.Text                   = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.RemoteDirectory),           Defaults.Remote.RemoteDirectory);
             local_directory.Text                    = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.LocalDirectory),            Defaults.Remote.LocalDirectory);
+
+            section = "Report";
+
+            gmail_address.Text                      = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Report.FromEmailAddress),          Defaults.Report.FromEmailAddress);
+            gmail_password.Text                     = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Report.FromEmailPassword),         Defaults.Report.FromEmailPassword);
+            email_address.Text                      = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Report.ToEmailAddress),            Defaults.Report.ToEmailAddress);
+            email_subject.Text                      = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Report.EmailSubject),              Defaults.Report.EmailSubject);
+            email_body.Text                         = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Report.EmailBody),                 Defaults.Report.EmailBody).Replace("<br>", "\n");
+            attachment.Text                         = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Report.EmailAttachment),           Defaults.Report.EmailAttachment);
 
             UpdateKeyPair();
         }
@@ -255,14 +281,14 @@ namespace phoenix
             m_ProcessRunner.AssumeCrashIfNotResponsive = assume_crash_if_not_responsive.Checked;
         }
 
-        private void enable_screenshot_on_crash_CheckedChanged(object sender, EventArgs e)
+        private void enable_report_on_crash_CheckedChanged(object sender, EventArgs e)
         {
             m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Local.EnableScreenshotOnCrash),
-                Helpers.GetPropertyName(() => Defaults.Local.EnableScreenshotOnCrash),
+                Helpers.GetClassName(() => Defaults.Local.EnableReportOnCrash),
+                Helpers.GetPropertyName(() => Defaults.Local.EnableReportOnCrash),
                 (sender as CheckBox).Checked);
 
-            m_ProcessRunner.ScreenShotOnCrash = enable_screenshot_on_crash.Checked;
+            m_ReportOnCrash = enable_email_report_on_crash.Checked;
         }
 
         private void script_to_execute_on_crash_TextChanged(object sender, EventArgs e)
@@ -600,6 +626,54 @@ namespace phoenix
             {
                 local_directory.Text = m_FolderDialog.SelectedPath;
             }
+        }
+
+        private void gmail_address_TextChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Report.FromEmailAddress),
+                Helpers.GetPropertyName(() => Defaults.Report.FromEmailAddress),
+                (sender as TextBox).Text);
+        }
+
+        private void email_address_TextChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Report.ToEmailAddress),
+                Helpers.GetPropertyName(() => Defaults.Report.ToEmailAddress),
+                (sender as TextBox).Text);
+        }
+
+        private void gmail_password_TextChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Report.FromEmailPassword),
+                Helpers.GetPropertyName(() => Defaults.Report.FromEmailPassword),
+                (sender as TextBox).Text);
+        }
+
+        private void email_subject_TextChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Report.EmailSubject),
+                Helpers.GetPropertyName(() => Defaults.Report.EmailSubject),
+                (sender as TextBox).Text);
+        }
+
+        private void attachment_TextChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Report.EmailAttachment),
+                Helpers.GetPropertyName(() => Defaults.Report.EmailAttachment),
+                (sender as TextBox).Text);
+        }
+
+        private void email_body_TextChanged(object sender, EventArgs e)
+        {
+            m_AppSettings.Store(
+                Helpers.GetClassName(() => Defaults.Report.EmailBody),
+                Helpers.GetPropertyName(() => Defaults.Report.EmailBody),
+                (sender as TextBox).Text.Replace("\n", "<br>"));
         }
     }
 }
