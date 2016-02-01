@@ -16,8 +16,25 @@ namespace phoenix
 
         public override void Write(string message)
         {
-            if (logbox == null || logbox.IsDisposed) return;
-            logbox.AppendText(message + Environment.NewLine);
+            if (logbox == null || logbox.IsDisposed)
+                return;
+
+            try
+            {
+                logbox.Invoke((MethodInvoker)(() =>
+                {
+                // double check pattern, I hate C#
+                if (logbox == null || logbox.IsDisposed)
+                        return;
+
+                    logbox.AppendText(message + Environment.NewLine);
+                }));
+            }
+            catch
+            {
+                /* I really cannot do anything here! */
+                Trace.TraceError(string.Format("Text box listener invoked without a valid textbox. msg: {0}", message));
+            }
         }
 
         public override void WriteLine(string message)
