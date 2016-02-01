@@ -15,8 +15,7 @@ namespace phoenix
         private OpenFileDialog      m_FileDialog;
         private FolderBrowserDialog m_FolderDialog;
         private bool                m_PauseMonitor = false;
-        private bool                m_FirstVisibleCall = true;
-        private bool                m_ReportOnCrash = true;
+        private bool                m_PhoenixReady = false;
         private Series              m_CpuUsageSeries;
         private Series              m_MemoryUsageSeries;
         static Mutex                m_SingleInstanceMutex;
@@ -63,8 +62,10 @@ namespace phoenix
             ValidateAndStartMonitoring();
             ResetMqttConnectionLabel();
             ResetWatchButtonLabel();
+            ResetReportTabStatus();
 
             Logger.Info("Phoenix is up and running.");
+            m_PhoenixReady = true;
         }
 
         private void SendCrashEmail()
@@ -119,6 +120,11 @@ namespace phoenix
                 else
                     watch_button.Text = "Start Watching ( ALT+F10 )";
             }));
+        }
+
+        private void ResetReportTabStatus()
+        {
+            (report_tab as Control).Enabled = enable_email_report_on_crash.Checked;
         }
 
         private bool EnsureSingleInstanceMode()
@@ -227,7 +233,7 @@ namespace phoenix
 
             if (application_to_watch.Text != string.Empty &&
                 File.Exists(application_to_watch.Text) &&
-                !m_FirstVisibleCall)
+                m_PhoenixReady)
             {
                 working_directory.Text =
                     Path.GetDirectoryName(application_to_watch.Text);
@@ -288,7 +294,7 @@ namespace phoenix
                 Helpers.GetPropertyName(() => Defaults.Local.EnableReportOnCrash),
                 (sender as CheckBox).Checked);
 
-            m_ReportOnCrash = enable_email_report_on_crash.Checked;
+            ResetReportTabStatus();
         }
 
         private void script_to_execute_on_crash_TextChanged(object sender, EventArgs e)
@@ -417,10 +423,10 @@ namespace phoenix
 
         protected override void SetVisibleCore(bool value)
         {
-            if (m_FirstVisibleCall)
+            if (!m_PhoenixReady)
             {
+                if (!IsHandleCreated) CreateHandle();
                 base.SetVisibleCore(!start_minimized.Checked);
-                m_FirstVisibleCall = false;
             }
             else
             {
