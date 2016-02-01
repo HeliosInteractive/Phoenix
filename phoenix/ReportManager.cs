@@ -49,6 +49,7 @@ namespace phoenix
             }
             catch
             {
+                Logger.Error("ReportManager failed to send the crash report.");
                 return;
             }
         }
