@@ -83,7 +83,7 @@ namespace phoenix
                     File.Exists(s_PrivateKeyPath);
             }
         }
-        static string MachineIdentity
+        public static string MachineIdentity
         {
             get
             {
