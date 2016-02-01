@@ -74,15 +74,11 @@
             this.public_key = new System.Windows.Forms.RichTextBox();
             this.rsync_server_password_label = new System.Windows.Forms.Label();
             this.rsync_server_username_label = new System.Windows.Forms.Label();
-            this.rabbitmq_server_password_label = new System.Windows.Forms.Label();
-            this.rabbitmq_server_username_label = new System.Windows.Forms.Label();
             this.rsync_server_password = new System.Windows.Forms.TextBox();
             this.rsync_server_username = new System.Windows.Forms.TextBox();
-            this.rabbitmq_server_password = new System.Windows.Forms.TextBox();
-            this.rabbitmq_server_username = new System.Windows.Forms.TextBox();
             this.rsync_server_address = new System.Windows.Forms.TextBox();
             this.rsync_server_address_label = new System.Windows.Forms.Label();
-            this.rabbitmq_server_address = new System.Windows.Forms.TextBox();
+            this.mqtt_server_address = new System.Windows.Forms.TextBox();
             this.rabbitmq_server_address_label = new System.Windows.Forms.Label();
             this.log = new System.Windows.Forms.TabPage();
             this.log_box = new System.Windows.Forms.RichTextBox();
@@ -356,9 +352,9 @@
             this.start_minimized.AutoSize = true;
             this.start_minimized.Location = new System.Drawing.Point(193, 238);
             this.start_minimized.Name = "start_minimized";
-            this.start_minimized.Size = new System.Drawing.Size(97, 17);
+            this.start_minimized.Size = new System.Drawing.Size(137, 17);
             this.start_minimized.TabIndex = 13;
-            this.start_minimized.Text = "Start Minimized";
+            this.start_minimized.Text = "Start Phoenix minimized";
             this.start_minimized.UseVisualStyleBackColor = true;
             this.start_minimized.CheckedChanged += new System.EventHandler(this.start_minimized_CheckedChanged);
             // 
@@ -431,15 +427,11 @@
             this.remote_tab.Controls.Add(this.public_key);
             this.remote_tab.Controls.Add(this.rsync_server_password_label);
             this.remote_tab.Controls.Add(this.rsync_server_username_label);
-            this.remote_tab.Controls.Add(this.rabbitmq_server_password_label);
-            this.remote_tab.Controls.Add(this.rabbitmq_server_username_label);
             this.remote_tab.Controls.Add(this.rsync_server_password);
             this.remote_tab.Controls.Add(this.rsync_server_username);
-            this.remote_tab.Controls.Add(this.rabbitmq_server_password);
-            this.remote_tab.Controls.Add(this.rabbitmq_server_username);
             this.remote_tab.Controls.Add(this.rsync_server_address);
             this.remote_tab.Controls.Add(this.rsync_server_address_label);
-            this.remote_tab.Controls.Add(this.rabbitmq_server_address);
+            this.remote_tab.Controls.Add(this.mqtt_server_address);
             this.remote_tab.Controls.Add(this.rabbitmq_server_address_label);
             this.remote_tab.Location = new System.Drawing.Point(4, 22);
             this.remote_tab.Name = "remote_tab";
@@ -548,36 +540,18 @@
             this.rsync_server_password_label.AutoSize = true;
             this.rsync_server_password_label.Location = new System.Drawing.Point(285, 60);
             this.rsync_server_password_label.Name = "rsync_server_password_label";
-            this.rsync_server_password_label.Size = new System.Drawing.Size(56, 13);
+            this.rsync_server_password_label.Size = new System.Drawing.Size(81, 13);
             this.rsync_server_password_label.TabIndex = 25;
-            this.rsync_server_password_label.Text = "Password:";
+            this.rsync_server_password_label.Text = "SSH Password:";
             // 
             // rsync_server_username_label
             // 
             this.rsync_server_username_label.AutoSize = true;
             this.rsync_server_username_label.Location = new System.Drawing.Point(193, 60);
             this.rsync_server_username_label.Name = "rsync_server_username_label";
-            this.rsync_server_username_label.Size = new System.Drawing.Size(58, 13);
+            this.rsync_server_username_label.Size = new System.Drawing.Size(83, 13);
             this.rsync_server_username_label.TabIndex = 24;
-            this.rsync_server_username_label.Text = "Username:";
-            // 
-            // rabbitmq_server_password_label
-            // 
-            this.rabbitmq_server_password_label.AutoSize = true;
-            this.rabbitmq_server_password_label.Location = new System.Drawing.Point(285, 10);
-            this.rabbitmq_server_password_label.Name = "rabbitmq_server_password_label";
-            this.rabbitmq_server_password_label.Size = new System.Drawing.Size(56, 13);
-            this.rabbitmq_server_password_label.TabIndex = 23;
-            this.rabbitmq_server_password_label.Text = "Password:";
-            // 
-            // rabbitmq_server_username_label
-            // 
-            this.rabbitmq_server_username_label.AutoSize = true;
-            this.rabbitmq_server_username_label.Location = new System.Drawing.Point(193, 10);
-            this.rabbitmq_server_username_label.Name = "rabbitmq_server_username_label";
-            this.rabbitmq_server_username_label.Size = new System.Drawing.Size(58, 13);
-            this.rabbitmq_server_username_label.TabIndex = 22;
-            this.rabbitmq_server_username_label.Text = "Username:";
+            this.rsync_server_username_label.Text = "SSH Username:";
             // 
             // rsync_server_password
             // 
@@ -595,22 +569,6 @@
             this.rsync_server_username.TabIndex = 5;
             this.rsync_server_username.TextChanged += new System.EventHandler(this.rsync_server_username_TextChanged);
             // 
-            // rabbitmq_server_password
-            // 
-            this.rabbitmq_server_password.Location = new System.Drawing.Point(285, 30);
-            this.rabbitmq_server_password.Name = "rabbitmq_server_password";
-            this.rabbitmq_server_password.Size = new System.Drawing.Size(81, 20);
-            this.rabbitmq_server_password.TabIndex = 3;
-            this.rabbitmq_server_password.TextChanged += new System.EventHandler(this.rabbitmq_server_password_TextChanged);
-            // 
-            // rabbitmq_server_username
-            // 
-            this.rabbitmq_server_username.Location = new System.Drawing.Point(193, 30);
-            this.rabbitmq_server_username.Name = "rabbitmq_server_username";
-            this.rabbitmq_server_username.Size = new System.Drawing.Size(81, 20);
-            this.rabbitmq_server_username.TabIndex = 2;
-            this.rabbitmq_server_username.TextChanged += new System.EventHandler(this.rabbitmq_server_username_TextChanged);
-            // 
             // rsync_server_address
             // 
             this.rsync_server_address.Location = new System.Drawing.Point(8, 80);
@@ -624,27 +582,27 @@
             this.rsync_server_address_label.AutoSize = true;
             this.rsync_server_address_label.Location = new System.Drawing.Point(8, 60);
             this.rsync_server_address_label.Name = "rsync_server_address_label";
-            this.rsync_server_address_label.Size = new System.Drawing.Size(156, 13);
+            this.rsync_server_address_label.Size = new System.Drawing.Size(161, 13);
             this.rsync_server_address_label.TabIndex = 4;
-            this.rsync_server_address_label.Text = "RSync server address and port:";
+            this.rsync_server_address_label.Text = "RSYNC server address and port:";
             // 
             // rabbitmq_server_address
             // 
-            this.rabbitmq_server_address.BackColor = System.Drawing.Color.LightGreen;
-            this.rabbitmq_server_address.Location = new System.Drawing.Point(8, 30);
-            this.rabbitmq_server_address.Name = "rabbitmq_server_address";
-            this.rabbitmq_server_address.Size = new System.Drawing.Size(173, 20);
-            this.rabbitmq_server_address.TabIndex = 1;
-            this.rabbitmq_server_address.TextChanged += new System.EventHandler(this.rabbitmq_server_address_TextChanged);
+            this.mqtt_server_address.BackColor = System.Drawing.Color.White;
+            this.mqtt_server_address.Location = new System.Drawing.Point(8, 30);
+            this.mqtt_server_address.Name = "rabbitmq_server_address";
+            this.mqtt_server_address.Size = new System.Drawing.Size(173, 20);
+            this.mqtt_server_address.TabIndex = 1;
+            this.mqtt_server_address.TextChanged += new System.EventHandler(this.mqtt_server_address_TextChanged);
             // 
             // rabbitmq_server_address_label
             // 
             this.rabbitmq_server_address_label.AutoSize = true;
             this.rabbitmq_server_address_label.Location = new System.Drawing.Point(8, 10);
             this.rabbitmq_server_address_label.Name = "rabbitmq_server_address_label";
-            this.rabbitmq_server_address_label.Size = new System.Drawing.Size(172, 13);
+            this.rabbitmq_server_address_label.Size = new System.Drawing.Size(155, 13);
             this.rabbitmq_server_address_label.TabIndex = 2;
-            this.rabbitmq_server_address_label.Text = "RabbitMQ server address and port:";
+            this.rabbitmq_server_address_label.Text = "MQTT server address and port:";
             // 
             // log
             // 
@@ -685,19 +643,19 @@
             this.exitPhoenixToolStripMenuItem});
             this.context_menu_strip.Name = "context_menu_strip";
             this.context_menu_strip.ShowImageMargin = false;
-            this.context_menu_strip.Size = new System.Drawing.Size(157, 48);
+            this.context_menu_strip.Size = new System.Drawing.Size(159, 48);
             // 
             // toggleUIToolStripMenuItem
             // 
             this.toggleUIToolStripMenuItem.Name = "toggleUIToolStripMenuItem";
-            this.toggleUIToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.toggleUIToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
             this.toggleUIToolStripMenuItem.Text = "Toggle UI (ALT+F11)";
             this.toggleUIToolStripMenuItem.Click += new System.EventHandler(this.toggleUIToolStripMenuItem_Click);
             // 
             // exitPhoenixToolStripMenuItem
             // 
             this.exitPhoenixToolStripMenuItem.Name = "exitPhoenixToolStripMenuItem";
-            this.exitPhoenixToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.exitPhoenixToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
             this.exitPhoenixToolStripMenuItem.Text = "Exit Phoenix";
             this.exitPhoenixToolStripMenuItem.Click += new System.EventHandler(this.exitPhoenixToolStripMenuItem_Click);
             // 
@@ -746,7 +704,7 @@
         private System.Windows.Forms.TextBox script_to_execute_on_crash;
         private System.Windows.Forms.Label crash_script_label;
         private System.Windows.Forms.Label rabbitmq_server_address_label;
-        private System.Windows.Forms.TextBox rabbitmq_server_address;
+        private System.Windows.Forms.TextBox mqtt_server_address;
         private System.Windows.Forms.Label rsync_server_address_label;
         private System.Windows.Forms.TextBox rsync_server_address;
         private System.Windows.Forms.Button watch_button;
@@ -769,12 +727,8 @@
         private System.Windows.Forms.TextBox working_directory;
         private System.Windows.Forms.TextBox start_script;
         private System.Windows.Forms.Label start_script_label;
-        private System.Windows.Forms.TextBox rabbitmq_server_password;
-        private System.Windows.Forms.TextBox rabbitmq_server_username;
         private System.Windows.Forms.TextBox rsync_server_password;
         private System.Windows.Forms.TextBox rsync_server_username;
-        private System.Windows.Forms.Label rabbitmq_server_username_label;
-        private System.Windows.Forms.Label rabbitmq_server_password_label;
         private System.Windows.Forms.Label rsync_server_password_label;
         private System.Windows.Forms.Label rsync_server_username_label;
         private System.Windows.Forms.RichTextBox public_key;

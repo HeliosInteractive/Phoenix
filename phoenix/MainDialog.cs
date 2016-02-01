@@ -140,9 +140,7 @@ namespace phoenix
 
             section = "Remote";
 
-            rabbitmq_server_address.Text            = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.RabbitMQServerAddress),     Defaults.Remote.RabbitMQServerAddress);
-            rabbitmq_server_username.Text           = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.RabbitMQServerUsername),    Defaults.Remote.RabbitMQServerUsername);
-            rabbitmq_server_password.Text           = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.RabbitMQServerPassword),    Defaults.Remote.RabbitMQServerPassword);
+            mqtt_server_address.Text                = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.MqttServerAddress),     Defaults.Remote.MqttServerAddress);
             rsync_server_address.Text               = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.RSyncServerAddress),        Defaults.Remote.RSyncServerAddress);
             rsync_server_username.Text              = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.RSyncServerUsername),       Defaults.Remote.RSyncServerUsername);
             rsync_server_password.Text              = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.RSyncServerPassword),       Defaults.Remote.RSyncServerPassword);
@@ -466,30 +464,14 @@ namespace phoenix
             UpdateKeyPair();
         }
 
-        private void rabbitmq_server_address_TextChanged(object sender, EventArgs e)
+        private void mqtt_server_address_TextChanged(object sender, EventArgs e)
         {
             m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Remote.RabbitMQServerAddress),
-                Helpers.GetPropertyName(() => Defaults.Remote.RabbitMQServerAddress),
+                Helpers.GetClassName(() => Defaults.Remote.MqttServerAddress),
+                Helpers.GetPropertyName(() => Defaults.Remote.MqttServerAddress),
                 (sender as TextBox).Text);
 
             ValidateAsServerAddress(sender);
-        }
-
-        private void rabbitmq_server_username_TextChanged(object sender, EventArgs e)
-        {
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Remote.RabbitMQServerUsername),
-                Helpers.GetPropertyName(() => Defaults.Remote.RabbitMQServerUsername),
-                (sender as TextBox).Text);
-        }
-
-        private void rabbitmq_server_password_TextChanged(object sender, EventArgs e)
-        {
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Remote.RabbitMQServerPassword),
-                Helpers.GetPropertyName(() => Defaults.Remote.RabbitMQServerPassword),
-                (sender as TextBox).Text);
         }
 
         private void rsync_server_address_TextChanged(object sender, EventArgs e)
