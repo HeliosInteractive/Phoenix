@@ -27,7 +27,6 @@ namespace phoenix
         Process     m_Process       = null;
         bool        m_AlwaysOnTop   = false;
         bool        m_CrashIfUnresp = false;
-        bool        m_CrashScrshot  = false;
         bool        m_Monitoring    = false;
         const int   m_NumSamples    = 100;
         double[]    m_MemoryUsage   = new double[m_NumSamples];
@@ -136,14 +135,6 @@ namespace phoenix
         {
             get { return m_CrashIfUnresp; }
             set { m_CrashIfUnresp = value; }
-        }
-        /// <summary>
-        /// Takes a screen shot on crash
-        /// </summary>
-        public bool ScreenShotOnCrash
-        {
-            get { return m_CrashScrshot; }
-            set { m_CrashScrshot = value; }
         }
         /// <summary>
         /// Force main window of the process to be always on top
@@ -436,11 +427,6 @@ namespace phoenix
 
             OnProcessStopped();
             CallScript(m_CrashScript);
-
-            if (ScreenShotOnCrash)
-            {
-                ScreenCapture.TakeScreenShot();
-            }
 
             Task.Delay(1000 * DelaySeconds)
                 .ContinueWith( fn => ExecuteProcess() );
