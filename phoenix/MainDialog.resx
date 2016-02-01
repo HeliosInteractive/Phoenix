@@ -117,6 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="email_body.Text" xml:space="preserve">
+    <value>Helios Phoenix crash report,
+
+Instance of #MACHINE_IDENTITY# has encountered a crash. Attached are a screenshot of this machine at the time of crash and optionally a log file (if specified before).
+This machine is set to fetch updates from #RSYNC_ADDRESS# and obtain commands from #MQTT_ADDRESS#.
+
+This is an automated message, please do not responed.</value>
+  </data>
   <metadata name="process_monitor_timer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
