@@ -31,12 +31,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea11 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend11 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series11 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea12 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend12 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series12 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainDialog));
             this.main_tab = new System.Windows.Forms.TabControl();
             this.tab_local = new System.Windows.Forms.TabPage();
@@ -162,11 +162,14 @@
             // 
             // start_script
             // 
+            this.start_script.AllowDrop = true;
             this.start_script.Location = new System.Drawing.Point(193, 82);
             this.start_script.Name = "start_script";
             this.start_script.Size = new System.Drawing.Size(173, 20);
             this.start_script.TabIndex = 7;
             this.start_script.TextChanged += new System.EventHandler(this.start_script_TextChanged);
+            this.start_script.DragDrop += new System.Windows.Forms.DragEventHandler(this.DragDropAcceptFirstFile);
+            this.start_script.DragEnter += new System.Windows.Forms.DragEventHandler(this.DragEnterEffectChange);
             this.start_script.DoubleClick += new System.EventHandler(this.start_script_DoubleClick);
             // 
             // start_script_label
@@ -199,40 +202,40 @@
             // memory_chart
             // 
             this.memory_chart.BorderlineWidth = 0;
-            chartArea1.AxisX.IsMarginVisible = false;
-            chartArea1.AxisX.LabelStyle.Enabled = false;
-            chartArea1.AxisX.LineWidth = 0;
-            chartArea1.AxisX.MajorGrid.Enabled = false;
-            chartArea1.AxisX.MajorTickMark.Enabled = false;
-            chartArea1.AxisY.IsMarginVisible = false;
-            chartArea1.AxisY.LabelStyle.Enabled = false;
-            chartArea1.AxisY.LineWidth = 0;
-            chartArea1.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
-            chartArea1.AxisY.MajorTickMark.Enabled = false;
-            chartArea1.AxisY.Maximum = 1D;
-            chartArea1.AxisY.Minimum = 0D;
-            chartArea1.BackColor = System.Drawing.Color.Snow;
-            chartArea1.BorderWidth = 0;
-            chartArea1.Name = "metrics_chart_area";
-            chartArea1.Position.Auto = false;
-            chartArea1.Position.Height = 100F;
-            chartArea1.Position.Width = 100F;
-            this.memory_chart.ChartAreas.Add(chartArea1);
-            legend1.Alignment = System.Drawing.StringAlignment.Far;
-            legend1.BackColor = System.Drawing.Color.Transparent;
-            legend1.DockedToChartArea = "metrics_chart_area";
-            legend1.Name = "mem_legend";
-            this.memory_chart.Legends.Add(legend1);
+            chartArea11.AxisX.IsMarginVisible = false;
+            chartArea11.AxisX.LabelStyle.Enabled = false;
+            chartArea11.AxisX.LineWidth = 0;
+            chartArea11.AxisX.MajorGrid.Enabled = false;
+            chartArea11.AxisX.MajorTickMark.Enabled = false;
+            chartArea11.AxisY.IsMarginVisible = false;
+            chartArea11.AxisY.LabelStyle.Enabled = false;
+            chartArea11.AxisY.LineWidth = 0;
+            chartArea11.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
+            chartArea11.AxisY.MajorTickMark.Enabled = false;
+            chartArea11.AxisY.Maximum = 1D;
+            chartArea11.AxisY.Minimum = 0D;
+            chartArea11.BackColor = System.Drawing.Color.Snow;
+            chartArea11.BorderWidth = 0;
+            chartArea11.Name = "metrics_chart_area";
+            chartArea11.Position.Auto = false;
+            chartArea11.Position.Height = 100F;
+            chartArea11.Position.Width = 100F;
+            this.memory_chart.ChartAreas.Add(chartArea11);
+            legend11.Alignment = System.Drawing.StringAlignment.Far;
+            legend11.BackColor = System.Drawing.Color.Transparent;
+            legend11.DockedToChartArea = "metrics_chart_area";
+            legend11.Name = "mem_legend";
+            this.memory_chart.Legends.Add(legend11);
             this.memory_chart.Location = new System.Drawing.Point(193, 158);
             this.memory_chart.Name = "memory_chart";
             this.memory_chart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Berry;
-            series1.ChartArea = "metrics_chart_area";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series1.IsXValueIndexed = true;
-            series1.Legend = "mem_legend";
-            series1.LegendText = "% Memory Usage";
-            series1.Name = "memory_usage_series";
-            this.memory_chart.Series.Add(series1);
+            series11.ChartArea = "metrics_chart_area";
+            series11.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series11.IsXValueIndexed = true;
+            series11.Legend = "mem_legend";
+            series11.LegendText = "% Memory Usage";
+            series11.Name = "memory_usage_series";
+            this.memory_chart.Series.Add(series11);
             this.memory_chart.Size = new System.Drawing.Size(173, 76);
             this.memory_chart.TabIndex = 0;
             this.memory_chart.TabStop = false;
@@ -240,40 +243,40 @@
             // cpu_chart
             // 
             this.cpu_chart.BorderlineWidth = 0;
-            chartArea2.AxisX.IsMarginVisible = false;
-            chartArea2.AxisX.LabelStyle.Enabled = false;
-            chartArea2.AxisX.LineWidth = 0;
-            chartArea2.AxisX.MajorGrid.Enabled = false;
-            chartArea2.AxisX.MajorTickMark.Enabled = false;
-            chartArea2.AxisY.IsMarginVisible = false;
-            chartArea2.AxisY.LabelStyle.Enabled = false;
-            chartArea2.AxisY.LineWidth = 0;
-            chartArea2.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
-            chartArea2.AxisY.MajorTickMark.Enabled = false;
-            chartArea2.AxisY.Minimum = 0D;
-            chartArea2.BackColor = System.Drawing.Color.Snow;
-            chartArea2.BorderWidth = 0;
-            chartArea2.Name = "metrics_chart_area";
-            chartArea2.Position.Auto = false;
-            chartArea2.Position.Height = 100F;
-            chartArea2.Position.Width = 100F;
-            this.cpu_chart.ChartAreas.Add(chartArea2);
-            legend2.BackColor = System.Drawing.Color.Transparent;
-            legend2.DockedToChartArea = "metrics_chart_area";
-            legend2.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
-            legend2.IsTextAutoFit = false;
-            legend2.Name = "cpu_legend";
-            this.cpu_chart.Legends.Add(legend2);
+            chartArea12.AxisX.IsMarginVisible = false;
+            chartArea12.AxisX.LabelStyle.Enabled = false;
+            chartArea12.AxisX.LineWidth = 0;
+            chartArea12.AxisX.MajorGrid.Enabled = false;
+            chartArea12.AxisX.MajorTickMark.Enabled = false;
+            chartArea12.AxisY.IsMarginVisible = false;
+            chartArea12.AxisY.LabelStyle.Enabled = false;
+            chartArea12.AxisY.LineWidth = 0;
+            chartArea12.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
+            chartArea12.AxisY.MajorTickMark.Enabled = false;
+            chartArea12.AxisY.Minimum = 0D;
+            chartArea12.BackColor = System.Drawing.Color.Snow;
+            chartArea12.BorderWidth = 0;
+            chartArea12.Name = "metrics_chart_area";
+            chartArea12.Position.Auto = false;
+            chartArea12.Position.Height = 100F;
+            chartArea12.Position.Width = 100F;
+            this.cpu_chart.ChartAreas.Add(chartArea12);
+            legend12.BackColor = System.Drawing.Color.Transparent;
+            legend12.DockedToChartArea = "metrics_chart_area";
+            legend12.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
+            legend12.IsTextAutoFit = false;
+            legend12.Name = "cpu_legend";
+            this.cpu_chart.Legends.Add(legend12);
             this.cpu_chart.Location = new System.Drawing.Point(8, 158);
             this.cpu_chart.Name = "cpu_chart";
             this.cpu_chart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.SeaGreen;
-            series2.ChartArea = "metrics_chart_area";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series2.IsXValueIndexed = true;
-            series2.Legend = "cpu_legend";
-            series2.LegendText = "% CPU Usage";
-            series2.Name = "cpu_usage_series";
-            this.cpu_chart.Series.Add(series2);
+            series12.ChartArea = "metrics_chart_area";
+            series12.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series12.IsXValueIndexed = true;
+            series12.Legend = "cpu_legend";
+            series12.LegendText = "% CPU Usage";
+            series12.Name = "cpu_usage_series";
+            this.cpu_chart.Series.Add(series12);
             this.cpu_chart.Size = new System.Drawing.Size(173, 76);
             this.cpu_chart.TabIndex = 0;
             this.cpu_chart.TabStop = false;
@@ -349,11 +352,14 @@
             // 
             // script_to_execute_on_crash
             // 
+            this.script_to_execute_on_crash.AllowDrop = true;
             this.script_to_execute_on_crash.Location = new System.Drawing.Point(193, 57);
             this.script_to_execute_on_crash.Name = "script_to_execute_on_crash";
             this.script_to_execute_on_crash.Size = new System.Drawing.Size(173, 20);
             this.script_to_execute_on_crash.TabIndex = 5;
             this.script_to_execute_on_crash.TextChanged += new System.EventHandler(this.script_to_execute_on_crash_TextChanged);
+            this.script_to_execute_on_crash.DragDrop += new System.Windows.Forms.DragEventHandler(this.DragDropAcceptFirstFile);
+            this.script_to_execute_on_crash.DragEnter += new System.Windows.Forms.DragEventHandler(this.DragEnterEffectChange);
             this.script_to_execute_on_crash.DoubleClick += new System.EventHandler(this.script_to_execute_on_crash_DoubleClick);
             // 
             // crash_script_label
@@ -424,11 +430,14 @@
             // 
             // application_to_watch
             // 
+            this.application_to_watch.AllowDrop = true;
             this.application_to_watch.Location = new System.Drawing.Point(193, 7);
             this.application_to_watch.Name = "application_to_watch";
             this.application_to_watch.Size = new System.Drawing.Size(173, 20);
             this.application_to_watch.TabIndex = 1;
             this.application_to_watch.TextChanged += new System.EventHandler(this.application_to_watch_TextChanged);
+            this.application_to_watch.DragDrop += new System.Windows.Forms.DragEventHandler(this.DragDropAcceptFirstFile);
+            this.application_to_watch.DragEnter += new System.Windows.Forms.DragEventHandler(this.DragEnterEffectChange);
             this.application_to_watch.DoubleClick += new System.EventHandler(this.application_to_watch_DoubleClick);
             // 
             // remote_tab
@@ -698,12 +707,16 @@
             // 
             // attachment
             // 
+            this.attachment.AllowDrop = true;
             this.attachment.BackColor = System.Drawing.Color.White;
             this.attachment.Location = new System.Drawing.Point(8, 130);
             this.attachment.Name = "attachment";
             this.attachment.Size = new System.Drawing.Size(358, 20);
             this.attachment.TabIndex = 10;
             this.attachment.TextChanged += new System.EventHandler(this.attachment_TextChanged);
+            this.attachment.DragDrop += new System.Windows.Forms.DragEventHandler(this.DragDropAcceptFirstFile);
+            this.attachment.DragEnter += new System.Windows.Forms.DragEventHandler(this.DragEnterEffectChange);
+            this.attachment.DoubleClick += new System.EventHandler(this.attachment_DoubleClick);
             // 
             // email_body
             // 

@@ -681,5 +681,31 @@ namespace phoenix
                 Helpers.GetPropertyName(() => Defaults.Report.EmailBody),
                 (sender as TextBox).Text.Replace("\n", "<br>"));
         }
+
+        private void attachment_DoubleClick(object sender, EventArgs e)
+        {
+            m_FileDialog.Filter = "Any File (*.*)|*.*";
+            m_FileDialog.Title = "Select a file to attach";
+
+            if (m_FileDialog.ShowDialog() == DialogResult.OK)
+            {
+                attachment.Text = m_FileDialog.FileName;
+            }
+        }
+
+        private void DragDropAcceptFirstFile(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            if (files != null && files.Length != 0)
+            {
+                if (sender as TextBox != null)
+                    (sender as TextBox).Text = files[0];
+            }
+        }
+
+        private void DragEnterEffectChange(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.All;
+        }
     }
 }
