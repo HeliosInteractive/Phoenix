@@ -10,7 +10,7 @@ namespace phoenix
 
         public TextboxWriterTraceListener(TextBoxBase box, string name)
         {
-            Name = name;
+            base.Name = name;
             logbox = box;
         }
 

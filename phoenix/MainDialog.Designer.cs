@@ -17,6 +17,7 @@
             {
                 m_ProcessRunner.Dispose();
                 m_RemoteManager.Dispose();
+                m_ReportManager.Dispose();
                 components.Dispose();
             }
             base.Dispose(disposing);
@@ -327,7 +328,7 @@
             this.screenshot_button.TabIndex = 16;
             this.screenshot_button.Text = "Take a screenshot ( ALT+F9 )";
             this.screenshot_button.UseVisualStyleBackColor = true;
-            this.screenshot_button.Click += new System.EventHandler(this.screenshot_button_Click);
+            this.screenshot_button.Click += new System.EventHandler(this.OnScreenshotButtonClick);
             // 
             // enable_report_on_crash
             // 
@@ -541,7 +542,7 @@
             this.generate_new_keys.TabIndex = 11;
             this.generate_new_keys.Text = "Generate new key pair";
             this.generate_new_keys.UseVisualStyleBackColor = true;
-            this.generate_new_keys.Click += new System.EventHandler(this.generate_new_keys_Click);
+            this.generate_new_keys.Click += new System.EventHandler(this.OnGenerateNewKeysClick);
             // 
             // private_key_label
             // 
@@ -570,7 +571,7 @@
             this.private_key.Size = new System.Drawing.Size(173, 90);
             this.private_key.TabIndex = 10;
             this.private_key.Text = "";
-            this.private_key.TextChanged += new System.EventHandler(this.private_key_TextChanged);
+            this.private_key.TextChanged += new System.EventHandler(this.OnPrivateKeyTextChanged);
             // 
             // public_key
             // 
@@ -581,7 +582,7 @@
             this.public_key.Size = new System.Drawing.Size(173, 90);
             this.public_key.TabIndex = 9;
             this.public_key.Text = "";
-            this.public_key.TextChanged += new System.EventHandler(this.public_key_TextChanged);
+            this.public_key.TextChanged += new System.EventHandler(this.OnPublicKeyTextChanged);
             // 
             // rsync_server_password_label
             // 
@@ -833,14 +834,14 @@
             this.toggleUIToolStripMenuItem.Name = "toggleUIToolStripMenuItem";
             this.toggleUIToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
             this.toggleUIToolStripMenuItem.Text = "Toggle UI (ALT+F11)";
-            this.toggleUIToolStripMenuItem.Click += new System.EventHandler(this.toggleUIToolStripMenuItem_Click);
+            this.toggleUIToolStripMenuItem.Click += new System.EventHandler(this.OnToggleUIToolStripMenuItemClick);
             // 
             // exitPhoenixToolStripMenuItem
             // 
             this.exitPhoenixToolStripMenuItem.Name = "exitPhoenixToolStripMenuItem";
             this.exitPhoenixToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
             this.exitPhoenixToolStripMenuItem.Text = "Exit Phoenix";
-            this.exitPhoenixToolStripMenuItem.Click += new System.EventHandler(this.exitPhoenixToolStripMenuItem_Click);
+            this.exitPhoenixToolStripMenuItem.Click += new System.EventHandler(this.OnExitPhoenixToolStripMenuItemClick);
             // 
             // MainDialog
             // 

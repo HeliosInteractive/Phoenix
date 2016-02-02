@@ -104,7 +104,7 @@ namespace phoenix
                 catch
                 {
                     Logger.Warn(string.Format(
-                        "Failed to change INI entry type in section {0} and key {1}. Default value: {1}",
+                        "Failed to change INI entry type in section {0} and key {1}. Default value: {2}",
                         Section,
                         Key,
                         DefaultValue));

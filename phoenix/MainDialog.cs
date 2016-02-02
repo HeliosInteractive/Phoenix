@@ -2,7 +2,6 @@
 {
     using System;
     using System.IO;
-    using System.Linq;
     using System.Threading;
     using System.Reflection;
     using System.Diagnostics;
@@ -56,8 +55,10 @@
             m_ProcessRunner.ProcessStarted += ResetWatchButtonLabel;
             m_ProcessRunner.ProcessStopped += ResetWatchButtonLabel;
             m_ProcessRunner.ProcessStopped += SendCrashEmail;
+
             m_RemoteManager.OnConnectionOpened += ResetMqttConnectionLabel;
             m_RemoteManager.OnConnectionClosed += ResetMqttConnectionLabel;
+            m_RemoteManager.OnMessage += OnMqttMessage;
 
             HotkeyManager.Register(Handle);
 
@@ -368,20 +369,9 @@
             cpu_chart.Invalidate();
         }
 
-        private void screenshot_button_Click(object sender, EventArgs e)
-        {
-            ScreenCapture.TakeScreenShot();
-        }
-
-        private void toggleUIToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Visible = !Visible;
-        }
-
-        private void exitPhoenixToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
+        private void OnScreenshotButtonClick(object sender, EventArgs e) { ScreenCapture.TakeScreenShot(); }
+        private void OnToggleUIToolStripMenuItemClick(object sender, EventArgs e) { Visible = !Visible; }
+        private void OnExitPhoenixToolStripMenuItemClick(object sender, EventArgs e) { Application.Exit(); }
 
         protected override void SetVisibleCore(bool value)
         {
@@ -439,19 +429,19 @@
             }
         }
 
-        private void generate_new_keys_Click(object sender, EventArgs e)
+        private void OnGenerateNewKeysClick(object sender, EventArgs e)
         {
             RsyncClient.RegenerateKeys();
             UpdateKeyPair();
         }
 
-        private void public_key_TextChanged(object sender, EventArgs e)
+        private void OnPublicKeyTextChanged(object sender, EventArgs e)
         {
             if (public_key.Text != RsyncClient.PublicKey)
                 RsyncClient.PublicKey = public_key.Text;
         }
 
-        private void private_key_TextChanged(object sender, EventArgs e)
+        private void OnPrivateKeyTextChanged(object sender, EventArgs e)
         {
             if (private_key.Text != RsyncClient.PrivateKey)
                 RsyncClient.PrivateKey = private_key.Text;
@@ -470,6 +460,11 @@
         private void DragEnterEffectChange(object sender, DragEventArgs e)
         {
             e.Effect = DragDropEffects.All;
+        }
+
+        private void OnMqttMessage(string message, string topic)
+        {
+            Logger.Info(string.Format("MQTT message received: ({0}) from ({1}).", message, topic));
         }
     }
 }

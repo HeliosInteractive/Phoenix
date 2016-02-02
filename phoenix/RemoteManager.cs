@@ -10,9 +10,9 @@ namespace phoenix
         MqttClient  m_client;
         string      m_channel;
 
-        public Action           OnConnectionClosed;
-        public Action           OnConnectionOpened;
-        public Action<string>   OnMessage;
+        public Action                   OnConnectionClosed;
+        public Action                   OnConnectionOpened;
+        public Action<string, string>   OnMessage;
 
         public void Connect(string address, string channel)
         {
@@ -66,9 +66,9 @@ namespace phoenix
 
             Logger.Info(string.Format("MQTT message received: ({0}) from ({1}).",
                 msg, e.Topic));
-            
+
             if (OnMessage != null)
-                OnMessage(msg);
+                OnMessage(msg, e.Topic);
         }
 
         public bool Connected

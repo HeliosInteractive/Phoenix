@@ -8,7 +8,7 @@ using System.Globalization;
 
 namespace phoenix
 {
-    class ReportManager
+    class ReportManager : IDisposable
     {
         private SmtpClient      m_Smtp;
         private EmailValidator  m_Validator;
@@ -133,5 +133,27 @@ namespace phoenix
                 return match.Groups[1].Value + domainName;
             }
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing && m_Smtp != null)
+                {
+                    m_Smtp.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+        #endregion
     }
 }
