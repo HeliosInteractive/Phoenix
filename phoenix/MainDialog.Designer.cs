@@ -40,7 +40,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainDialog));
             this.main_tab = new System.Windows.Forms.TabControl();
             this.tab_local = new System.Windows.Forms.TabPage();
-            this.start_script = new System.Windows.Forms.TextBox();
+            this.script_to_execute_on_start = new System.Windows.Forms.TextBox();
             this.start_script_label = new System.Windows.Forms.Label();
             this.working_directory = new System.Windows.Forms.TextBox();
             this.working_directory_label = new System.Windows.Forms.Label();
@@ -51,7 +51,7 @@
             this.time_delay_before_launch = new System.Windows.Forms.TextBox();
             this.assume_crash_if_not_responsive = new System.Windows.Forms.CheckBox();
             this.screenshot_button = new System.Windows.Forms.Button();
-            this.enable_email_report_on_crash = new System.Windows.Forms.CheckBox();
+            this.enable_report_on_crash = new System.Windows.Forms.CheckBox();
             this.watch_button = new System.Windows.Forms.Button();
             this.script_to_execute_on_crash = new System.Windows.Forms.TextBox();
             this.crash_script_label = new System.Windows.Forms.Label();
@@ -130,7 +130,7 @@
             // 
             // tab_local
             // 
-            this.tab_local.Controls.Add(this.start_script);
+            this.tab_local.Controls.Add(this.script_to_execute_on_start);
             this.tab_local.Controls.Add(this.start_script_label);
             this.tab_local.Controls.Add(this.working_directory);
             this.tab_local.Controls.Add(this.working_directory_label);
@@ -141,7 +141,7 @@
             this.tab_local.Controls.Add(this.time_delay_before_launch);
             this.tab_local.Controls.Add(this.assume_crash_if_not_responsive);
             this.tab_local.Controls.Add(this.screenshot_button);
-            this.tab_local.Controls.Add(this.enable_email_report_on_crash);
+            this.tab_local.Controls.Add(this.enable_report_on_crash);
             this.tab_local.Controls.Add(this.watch_button);
             this.tab_local.Controls.Add(this.script_to_execute_on_crash);
             this.tab_local.Controls.Add(this.crash_script_label);
@@ -162,15 +162,15 @@
             // 
             // start_script
             // 
-            this.start_script.AllowDrop = true;
-            this.start_script.Location = new System.Drawing.Point(193, 82);
-            this.start_script.Name = "start_script";
-            this.start_script.Size = new System.Drawing.Size(173, 20);
-            this.start_script.TabIndex = 7;
-            this.start_script.TextChanged += new System.EventHandler(this.start_script_TextChanged);
-            this.start_script.DragDrop += new System.Windows.Forms.DragEventHandler(this.DragDropAcceptFirstFile);
-            this.start_script.DragEnter += new System.Windows.Forms.DragEventHandler(this.DragEnterEffectChange);
-            this.start_script.DoubleClick += new System.EventHandler(this.start_script_DoubleClick);
+            this.script_to_execute_on_start.AllowDrop = true;
+            this.script_to_execute_on_start.Location = new System.Drawing.Point(193, 82);
+            this.script_to_execute_on_start.Name = "start_script";
+            this.script_to_execute_on_start.Size = new System.Drawing.Size(173, 20);
+            this.script_to_execute_on_start.TabIndex = 7;
+            this.script_to_execute_on_start.TextChanged += new System.EventHandler(this.start_script_TextChanged);
+            this.script_to_execute_on_start.DragDrop += new System.Windows.Forms.DragEventHandler(this.DragDropAcceptFirstFile);
+            this.script_to_execute_on_start.DragEnter += new System.Windows.Forms.DragEventHandler(this.DragEnterEffectChange);
+            this.script_to_execute_on_start.DoubleClick += new System.EventHandler(this.start_script_DoubleClick);
             // 
             // start_script_label
             // 
@@ -331,14 +331,14 @@
             // 
             // enable_email_report_on_crash
             // 
-            this.enable_email_report_on_crash.AutoSize = true;
-            this.enable_email_report_on_crash.Location = new System.Drawing.Point(193, 258);
-            this.enable_email_report_on_crash.Name = "enable_email_report_on_crash";
-            this.enable_email_report_on_crash.Size = new System.Drawing.Size(160, 17);
-            this.enable_email_report_on_crash.TabIndex = 15;
-            this.enable_email_report_on_crash.Text = "Enable email report on crash";
-            this.enable_email_report_on_crash.UseVisualStyleBackColor = true;
-            this.enable_email_report_on_crash.CheckedChanged += new System.EventHandler(this.enable_report_on_crash_CheckedChanged);
+            this.enable_report_on_crash.AutoSize = true;
+            this.enable_report_on_crash.Location = new System.Drawing.Point(193, 258);
+            this.enable_report_on_crash.Name = "enable_email_report_on_crash";
+            this.enable_report_on_crash.Size = new System.Drawing.Size(160, 17);
+            this.enable_report_on_crash.TabIndex = 15;
+            this.enable_report_on_crash.Text = "Enable email report on crash";
+            this.enable_report_on_crash.UseVisualStyleBackColor = true;
+            this.enable_report_on_crash.CheckedChanged += new System.EventHandler(this.enable_report_on_crash_CheckedChanged);
             // 
             // watch_button
             // 
@@ -893,7 +893,7 @@
         private System.Windows.Forms.Label rsync_server_address_label;
         private System.Windows.Forms.TextBox rsync_server_address;
         private System.Windows.Forms.Button watch_button;
-        private System.Windows.Forms.CheckBox enable_email_report_on_crash;
+        private System.Windows.Forms.CheckBox enable_report_on_crash;
         private System.Windows.Forms.TabPage log;
         private System.Windows.Forms.RichTextBox log_box;
         private System.Windows.Forms.Button screenshot_button;
@@ -910,7 +910,7 @@
         private System.Windows.Forms.ToolStripMenuItem exitPhoenixToolStripMenuItem;
         private System.Windows.Forms.Label working_directory_label;
         private System.Windows.Forms.TextBox working_directory;
-        private System.Windows.Forms.TextBox start_script;
+        private System.Windows.Forms.TextBox script_to_execute_on_start;
         private System.Windows.Forms.Label start_script_label;
         private System.Windows.Forms.TextBox rsync_server_password;
         private System.Windows.Forms.TextBox rsync_server_username;

@@ -7,6 +7,9 @@
     using System.Windows.Forms;
     using System.Security.Cryptography;
     using System.Windows.Forms.DataVisualization.Charting;
+    using System.Linq.Expressions;
+    using System.Linq;
+    using System.Reflection;
 
     public partial class MainDialog : Form
     {
@@ -125,7 +128,7 @@
 
         private void ResetReportTabStatus()
         {
-            (report_tab as Control).Enabled = enable_email_report_on_crash.Checked;
+            (report_tab as Control).Enabled = enable_report_on_crash.Checked;
         }
 
         private bool EnsureSingleInstanceMode()
@@ -180,39 +183,39 @@
 
         private void ApplySettings()
         {
-            string section = "Local";
-
-            application_to_watch.Text               = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Local.ApplicationToWtach),         Defaults.Local.ApplicationToWtach);
-            command_line_arguments.Text             = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Local.CommandLineArguments),       Defaults.Local.CommandLineArguments);
-            time_delay_before_launch.Text           = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Local.TimeDelayBeforeLaunch),      Defaults.Local.TimeDelayBeforeLaunch).ToString();
-            maximum_retries.Text                    = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Local.MaximumRetries),             Defaults.Local.MaximumRetries).ToString();
-            script_to_execute_on_crash.Text         = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Local.ScriptToExecuteOnCrash),     Defaults.Local.ScriptToExecuteOnCrash);
-            force_always_on_top.Checked             = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Local.ForceAlwaysOnTop),           Defaults.Local.ForceAlwaysOnTop);
-            start_minimized.Checked                 = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Local.StartMinimized),             Defaults.Local.StartMinimized);
-            assume_crash_if_not_responsive.Checked  = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Local.AssumeCrashIfNotResponsive), Defaults.Local.AssumeCrashIfNotResponsive);
-            enable_email_report_on_crash.Checked    = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Local.EnableReportOnCrash),        Defaults.Local.EnableReportOnCrash);
-            start_script.Text                       = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Local.ScriptToExecuteOnStart),     Defaults.Local.ScriptToExecuteOnStart);
-            working_directory.Text                  = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Local.WorkingDirectory),           Defaults.Local.WorkingDirectory);
-
-            section = "Remote";
-
-            mqtt_server_address.Text                = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.MqttServerAddress),         Defaults.Remote.MqttServerAddress);
-            rsync_server_address.Text               = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.RSyncServerAddress),        Defaults.Remote.RSyncServerAddress);
-            rsync_server_username.Text              = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.RSyncServerUsername),       Defaults.Remote.RSyncServerUsername);
-            rsync_server_password.Text              = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.RSyncServerPassword),       Defaults.Remote.RSyncServerPassword);
-            remote_directory.Text                   = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.RemoteDirectory),           Defaults.Remote.RemoteDirectory);
-            local_directory.Text                    = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Remote.LocalDirectory),            Defaults.Remote.LocalDirectory);
-
-            section = "Report";
-
-            gmail_address.Text                      = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Report.FromEmailAddress),          Defaults.Report.FromEmailAddress);
-            gmail_password.Text                     = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Report.FromEmailPassword),         Defaults.Report.FromEmailPassword);
-            email_address.Text                      = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Report.ToEmailAddress),            Defaults.Report.ToEmailAddress);
-            email_subject.Text                      = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Report.EmailSubject),              Defaults.Report.EmailSubject);
-            email_body.Text                         = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Report.EmailBody),                 Defaults.Report.EmailBody).Replace("<br>", "\n");
-            attachment.Text                         = m_AppSettings.Read(section, Helpers.GetPropertyName(() => Defaults.Report.EmailAttachment),           Defaults.Report.EmailAttachment);
+            foreach (Type nested_type in typeof(Defaults).GetNestedTypes())
+            {
+                foreach(FieldInfo field in nested_type.GetFields())
+                {
+                    ApplyControlSetting(nested_type.Name, field.Name);
+                }
+            }
 
             UpdateKeyPair();
+        }
+
+        void ApplyControlSetting(string section, string name)
+        {
+            object value    = typeof(Defaults).GetNestedType(section).GetField(name).GetValue(null);
+            string element  = string.Concat(name.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x.ToString() : x.ToString())).ToLower();
+            Control control = null;
+
+            FieldInfo field = typeof(MainDialog).GetField(element, BindingFlags.Instance | BindingFlags.NonPublic);
+            if (field != null) {
+                control = field.GetValue(this) as Control;
+            }
+
+            if (control == null) {
+                Logger.Error(string.Format("Could not lookup control element of entry {0} in {1}", name, section));
+                return;
+            }
+
+            if (control as TextBoxBase != null)
+                ((TextBoxBase)control).Text = m_AppSettings.Read(section, name, value.ToString().Replace("<br>", "\n"));
+            else if (control as CheckBox != null)
+                ((CheckBox)control).Checked = m_AppSettings.Read(section, name, (bool)value);
+            else
+                throw new ArgumentException();
         }
 
         private void UpdateKeyPair()
@@ -241,8 +244,8 @@
             }
 
             m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Local.ApplicationToWtach),
-                Helpers.GetPropertyName(() => Defaults.Local.ApplicationToWtach),
+                Helpers.GetClassName(() => Defaults.Local.ApplicationToWatch),
+                Helpers.GetPropertyName(() => Defaults.Local.ApplicationToWatch),
                 (sender as TextBox).Text);
 
             m_ProcessRunner.ProcessPath = application_to_watch.Text;
@@ -265,7 +268,10 @@
                 Helpers.GetPropertyName(() => Defaults.Local.TimeDelayBeforeLaunch),
                 (sender as TextBox).Text);
 
-            m_ProcessRunner.DelaySeconds = Int32.Parse(time_delay_before_launch.Text);
+            if (String.IsNullOrEmpty(time_delay_before_launch.Text))
+                m_ProcessRunner.DelaySeconds = 0;
+            else
+                m_ProcessRunner.DelaySeconds = Int32.Parse(time_delay_before_launch.Text.Trim());
         }
 
         private void force_always_on_top_CheckedChanged(object sender, EventArgs e)
@@ -324,7 +330,10 @@
                 Helpers.GetPropertyName(() => Defaults.Local.MaximumRetries),
                 (sender as TextBox).Text);
 
-            m_ProcessRunner.Attempts = Int32.Parse(maximum_retries.Text);
+            if (String.IsNullOrEmpty(maximum_retries.Text))
+                m_ProcessRunner.Attempts = 0;
+            else
+                m_ProcessRunner.Attempts = Int32.Parse(maximum_retries.Text);
         }
 
         private void watch_button_Click(object sender, EventArgs e)
@@ -469,15 +478,15 @@
 
         private void start_script_TextChanged(object sender, EventArgs e)
         {
-            start_script.Text =
-                ProcessRunner.CleanStringAsPath(start_script.Text);
+            script_to_execute_on_start.Text =
+                ProcessRunner.CleanStringAsPath(script_to_execute_on_start.Text);
 
             m_AppSettings.Store(
                 Helpers.GetClassName(() => Defaults.Local.ScriptToExecuteOnStart),
                 Helpers.GetPropertyName(() => Defaults.Local.ScriptToExecuteOnStart),
                 (sender as TextBox).Text);
 
-            m_ProcessRunner.StartScript = start_script.Text;
+            m_ProcessRunner.StartScript = script_to_execute_on_start.Text;
         }
 
         private void application_to_watch_DoubleClick(object sender, EventArgs e)
@@ -519,7 +528,7 @@
 
             if (m_FileDialog.ShowDialog() == DialogResult.OK)
             {
-                start_script.Text = m_FileDialog.FileName;
+                script_to_execute_on_start.Text = m_FileDialog.FileName;
             }
         }
 
@@ -542,8 +551,8 @@
         private void rsync_server_address_TextChanged(object sender, EventArgs e)
         {
             m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Remote.RSyncServerAddress),
-                Helpers.GetPropertyName(() => Defaults.Remote.RSyncServerAddress),
+                Helpers.GetClassName(() => Defaults.Remote.RsyncServerAddress),
+                Helpers.GetPropertyName(() => Defaults.Remote.RsyncServerAddress),
                 (sender as TextBox).Text);
 
             ValidateAsServerAddress(sender);
@@ -552,16 +561,16 @@
         private void rsync_server_username_TextChanged(object sender, EventArgs e)
         {
             m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Remote.RSyncServerUsername),
-                Helpers.GetPropertyName(() => Defaults.Remote.RSyncServerUsername),
+                Helpers.GetClassName(() => Defaults.Remote.RsyncServerUsername),
+                Helpers.GetPropertyName(() => Defaults.Remote.RsyncServerUsername),
                 (sender as TextBox).Text);
         }
 
         private void rsync_server_password_TextChanged(object sender, EventArgs e)
         {
             m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Remote.RSyncServerPassword),
-                Helpers.GetPropertyName(() => Defaults.Remote.RSyncServerPassword),
+                Helpers.GetClassName(() => Defaults.Remote.RsyncServerPassword),
+                Helpers.GetPropertyName(() => Defaults.Remote.RsyncServerPassword),
                 (sender as TextBox).Text);
         }
 
