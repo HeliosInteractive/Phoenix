@@ -1,11 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Net;
-using System.Xml;
-using System.Reflection;
-
-namespace phoenix
+﻿namespace phoenix
 {
+    using System;
+    using System.IO;
+    using System.Net;
+    using System.Xml;
+    using System.Reflection;
+
     class UpdateManager
     {
         Version m_CurrentVersion;

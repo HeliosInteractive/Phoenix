@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-
-namespace phoenix
+﻿namespace phoenix
 {
+    using System;
+    using System.IO;
+    using System.Text;
+    using System.Collections.Generic;
+
     /// <summary>
     /// A class that can read and write to INI files using Kernel32 API
     /// It can auto save the read entries automatically to an INI file.

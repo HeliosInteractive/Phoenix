@@ -3,6 +3,8 @@
     using System;
     using System.Reflection;
 
+    // NOTE: Keep section names and key names unique.
+    // NOTE: Keep controls' names the same as keys but underscored
     class Defaults
     {
         public class Local

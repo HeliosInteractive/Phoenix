@@ -1,13 +1,13 @@
-﻿using System;
-using System.IO;
-using System.Net;
-using System.Linq;
-using System.Net.Mail;
-using System.Text.RegularExpressions;
-using System.Globalization;
-
-namespace phoenix
+﻿namespace phoenix
 {
+    using System;
+    using System.IO;
+    using System.Net;
+    using System.Linq;
+    using System.Net.Mail;
+    using System.Globalization;
+    using System.Text.RegularExpressions;
+
     class ReportManager : IDisposable
     {
         private SmtpClient      m_Smtp;

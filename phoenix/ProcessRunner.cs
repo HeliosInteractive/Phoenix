@@ -1,10 +1,10 @@
-﻿using System;
-using System.IO;
-using System.Diagnostics;
-using System.Threading.Tasks;
-
-namespace phoenix
+﻿namespace phoenix
 {
+    using System;
+    using System.IO;
+    using System.Diagnostics;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// A class that runs and monitors a given process
     /// </summary>

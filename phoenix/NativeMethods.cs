@@ -1,7 +1,7 @@
-﻿using System.Runtime.InteropServices;
-
-namespace phoenix
+﻿namespace phoenix
 {
+    using System.Runtime.InteropServices;
+
     internal static class NativeMethods
     {
         /// <summary>

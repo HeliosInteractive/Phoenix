@@ -1,10 +1,10 @@
-﻿using System;
-using System.Text;
-using uPLibrary.Networking.M2Mqtt;
-using uPLibrary.Networking.M2Mqtt.Messages;
-
-namespace phoenix
+﻿namespace phoenix
 {
+    using System;
+    using System.Text;
+    using uPLibrary.Networking.M2Mqtt;
+    using uPLibrary.Networking.M2Mqtt.Messages;
+
     class RemoteManager : IDisposable
     {
         MqttClient  m_client;

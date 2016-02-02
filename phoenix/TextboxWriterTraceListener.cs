@@ -1,9 +1,9 @@
-﻿using System;
-using System.Diagnostics;
-using System.Windows.Forms;
-
-namespace phoenix
+﻿namespace phoenix
 {
+    using System;
+    using System.Diagnostics;
+    using System.Windows.Forms;
+
     class TextboxWriterTraceListener : TraceListener
     {
         private TextBoxBase logbox;

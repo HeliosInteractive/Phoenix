@@ -1,7 +1,7 @@
-﻿using System.Diagnostics;
-
-namespace phoenix
+﻿namespace phoenix
 {
+    using System.Diagnostics;
+
     class Logger
     {
         public static void Info(string msg)

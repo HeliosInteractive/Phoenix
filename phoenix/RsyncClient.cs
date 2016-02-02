@@ -1,11 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
-using System.Diagnostics;
-using System.IO.Compression;
-
-namespace phoenix
+﻿namespace phoenix
 {
+    using System;
+    using System.IO;
+    using System.Reflection;
+    using System.Diagnostics;
+    using System.IO.Compression;
+
     class RsyncClient
     {
         private static string s_ClientDirectory = string.Format("{0}phoenix{1}", Path.GetTempPath(), Path.DirectorySeparatorChar);

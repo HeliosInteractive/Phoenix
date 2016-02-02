@@ -1,11 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Drawing.Imaging;
-
-namespace phoenix
+﻿namespace phoenix
 {
+    using System;
+    using System.IO;
+    using System.Drawing;
+    using System.Windows.Forms;
+    using System.Drawing.Imaging;
+
     class ScreenCapture
     {
         public static string ScreenShotDirectory
