@@ -49,7 +49,7 @@ namespace phoenix
                 message.Subject = subject;
                 message.Body = body;
 
-                if (attachment != string.Empty && File.Exists(attachment))
+                if (!String.IsNullOrEmpty(attachment) && File.Exists(attachment))
                     message.Attachments.Add(new Attachment(attachment));
 
                 ScreenCapture.TakeScreenShot();
