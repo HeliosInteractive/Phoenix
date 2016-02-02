@@ -1,5 +1,10 @@
 ﻿namespace phoenix
 {
+    using System;
+    using System.Reflection;
+    using System.Globalization;
+    using System.Text.RegularExpressions;
+
     class Defaults
     {
         public class Local
@@ -34,6 +39,23 @@
             public static string EmailSubject = "(#MACHINE_IDENTITY#) Helios Phoenix crash report";
             public static string EmailBody = "Helios Phoenix crash report,<br><br>Instance of #MACHINE_IDENTITY# has encountered a crash. Attached are a screen shot of this machine at the time of crash and optionally a log file (if specified before).<br>This machine is set to fetch updates from #RSYNC_ADDRESS# and obtain commands from #MQTT_ADDRESS#.<br><br>This is an automated message, please do not respond.";
             public static string EmailAttachment = "";
+        }
+
+        public static string GetSectionByKey(string key)
+        {
+            if (key.Contains("_"))
+                key = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(key).Replace("_", string.Empty);
+
+            foreach (Type nested_type in typeof(Defaults).GetNestedTypes())
+            {
+                foreach (FieldInfo field in nested_type.GetFields())
+                {
+                    if (field.Name == key)
+                        return nested_type.Name;
+                }
+            }
+
+            return string.Empty;
         }
     }
 }

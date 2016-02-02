@@ -31,12 +31,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea8 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend8 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainDialog));
             this.main_tab = new System.Windows.Forms.TabControl();
             this.tab_local = new System.Windows.Forms.TabPage();
@@ -83,8 +83,6 @@
             this.rsync_server_address_label = new System.Windows.Forms.Label();
             this.mqtt_server_address = new System.Windows.Forms.TextBox();
             this.rabbitmq_server_address_label = new System.Windows.Forms.Label();
-            this.log = new System.Windows.Forms.TabPage();
-            this.log_box = new System.Windows.Forms.RichTextBox();
             this.report_tab = new System.Windows.Forms.TabPage();
             this.attachment_label = new System.Windows.Forms.Label();
             this.attachment = new System.Windows.Forms.TextBox();
@@ -98,6 +96,8 @@
             this.email_address_label = new System.Windows.Forms.Label();
             this.gmail_address = new System.Windows.Forms.TextBox();
             this.gmail_address_label = new System.Windows.Forms.Label();
+            this.log = new System.Windows.Forms.TabPage();
+            this.log_box = new System.Windows.Forms.RichTextBox();
             this.process_monitor_timer = new System.Windows.Forms.Timer(this.components);
             this.notify_icon = new System.Windows.Forms.NotifyIcon(this.components);
             this.context_menu_strip = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -108,8 +108,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.memory_chart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cpu_chart)).BeginInit();
             this.remote_tab.SuspendLayout();
-            this.log.SuspendLayout();
             this.report_tab.SuspendLayout();
+            this.log.SuspendLayout();
             this.context_menu_strip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -160,14 +160,14 @@
             this.tab_local.Text = "Local";
             this.tab_local.UseVisualStyleBackColor = true;
             // 
-            // start_script
+            // script_to_execute_on_start
             // 
             this.script_to_execute_on_start.AllowDrop = true;
             this.script_to_execute_on_start.Location = new System.Drawing.Point(193, 82);
-            this.script_to_execute_on_start.Name = "start_script";
+            this.script_to_execute_on_start.Name = "script_to_execute_on_start";
             this.script_to_execute_on_start.Size = new System.Drawing.Size(173, 20);
             this.script_to_execute_on_start.TabIndex = 7;
-            this.script_to_execute_on_start.TextChanged += new System.EventHandler(this.start_script_TextChanged);
+            this.script_to_execute_on_start.TextChanged += new System.EventHandler(this.StoreControlValue);
             this.script_to_execute_on_start.DragDrop += new System.Windows.Forms.DragEventHandler(this.DragDropAcceptFirstFile);
             this.script_to_execute_on_start.DragEnter += new System.Windows.Forms.DragEventHandler(this.DragEnterEffectChange);
             this.script_to_execute_on_start.DoubleClick += new System.EventHandler(this.start_script_DoubleClick);
@@ -187,7 +187,7 @@
             this.working_directory.Name = "working_directory";
             this.working_directory.Size = new System.Drawing.Size(173, 20);
             this.working_directory.TabIndex = 3;
-            this.working_directory.TextChanged += new System.EventHandler(this.working_directory_TextChanged);
+            this.working_directory.TextChanged += new System.EventHandler(this.StoreControlValue);
             this.working_directory.DoubleClick += new System.EventHandler(this.working_directory_DoubleClick);
             // 
             // working_directory_label
@@ -202,40 +202,40 @@
             // memory_chart
             // 
             this.memory_chart.BorderlineWidth = 0;
-            chartArea1.AxisX.IsMarginVisible = false;
-            chartArea1.AxisX.LabelStyle.Enabled = false;
-            chartArea1.AxisX.LineWidth = 0;
-            chartArea1.AxisX.MajorGrid.Enabled = false;
-            chartArea1.AxisX.MajorTickMark.Enabled = false;
-            chartArea1.AxisY.IsMarginVisible = false;
-            chartArea1.AxisY.LabelStyle.Enabled = false;
-            chartArea1.AxisY.LineWidth = 0;
-            chartArea1.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
-            chartArea1.AxisY.MajorTickMark.Enabled = false;
-            chartArea1.AxisY.Maximum = 1D;
-            chartArea1.AxisY.Minimum = 0D;
-            chartArea1.BackColor = System.Drawing.Color.Snow;
-            chartArea1.BorderWidth = 0;
-            chartArea1.Name = "metrics_chart_area";
-            chartArea1.Position.Auto = false;
-            chartArea1.Position.Height = 100F;
-            chartArea1.Position.Width = 100F;
-            this.memory_chart.ChartAreas.Add(chartArea1);
-            legend1.Alignment = System.Drawing.StringAlignment.Far;
-            legend1.BackColor = System.Drawing.Color.Transparent;
-            legend1.DockedToChartArea = "metrics_chart_area";
-            legend1.Name = "mem_legend";
-            this.memory_chart.Legends.Add(legend1);
+            chartArea7.AxisX.IsMarginVisible = false;
+            chartArea7.AxisX.LabelStyle.Enabled = false;
+            chartArea7.AxisX.LineWidth = 0;
+            chartArea7.AxisX.MajorGrid.Enabled = false;
+            chartArea7.AxisX.MajorTickMark.Enabled = false;
+            chartArea7.AxisY.IsMarginVisible = false;
+            chartArea7.AxisY.LabelStyle.Enabled = false;
+            chartArea7.AxisY.LineWidth = 0;
+            chartArea7.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
+            chartArea7.AxisY.MajorTickMark.Enabled = false;
+            chartArea7.AxisY.Maximum = 1D;
+            chartArea7.AxisY.Minimum = 0D;
+            chartArea7.BackColor = System.Drawing.Color.Snow;
+            chartArea7.BorderWidth = 0;
+            chartArea7.Name = "metrics_chart_area";
+            chartArea7.Position.Auto = false;
+            chartArea7.Position.Height = 100F;
+            chartArea7.Position.Width = 100F;
+            this.memory_chart.ChartAreas.Add(chartArea7);
+            legend7.Alignment = System.Drawing.StringAlignment.Far;
+            legend7.BackColor = System.Drawing.Color.Transparent;
+            legend7.DockedToChartArea = "metrics_chart_area";
+            legend7.Name = "mem_legend";
+            this.memory_chart.Legends.Add(legend7);
             this.memory_chart.Location = new System.Drawing.Point(193, 158);
             this.memory_chart.Name = "memory_chart";
             this.memory_chart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Berry;
-            series1.ChartArea = "metrics_chart_area";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series1.IsXValueIndexed = true;
-            series1.Legend = "mem_legend";
-            series1.LegendText = "% Memory Usage";
-            series1.Name = "memory_usage_series";
-            this.memory_chart.Series.Add(series1);
+            series7.ChartArea = "metrics_chart_area";
+            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series7.IsXValueIndexed = true;
+            series7.Legend = "mem_legend";
+            series7.LegendText = "% Memory Usage";
+            series7.Name = "memory_usage_series";
+            this.memory_chart.Series.Add(series7);
             this.memory_chart.Size = new System.Drawing.Size(173, 76);
             this.memory_chart.TabIndex = 0;
             this.memory_chart.TabStop = false;
@@ -243,40 +243,40 @@
             // cpu_chart
             // 
             this.cpu_chart.BorderlineWidth = 0;
-            chartArea2.AxisX.IsMarginVisible = false;
-            chartArea2.AxisX.LabelStyle.Enabled = false;
-            chartArea2.AxisX.LineWidth = 0;
-            chartArea2.AxisX.MajorGrid.Enabled = false;
-            chartArea2.AxisX.MajorTickMark.Enabled = false;
-            chartArea2.AxisY.IsMarginVisible = false;
-            chartArea2.AxisY.LabelStyle.Enabled = false;
-            chartArea2.AxisY.LineWidth = 0;
-            chartArea2.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
-            chartArea2.AxisY.MajorTickMark.Enabled = false;
-            chartArea2.AxisY.Minimum = 0D;
-            chartArea2.BackColor = System.Drawing.Color.Snow;
-            chartArea2.BorderWidth = 0;
-            chartArea2.Name = "metrics_chart_area";
-            chartArea2.Position.Auto = false;
-            chartArea2.Position.Height = 100F;
-            chartArea2.Position.Width = 100F;
-            this.cpu_chart.ChartAreas.Add(chartArea2);
-            legend2.BackColor = System.Drawing.Color.Transparent;
-            legend2.DockedToChartArea = "metrics_chart_area";
-            legend2.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
-            legend2.IsTextAutoFit = false;
-            legend2.Name = "cpu_legend";
-            this.cpu_chart.Legends.Add(legend2);
+            chartArea8.AxisX.IsMarginVisible = false;
+            chartArea8.AxisX.LabelStyle.Enabled = false;
+            chartArea8.AxisX.LineWidth = 0;
+            chartArea8.AxisX.MajorGrid.Enabled = false;
+            chartArea8.AxisX.MajorTickMark.Enabled = false;
+            chartArea8.AxisY.IsMarginVisible = false;
+            chartArea8.AxisY.LabelStyle.Enabled = false;
+            chartArea8.AxisY.LineWidth = 0;
+            chartArea8.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
+            chartArea8.AxisY.MajorTickMark.Enabled = false;
+            chartArea8.AxisY.Minimum = 0D;
+            chartArea8.BackColor = System.Drawing.Color.Snow;
+            chartArea8.BorderWidth = 0;
+            chartArea8.Name = "metrics_chart_area";
+            chartArea8.Position.Auto = false;
+            chartArea8.Position.Height = 100F;
+            chartArea8.Position.Width = 100F;
+            this.cpu_chart.ChartAreas.Add(chartArea8);
+            legend8.BackColor = System.Drawing.Color.Transparent;
+            legend8.DockedToChartArea = "metrics_chart_area";
+            legend8.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
+            legend8.IsTextAutoFit = false;
+            legend8.Name = "cpu_legend";
+            this.cpu_chart.Legends.Add(legend8);
             this.cpu_chart.Location = new System.Drawing.Point(8, 158);
             this.cpu_chart.Name = "cpu_chart";
             this.cpu_chart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.SeaGreen;
-            series2.ChartArea = "metrics_chart_area";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series2.IsXValueIndexed = true;
-            series2.Legend = "cpu_legend";
-            series2.LegendText = "% CPU Usage";
-            series2.Name = "cpu_usage_series";
-            this.cpu_chart.Series.Add(series2);
+            series8.ChartArea = "metrics_chart_area";
+            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series8.IsXValueIndexed = true;
+            series8.Legend = "cpu_legend";
+            series8.LegendText = "% CPU Usage";
+            series8.Name = "cpu_usage_series";
+            this.cpu_chart.Series.Add(series8);
             this.cpu_chart.Size = new System.Drawing.Size(173, 76);
             this.cpu_chart.TabIndex = 0;
             this.cpu_chart.TabStop = false;
@@ -296,8 +296,8 @@
             this.maximum_retries.Name = "maximum_retries";
             this.maximum_retries.Size = new System.Drawing.Size(81, 20);
             this.maximum_retries.TabIndex = 11;
-            this.maximum_retries.TextChanged += new System.EventHandler(this.maximum_retries_TextChanged);
-            this.maximum_retries.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.maximum_retries_KeyPress);
+            this.maximum_retries.TextChanged += new System.EventHandler(this.StoreControlValue);
+            this.maximum_retries.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FilterDigitKeys);
             // 
             // time_delay_before_launch
             // 
@@ -305,8 +305,8 @@
             this.time_delay_before_launch.Name = "time_delay_before_launch";
             this.time_delay_before_launch.Size = new System.Drawing.Size(81, 20);
             this.time_delay_before_launch.TabIndex = 10;
-            this.time_delay_before_launch.TextChanged += new System.EventHandler(this.time_delay_before_launch_TextChanged);
-            this.time_delay_before_launch.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.time_delay_before_launch_KeyPress);
+            this.time_delay_before_launch.TextChanged += new System.EventHandler(this.StoreControlValue);
+            this.time_delay_before_launch.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FilterDigitKeys);
             // 
             // assume_crash_if_not_responsive
             // 
@@ -317,7 +317,7 @@
             this.assume_crash_if_not_responsive.TabIndex = 14;
             this.assume_crash_if_not_responsive.Text = "Assume crash if not responsive";
             this.assume_crash_if_not_responsive.UseVisualStyleBackColor = true;
-            this.assume_crash_if_not_responsive.CheckedChanged += new System.EventHandler(this.assume_crash_if_not_responsive_CheckedChanged);
+            this.assume_crash_if_not_responsive.CheckedChanged += new System.EventHandler(this.StoreControlValue);
             // 
             // screenshot_button
             // 
@@ -329,16 +329,16 @@
             this.screenshot_button.UseVisualStyleBackColor = true;
             this.screenshot_button.Click += new System.EventHandler(this.screenshot_button_Click);
             // 
-            // enable_email_report_on_crash
+            // enable_report_on_crash
             // 
             this.enable_report_on_crash.AutoSize = true;
             this.enable_report_on_crash.Location = new System.Drawing.Point(193, 258);
-            this.enable_report_on_crash.Name = "enable_email_report_on_crash";
+            this.enable_report_on_crash.Name = "enable_report_on_crash";
             this.enable_report_on_crash.Size = new System.Drawing.Size(160, 17);
             this.enable_report_on_crash.TabIndex = 15;
             this.enable_report_on_crash.Text = "Enable email report on crash";
             this.enable_report_on_crash.UseVisualStyleBackColor = true;
-            this.enable_report_on_crash.CheckedChanged += new System.EventHandler(this.enable_report_on_crash_CheckedChanged);
+            this.enable_report_on_crash.CheckedChanged += new System.EventHandler(this.StoreControlValue);
             // 
             // watch_button
             // 
@@ -357,7 +357,7 @@
             this.script_to_execute_on_crash.Name = "script_to_execute_on_crash";
             this.script_to_execute_on_crash.Size = new System.Drawing.Size(173, 20);
             this.script_to_execute_on_crash.TabIndex = 5;
-            this.script_to_execute_on_crash.TextChanged += new System.EventHandler(this.script_to_execute_on_crash_TextChanged);
+            this.script_to_execute_on_crash.TextChanged += new System.EventHandler(this.StoreControlValue);
             this.script_to_execute_on_crash.DragDrop += new System.Windows.Forms.DragEventHandler(this.DragDropAcceptFirstFile);
             this.script_to_execute_on_crash.DragEnter += new System.Windows.Forms.DragEventHandler(this.DragEnterEffectChange);
             this.script_to_execute_on_crash.DoubleClick += new System.EventHandler(this.script_to_execute_on_crash_DoubleClick);
@@ -380,7 +380,7 @@
             this.start_minimized.TabIndex = 13;
             this.start_minimized.Text = "Start Phoenix minimized";
             this.start_minimized.UseVisualStyleBackColor = true;
-            this.start_minimized.CheckedChanged += new System.EventHandler(this.start_minimized_CheckedChanged);
+            this.start_minimized.CheckedChanged += new System.EventHandler(this.StoreControlValue);
             // 
             // force_always_on_top
             // 
@@ -391,7 +391,7 @@
             this.force_always_on_top.TabIndex = 12;
             this.force_always_on_top.Text = "Keep app on top ( ALT+F12 )";
             this.force_always_on_top.UseVisualStyleBackColor = true;
-            this.force_always_on_top.CheckedChanged += new System.EventHandler(this.force_always_on_top_CheckedChanged);
+            this.force_always_on_top.CheckedChanged += new System.EventHandler(this.StoreControlValue);
             // 
             // time_delay_label
             // 
@@ -408,7 +408,7 @@
             this.command_line_arguments.Name = "command_line_arguments";
             this.command_line_arguments.Size = new System.Drawing.Size(173, 20);
             this.command_line_arguments.TabIndex = 9;
-            this.command_line_arguments.TextChanged += new System.EventHandler(this.command_line_arguments_TextChanged);
+            this.command_line_arguments.TextChanged += new System.EventHandler(this.StoreControlValue);
             // 
             // cmd_line_label
             // 
@@ -435,7 +435,7 @@
             this.application_to_watch.Name = "application_to_watch";
             this.application_to_watch.Size = new System.Drawing.Size(173, 20);
             this.application_to_watch.TabIndex = 1;
-            this.application_to_watch.TextChanged += new System.EventHandler(this.application_to_watch_TextChanged);
+            this.application_to_watch.TextChanged += new System.EventHandler(this.StoreControlValue);
             this.application_to_watch.DragDrop += new System.Windows.Forms.DragEventHandler(this.DragDropAcceptFirstFile);
             this.application_to_watch.DragEnter += new System.Windows.Forms.DragEventHandler(this.DragEnterEffectChange);
             this.application_to_watch.DoubleClick += new System.EventHandler(this.application_to_watch_DoubleClick);
@@ -495,7 +495,7 @@
             this.local_directory.Name = "local_directory";
             this.local_directory.Size = new System.Drawing.Size(173, 20);
             this.local_directory.TabIndex = 8;
-            this.local_directory.TextChanged += new System.EventHandler(this.local_directory_TextChanged);
+            this.local_directory.TextChanged += new System.EventHandler(this.StoreControlValue);
             this.local_directory.DoubleClick += new System.EventHandler(this.local_directory_DoubleClick);
             // 
             // remote_directory
@@ -504,7 +504,7 @@
             this.remote_directory.Name = "remote_directory";
             this.remote_directory.Size = new System.Drawing.Size(173, 20);
             this.remote_directory.TabIndex = 7;
-            this.remote_directory.TextChanged += new System.EventHandler(this.remote_directory_TextChanged);
+            this.remote_directory.TextChanged += new System.EventHandler(this.StoreControlValue);
             // 
             // local_directory_label
             // 
@@ -607,7 +607,7 @@
             this.rsync_server_password.Name = "rsync_server_password";
             this.rsync_server_password.Size = new System.Drawing.Size(81, 20);
             this.rsync_server_password.TabIndex = 6;
-            this.rsync_server_password.TextChanged += new System.EventHandler(this.rsync_server_password_TextChanged);
+            this.rsync_server_password.TextChanged += new System.EventHandler(this.StoreControlValue);
             // 
             // rsync_server_username
             // 
@@ -615,7 +615,7 @@
             this.rsync_server_username.Name = "rsync_server_username";
             this.rsync_server_username.Size = new System.Drawing.Size(81, 20);
             this.rsync_server_username.TabIndex = 5;
-            this.rsync_server_username.TextChanged += new System.EventHandler(this.rsync_server_username_TextChanged);
+            this.rsync_server_username.TextChanged += new System.EventHandler(this.StoreControlValue);
             // 
             // rsync_server_address
             // 
@@ -623,7 +623,7 @@
             this.rsync_server_address.Name = "rsync_server_address";
             this.rsync_server_address.Size = new System.Drawing.Size(173, 20);
             this.rsync_server_address.TabIndex = 4;
-            this.rsync_server_address.TextChanged += new System.EventHandler(this.rsync_server_address_TextChanged);
+            this.rsync_server_address.TextChanged += new System.EventHandler(this.StoreControlValue);
             // 
             // rsync_server_address_label
             // 
@@ -641,7 +641,7 @@
             this.mqtt_server_address.Name = "mqtt_server_address";
             this.mqtt_server_address.Size = new System.Drawing.Size(173, 20);
             this.mqtt_server_address.TabIndex = 1;
-            this.mqtt_server_address.TextChanged += new System.EventHandler(this.mqtt_server_address_TextChanged);
+            this.mqtt_server_address.TextChanged += new System.EventHandler(this.StoreControlValue);
             // 
             // rabbitmq_server_address_label
             // 
@@ -651,28 +651,6 @@
             this.rabbitmq_server_address_label.Size = new System.Drawing.Size(155, 13);
             this.rabbitmq_server_address_label.TabIndex = 2;
             this.rabbitmq_server_address_label.Text = "MQTT server address and port:";
-            // 
-            // log
-            // 
-            this.log.Controls.Add(this.log_box);
-            this.log.Location = new System.Drawing.Point(4, 22);
-            this.log.Name = "log";
-            this.log.Padding = new System.Windows.Forms.Padding(3);
-            this.log.Size = new System.Drawing.Size(376, 312);
-            this.log.TabIndex = 4;
-            this.log.Text = "Log";
-            this.log.UseVisualStyleBackColor = true;
-            // 
-            // log_box
-            // 
-            this.log_box.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.log_box.Location = new System.Drawing.Point(3, 3);
-            this.log_box.Name = "log_box";
-            this.log_box.ReadOnly = true;
-            this.log_box.Size = new System.Drawing.Size(370, 306);
-            this.log_box.TabIndex = 0;
-            this.log_box.Text = "";
-            this.log_box.WordWrap = false;
             // 
             // report_tab
             // 
@@ -713,7 +691,7 @@
             this.attachment.Name = "attachment";
             this.attachment.Size = new System.Drawing.Size(358, 20);
             this.attachment.TabIndex = 10;
-            this.attachment.TextChanged += new System.EventHandler(this.attachment_TextChanged);
+            this.attachment.TextChanged += new System.EventHandler(this.StoreControlValue);
             this.attachment.DragDrop += new System.Windows.Forms.DragEventHandler(this.DragDropAcceptFirstFile);
             this.attachment.DragEnter += new System.Windows.Forms.DragEventHandler(this.DragEnterEffectChange);
             this.attachment.DoubleClick += new System.EventHandler(this.attachment_DoubleClick);
@@ -725,7 +703,7 @@
             this.email_body.Size = new System.Drawing.Size(358, 125);
             this.email_body.TabIndex = 12;
             this.email_body.Text = resources.GetString("email_body.Text");
-            this.email_body.TextChanged += new System.EventHandler(this.email_body_TextChanged);
+            this.email_body.TextChanged += new System.EventHandler(this.StoreControlValue);
             // 
             // email_body_label
             // 
@@ -752,7 +730,7 @@
             this.email_subject.Name = "email_subject";
             this.email_subject.Size = new System.Drawing.Size(173, 20);
             this.email_subject.TabIndex = 8;
-            this.email_subject.TextChanged += new System.EventHandler(this.email_subject_TextChanged);
+            this.email_subject.TextChanged += new System.EventHandler(this.StoreControlValue);
             // 
             // gmail_password
             // 
@@ -762,7 +740,7 @@
             this.gmail_password.PasswordChar = '*';
             this.gmail_password.Size = new System.Drawing.Size(173, 20);
             this.gmail_password.TabIndex = 6;
-            this.gmail_password.TextChanged += new System.EventHandler(this.gmail_password_TextChanged);
+            this.gmail_password.TextChanged += new System.EventHandler(this.StoreControlValue);
             // 
             // gmail_password_label
             // 
@@ -780,7 +758,7 @@
             this.email_address.Name = "email_address";
             this.email_address.Size = new System.Drawing.Size(173, 20);
             this.email_address.TabIndex = 4;
-            this.email_address.TextChanged += new System.EventHandler(this.email_address_TextChanged);
+            this.email_address.TextChanged += new System.EventHandler(this.StoreControlValue);
             // 
             // email_address_label
             // 
@@ -798,7 +776,7 @@
             this.gmail_address.Name = "gmail_address";
             this.gmail_address.Size = new System.Drawing.Size(173, 20);
             this.gmail_address.TabIndex = 2;
-            this.gmail_address.TextChanged += new System.EventHandler(this.gmail_address_TextChanged);
+            this.gmail_address.TextChanged += new System.EventHandler(this.StoreControlValue);
             // 
             // gmail_address_label
             // 
@@ -808,6 +786,28 @@
             this.gmail_address_label.Size = new System.Drawing.Size(150, 13);
             this.gmail_address_label.TabIndex = 1;
             this.gmail_address_label.Text = "GMAIL email address [FROM]:";
+            // 
+            // log
+            // 
+            this.log.Controls.Add(this.log_box);
+            this.log.Location = new System.Drawing.Point(4, 22);
+            this.log.Name = "log";
+            this.log.Padding = new System.Windows.Forms.Padding(3);
+            this.log.Size = new System.Drawing.Size(376, 312);
+            this.log.TabIndex = 4;
+            this.log.Text = "Log";
+            this.log.UseVisualStyleBackColor = true;
+            // 
+            // log_box
+            // 
+            this.log_box.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.log_box.Location = new System.Drawing.Point(3, 3);
+            this.log_box.Name = "log_box";
+            this.log_box.ReadOnly = true;
+            this.log_box.Size = new System.Drawing.Size(370, 306);
+            this.log_box.TabIndex = 0;
+            this.log_box.Text = "";
+            this.log_box.WordWrap = false;
             // 
             // process_monitor_timer
             // 
@@ -866,9 +866,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.cpu_chart)).EndInit();
             this.remote_tab.ResumeLayout(false);
             this.remote_tab.PerformLayout();
-            this.log.ResumeLayout(false);
             this.report_tab.ResumeLayout(false);
             this.report_tab.PerformLayout();
+            this.log.ResumeLayout(false);
             this.context_menu_strip.ResumeLayout(false);
             this.ResumeLayout(false);
 

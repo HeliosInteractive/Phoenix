@@ -2,14 +2,13 @@
 {
     using System;
     using System.IO;
+    using System.Linq;
     using System.Threading;
+    using System.Reflection;
     using System.Diagnostics;
     using System.Windows.Forms;
     using System.Security.Cryptography;
     using System.Windows.Forms.DataVisualization.Charting;
-    using System.Linq.Expressions;
-    using System.Linq;
-    using System.Reflection;
 
     public partial class MainDialog : Form
     {
@@ -224,116 +223,88 @@
             private_key.Text = RsyncClient.PrivateKey;
         }
 
-        private void time_delay_before_launch_KeyPress(object sender, KeyPressEventArgs e)
+        private void FilterDigitKeys(object sender, KeyPressEventArgs e)
         {
             if (!(Char.IsDigit(e.KeyChar) || (e.KeyChar == (char)Keys.Back) || (e.KeyChar == (char)Keys.Delete)))
                 e.Handled = true;
         }
 
-        private void application_to_watch_TextChanged(object sender, EventArgs e)
+        private void StoreControlValue(object sender, EventArgs e)
         {
-            application_to_watch.Text = 
-                ProcessRunner.CleanStringAsPath(application_to_watch.Text);
+            if (sender as Control == null)
+                return;
 
-            if (application_to_watch.Text != string.Empty &&
-                File.Exists(application_to_watch.Text) &&
-                m_PhoenixReady)
-            {
-                working_directory.Text =
-                    Path.GetDirectoryName(application_to_watch.Text);
+            Control control = (Control)sender;
+            OnControlValidate(control);
+
+            if (control as TextBoxBase != null)
+                m_AppSettings.Store(control.Name, Defaults.GetSectionByKey(control.Name), (sender as TextBox).Text);
+            else if (control as CheckBox != null)
+                m_AppSettings.Store(control.Name, Defaults.GetSectionByKey(control.Name), (sender as CheckBox).Checked);
+            else
+                throw new ArgumentException();
+
+            OnControlValueChanged(control);
+        }
+
+        private void OnControlValidate(Control control)
+        {
+            if (control == application_to_watch) {
+                application_to_watch.Text =
+                    ProcessRunner.CleanStringAsPath(application_to_watch.Text);
+
+                if (application_to_watch.Text != string.Empty &&
+                    File.Exists(application_to_watch.Text) &&
+                    m_PhoenixReady)
+                {
+                    working_directory.Text =
+                        Path.GetDirectoryName(application_to_watch.Text);
+                }
+            } else if (control == script_to_execute_on_crash ||
+                control == script_to_execute_on_start ||
+                control == remote_directory ||
+                control == working_directory) {
+                (control as TextBoxBase).Text =
+                    ProcessRunner.CleanStringAsPath((control as TextBoxBase).Text);
+            } else if (control == local_directory) {
+                local_directory.Text =
+                    ProcessRunner.CleanStringAsPath(local_directory.Text);
+                local_directory.Text =
+                    RsyncClient.PathToCygwinPath(local_directory.Text);
             }
-
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Local.ApplicationToWatch),
-                Helpers.GetPropertyName(() => Defaults.Local.ApplicationToWatch),
-                (sender as TextBox).Text);
-
-            m_ProcessRunner.ProcessPath = application_to_watch.Text;
         }
 
-        private void command_line_arguments_TextChanged(object sender, EventArgs e)
+        private void OnControlValueChanged(Control control)
         {
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Local.CommandLineArguments),
-                Helpers.GetPropertyName(() => Defaults.Local.CommandLineArguments),
-                (sender as TextBox).Text);
-
-            m_ProcessRunner.CommandLine = command_line_arguments.Text;
-        }
-
-        private void time_delay_before_launch_TextChanged(object sender, EventArgs e)
-        {
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Local.TimeDelayBeforeLaunch),
-                Helpers.GetPropertyName(() => Defaults.Local.TimeDelayBeforeLaunch),
-                (sender as TextBox).Text);
-
-            if (String.IsNullOrEmpty(time_delay_before_launch.Text))
-                m_ProcessRunner.DelaySeconds = 0;
-            else
-                m_ProcessRunner.DelaySeconds = Int32.Parse(time_delay_before_launch.Text.Trim());
-        }
-
-        private void force_always_on_top_CheckedChanged(object sender, EventArgs e)
-        {
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Local.ForceAlwaysOnTop),
-                Helpers.GetPropertyName(() => Defaults.Local.ForceAlwaysOnTop),
-                (sender as CheckBox).Checked);
-
-            m_ProcessRunner.ForceAlwaysOnTop = force_always_on_top.Checked;
-        }
-
-        private void assume_crash_if_not_responsive_CheckedChanged(object sender, EventArgs e)
-        {
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Local.AssumeCrashIfNotResponsive),
-                Helpers.GetPropertyName(() => Defaults.Local.AssumeCrashIfNotResponsive),
-                (sender as CheckBox).Checked);
-
-            m_ProcessRunner.AssumeCrashIfNotResponsive = assume_crash_if_not_responsive.Checked;
-        }
-
-        private void enable_report_on_crash_CheckedChanged(object sender, EventArgs e)
-        {
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Local.EnableReportOnCrash),
-                Helpers.GetPropertyName(() => Defaults.Local.EnableReportOnCrash),
-                (sender as CheckBox).Checked);
-
-            ResetReportTabStatus();
-        }
-
-        private void script_to_execute_on_crash_TextChanged(object sender, EventArgs e)
-        {
-            script_to_execute_on_crash.Text =
-                ProcessRunner.CleanStringAsPath(script_to_execute_on_crash.Text);
-
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Local.ScriptToExecuteOnCrash),
-                Helpers.GetPropertyName(() => Defaults.Local.ScriptToExecuteOnCrash),
-                (sender as TextBox).Text);
-
-            m_ProcessRunner.CrashScript = script_to_execute_on_crash.Text;
-        }
-
-        private void maximum_retries_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!(Char.IsDigit(e.KeyChar) || (e.KeyChar == (char)Keys.Back) || (e.KeyChar == (char)Keys.Delete)))
-                e.Handled = true;
-        }
-
-        private void maximum_retries_TextChanged(object sender, EventArgs e)
-        {
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Local.MaximumRetries),
-                Helpers.GetPropertyName(() => Defaults.Local.MaximumRetries),
-                (sender as TextBox).Text);
-
-            if (String.IsNullOrEmpty(maximum_retries.Text))
-                m_ProcessRunner.Attempts = 0;
-            else
-                m_ProcessRunner.Attempts = Int32.Parse(maximum_retries.Text);
+            if (control == command_line_arguments) {
+                m_ProcessRunner.CommandLine = command_line_arguments.Text;
+            } else if (control == force_always_on_top) {
+                m_ProcessRunner.ForceAlwaysOnTop = force_always_on_top.Checked;
+            } else if (control == time_delay_before_launch) {
+                if (String.IsNullOrEmpty(time_delay_before_launch.Text.Trim()))
+                    m_ProcessRunner.DelaySeconds = 0;
+                else
+                    m_ProcessRunner.DelaySeconds = Int32.Parse(time_delay_before_launch.Text);
+            } else if (control == assume_crash_if_not_responsive) {
+                m_ProcessRunner.AssumeCrashIfNotResponsive = assume_crash_if_not_responsive.Checked;
+            } else if (control == enable_report_on_crash) {
+                ResetReportTabStatus();
+            } else if (control == maximum_retries) {
+                if (String.IsNullOrEmpty(maximum_retries.Text))
+                    m_ProcessRunner.Attempts = 0;
+                else
+                    m_ProcessRunner.Attempts = Int32.Parse(maximum_retries.Text);
+            } else if (control == mqtt_server_address) {
+                m_RemoteManager.Connect(mqtt_server_address.Text, "/helios/phoenix");
+            } else if (control == application_to_watch) {
+                m_ProcessRunner.ProcessPath = application_to_watch.Text;
+            } else if (control == script_to_execute_on_crash) {
+                m_ProcessRunner.CrashScript = script_to_execute_on_crash.Text;
+            } else if (control == working_directory) {
+                m_ProcessRunner.WorkingDirectory = working_directory.Text;
+            } else if (control == script_to_execute_on_start) {
+                m_ProcessRunner.StartScript = script_to_execute_on_start.Text;
+            }
         }
 
         private void watch_button_Click(object sender, EventArgs e)
@@ -413,14 +384,6 @@
             ScreenCapture.TakeScreenShot();
         }
 
-        private void start_minimized_CheckedChanged(object sender, EventArgs e)
-        {
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Local.StartMinimized),
-                Helpers.GetPropertyName(() => Defaults.Local.StartMinimized),
-                (sender as CheckBox).Checked);
-        }
-
         private void toggleUIToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Visible = !Visible;
@@ -461,32 +424,6 @@
             }
 
             base.WndProc(ref m);
-        }
-
-        private void working_directory_TextChanged(object sender, EventArgs e)
-        {
-            working_directory.Text =
-                ProcessRunner.CleanStringAsPath(working_directory.Text);
-
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Local.WorkingDirectory),
-                Helpers.GetPropertyName(() => Defaults.Local.WorkingDirectory),
-                (sender as TextBox).Text);
-
-            m_ProcessRunner.WorkingDirectory = working_directory.Text;
-        }
-
-        private void start_script_TextChanged(object sender, EventArgs e)
-        {
-            script_to_execute_on_start.Text =
-                ProcessRunner.CleanStringAsPath(script_to_execute_on_start.Text);
-
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Local.ScriptToExecuteOnStart),
-                Helpers.GetPropertyName(() => Defaults.Local.ScriptToExecuteOnStart),
-                (sender as TextBox).Text);
-
-            m_ProcessRunner.StartScript = script_to_execute_on_start.Text;
         }
 
         private void application_to_watch_DoubleClick(object sender, EventArgs e)
@@ -538,90 +475,6 @@
             UpdateKeyPair();
         }
 
-        private void mqtt_server_address_TextChanged(object sender, EventArgs e)
-        {
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Remote.MqttServerAddress),
-                Helpers.GetPropertyName(() => Defaults.Remote.MqttServerAddress),
-                (sender as TextBox).Text);
-
-            m_RemoteManager.Connect((sender as TextBox).Text, "/helios/phoenix");
-        }
-
-        private void rsync_server_address_TextChanged(object sender, EventArgs e)
-        {
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Remote.RsyncServerAddress),
-                Helpers.GetPropertyName(() => Defaults.Remote.RsyncServerAddress),
-                (sender as TextBox).Text);
-
-            ValidateAsServerAddress(sender);
-        }
-
-        private void rsync_server_username_TextChanged(object sender, EventArgs e)
-        {
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Remote.RsyncServerUsername),
-                Helpers.GetPropertyName(() => Defaults.Remote.RsyncServerUsername),
-                (sender as TextBox).Text);
-        }
-
-        private void rsync_server_password_TextChanged(object sender, EventArgs e)
-        {
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Remote.RsyncServerPassword),
-                Helpers.GetPropertyName(() => Defaults.Remote.RsyncServerPassword),
-                (sender as TextBox).Text);
-        }
-
-        private void remote_directory_TextChanged(object sender, EventArgs e)
-        {
-            remote_directory.Text =
-                ProcessRunner.CleanStringAsPath(remote_directory.Text);
-
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Remote.RemoteDirectory),
-                Helpers.GetPropertyName(() => Defaults.Remote.RemoteDirectory),
-                (sender as TextBox).Text);
-        }
-
-        private void local_directory_TextChanged(object sender, EventArgs e)
-        {
-            local_directory.Text =
-                ProcessRunner.CleanStringAsPath(local_directory.Text);
-
-            local_directory.Text = 
-                RsyncClient.PathToCygwinPath(local_directory.Text);
-
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Remote.LocalDirectory),
-                Helpers.GetPropertyName(() => Defaults.Remote.LocalDirectory),
-                (sender as TextBox).Text);
-        }
-
-        private bool ServerAdressValid(string address)
-        {
-            if (address == string.Empty) return false;
-            try
-            {
-                Uri uri = new Uri("dummy://" + address);
-                return uri.DnsSafeHost != string.Empty && uri.Port > 0;
-            }
-            catch { /* no-op */ }
-            return false;
-        }
-
-        private void ValidateAsServerAddress(object sender)
-        {
-            TextBox tb = (sender as TextBox);
-            if (tb == null) return;
-
-            if (!ServerAdressValid(tb.Text))
-                tb.BackColor = System.Drawing.Color.Salmon;
-            else
-                tb.BackColor = System.Drawing.Color.LightGreen;
-        }
-
         private void public_key_TextChanged(object sender, EventArgs e)
         {
             if (public_key.Text != RsyncClient.PublicKey)
@@ -642,54 +495,6 @@
             {
                 local_directory.Text = m_FolderDialog.SelectedPath;
             }
-        }
-
-        private void gmail_address_TextChanged(object sender, EventArgs e)
-        {
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Report.FromEmailAddress),
-                Helpers.GetPropertyName(() => Defaults.Report.FromEmailAddress),
-                (sender as TextBox).Text);
-        }
-
-        private void email_address_TextChanged(object sender, EventArgs e)
-        {
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Report.ToEmailAddress),
-                Helpers.GetPropertyName(() => Defaults.Report.ToEmailAddress),
-                (sender as TextBox).Text);
-        }
-
-        private void gmail_password_TextChanged(object sender, EventArgs e)
-        {
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Report.FromEmailPassword),
-                Helpers.GetPropertyName(() => Defaults.Report.FromEmailPassword),
-                (sender as TextBox).Text);
-        }
-
-        private void email_subject_TextChanged(object sender, EventArgs e)
-        {
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Report.EmailSubject),
-                Helpers.GetPropertyName(() => Defaults.Report.EmailSubject),
-                (sender as TextBox).Text);
-        }
-
-        private void attachment_TextChanged(object sender, EventArgs e)
-        {
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Report.EmailAttachment),
-                Helpers.GetPropertyName(() => Defaults.Report.EmailAttachment),
-                (sender as TextBox).Text);
-        }
-
-        private void email_body_TextChanged(object sender, EventArgs e)
-        {
-            m_AppSettings.Store(
-                Helpers.GetClassName(() => Defaults.Report.EmailBody),
-                Helpers.GetPropertyName(() => Defaults.Report.EmailBody),
-                (sender as TextBox).Text.Replace("\n", "<br>"));
         }
 
         private void attachment_DoubleClick(object sender, EventArgs e)
