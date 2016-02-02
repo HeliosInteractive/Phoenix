@@ -4,7 +4,7 @@
     {
         public class Local
         {
-            public static string ApplicationToWtach = "";
+            public static string ApplicationToWatch = "";
             public static string CommandLineArguments = "";
             public static string ScriptToExecuteOnCrash = "";
             public static string ScriptToExecuteOnStart = "";
@@ -20,9 +20,9 @@
         public class Remote
         {
             public static string MqttServerAddress = "test.mosquitto.org";
-            public static string RSyncServerAddress = "";
-            public static string RSyncServerUsername = "";
-            public static string RSyncServerPassword = "";
+            public static string RsyncServerAddress = "";
+            public static string RsyncServerUsername = "";
+            public static string RsyncServerPassword = "";
             public static string RemoteDirectory = "";
             public static string LocalDirectory = "";
         }
