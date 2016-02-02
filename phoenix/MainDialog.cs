@@ -16,7 +16,6 @@
         private ProcessRunner       m_ProcessRunner;
         private OpenFileDialog      m_FileDialog;
         private FolderBrowserDialog m_FolderDialog;
-        private bool                m_PauseMonitor = false;
         private bool                m_PhoenixReady = false;
         private Series              m_CpuUsageSeries;
         private Series              m_MemoryUsageSeries;
@@ -28,10 +27,10 @@
         public MainDialog()
         {
             InitializeComponent();
-            HandleCreated += MainDialog_HandleCreated;
+            HandleCreated += OnHandleCreated;
         }
 
-        private void MainDialog_HandleCreated(object sender, EventArgs e)
+        private void OnHandleCreated(object sender, EventArgs e)
         {
             SetupTracer();
 
@@ -184,7 +183,7 @@
         {
             foreach (Type nested_type in typeof(Defaults).GetNestedTypes())
             {
-                foreach(FieldInfo field in nested_type.GetFields())
+                foreach (FieldInfo field in nested_type.GetFields())
                 {
                     ApplyControlSetting(nested_type.Name, field.Name);
                 }
@@ -196,7 +195,7 @@
         void ApplyControlSetting(string section, string name)
         {
             object value    = typeof(Defaults).GetNestedType(section).GetField(name).GetValue(null);
-            string element  = string.Concat(name.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x.ToString() : x.ToString())).ToLower();
+            string element  = name.ToUnderScore();
             Control control = null;
 
             FieldInfo field = typeof(MainDialog).GetField(element, BindingFlags.Instance | BindingFlags.NonPublic);
@@ -231,18 +230,20 @@
 
         private void StoreControlValue(object sender, EventArgs e)
         {
-            if (sender as Control == null)
+            if ((sender as Control) == null)
                 return;
 
             Control control = (Control)sender;
+            string control_name_cc = control.Name.ToCamelCase();
+
             OnControlValidate(control);
 
             if (control as TextBoxBase != null)
-                m_AppSettings.Store(control.Name, Defaults.GetSectionByKey(control.Name), (sender as TextBox).Text);
+                m_AppSettings.Store(Defaults.GetSectionByKey(control_name_cc), control_name_cc, (sender as TextBox).Text.Replace("\n", "<br>"));
             else if (control as CheckBox != null)
-                m_AppSettings.Store(control.Name, Defaults.GetSectionByKey(control.Name), (sender as CheckBox).Checked);
+                m_AppSettings.Store(Defaults.GetSectionByKey(control_name_cc), control_name_cc, (sender as CheckBox).Checked);
             else
-                throw new ArgumentException();
+                Logger.Error("Control type is not supported.");
 
             OnControlValueChanged(control);
         }
@@ -352,11 +353,9 @@
             }
         }
 
-        private void process_monitor_timer_Tick(object sender, EventArgs e)
+        private void OnApplicationTick(object sender, EventArgs e)
         {
-            if (!m_PauseMonitor)
-                m_ProcessRunner.Monitor();
-
+            m_ProcessRunner.Monitor();
             m_ProcessRunner.UpdateMetrics();
 
             m_MemoryUsageSeries.Points.Clear();
@@ -367,16 +366,6 @@
 
             memory_chart.Invalidate();
             cpu_chart.Invalidate();
-        }
-
-        private void MainDialog_Activated(object sender, EventArgs e)
-        {
-            m_PauseMonitor = true;
-        }
-
-        private void MainDialog_Deactivate(object sender, EventArgs e)
-        {
-            m_PauseMonitor = false;
         }
 
         private void screenshot_button_Click(object sender, EventArgs e)
@@ -426,46 +415,27 @@
             base.WndProc(ref m);
         }
 
-        private void application_to_watch_DoubleClick(object sender, EventArgs e)
+        private void SelectFileDialog(object sender, EventArgs e)
         {
-            m_FileDialog.Filter = "Windows Executable (*.exe)|*.exe";
-            m_FileDialog.Title = "Select application to watch";
+            if (sender == application_to_watch)
+                m_FileDialog.Filter = "Windows Executable (*.exe)|*.exe";
+            else
+                m_FileDialog.Filter = string.Empty;
 
-            if (m_FileDialog.ShowDialog() == DialogResult.OK)
+            m_FileDialog.Title = "Please select a file to continue";
+
+            if (m_FileDialog.ShowDialog() == DialogResult.OK && (sender as TextBoxBase) != null)
             {
-                application_to_watch.Text = m_FileDialog.FileName;
+                (sender as TextBoxBase).Text = m_FileDialog.FileName;
             }
         }
-
-        private void working_directory_DoubleClick(object sender, EventArgs e)
+        private void SelectFolderDialog(object sender, EventArgs e)
         {
-            m_FolderDialog.Description = "Select working directory";
+            m_FolderDialog.Description = "Please select a folder to continue";
 
-            if (m_FolderDialog.ShowDialog() == DialogResult.OK)
+            if (m_FolderDialog.ShowDialog() == DialogResult.OK && (sender as TextBoxBase) != null)
             {
-                working_directory.Text = m_FolderDialog.SelectedPath;
-            }
-        }
-
-        private void script_to_execute_on_crash_DoubleClick(object sender, EventArgs e)
-        {
-            m_FileDialog.Filter = string.Empty;
-            m_FileDialog.Title = "Select crash script";
-
-            if (m_FileDialog.ShowDialog() == DialogResult.OK)
-            {
-                script_to_execute_on_crash.Text = m_FileDialog.FileName;
-            }
-        }
-
-        private void start_script_DoubleClick(object sender, EventArgs e)
-        {
-            m_FileDialog.Filter = string.Empty;
-            m_FileDialog.Title = "Select start script";
-
-            if (m_FileDialog.ShowDialog() == DialogResult.OK)
-            {
-                script_to_execute_on_start.Text = m_FileDialog.FileName;
+                (sender as TextBoxBase).Text = m_FolderDialog.SelectedPath;
             }
         }
 
@@ -485,27 +455,6 @@
         {
             if (private_key.Text != RsyncClient.PrivateKey)
                 RsyncClient.PrivateKey = private_key.Text;
-        }
-
-        private void local_directory_DoubleClick(object sender, EventArgs e)
-        {
-            m_FolderDialog.Description = "Select local directory to synchronize";
-
-            if (m_FolderDialog.ShowDialog() == DialogResult.OK)
-            {
-                local_directory.Text = m_FolderDialog.SelectedPath;
-            }
-        }
-
-        private void attachment_DoubleClick(object sender, EventArgs e)
-        {
-            m_FileDialog.Filter = "Any File (*.*)|*.*";
-            m_FileDialog.Title = "Select a file to attach";
-
-            if (m_FileDialog.ShowDialog() == DialogResult.OK)
-            {
-                attachment.Text = m_FileDialog.FileName;
-            }
         }
 
         private void DragDropAcceptFirstFile(object sender, DragEventArgs e)

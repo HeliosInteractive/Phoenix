@@ -77,7 +77,7 @@ namespace phoenix
             if (to_be_stored.StartsWith("\"") && to_be_stored.EndsWith("\""))
                 to_be_stored = string.Format("\"{0}\"", to_be_stored);
 
-            m_Settings[Section][Key] = to_be_stored.Replace("\n", "<br>");
+            m_Settings[Section][Key] = to_be_stored;
         }
 
         /// <summary>

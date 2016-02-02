@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Defaults.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="HotkeyManager.cs" />
     <Compile Include="IniSettings.cs" />
     <Compile Include="Logger.cs" />

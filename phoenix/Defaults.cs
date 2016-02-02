@@ -2,8 +2,6 @@
 {
     using System;
     using System.Reflection;
-    using System.Globalization;
-    using System.Text.RegularExpressions;
 
     class Defaults
     {
@@ -43,9 +41,6 @@
 
         public static string GetSectionByKey(string key)
         {
-            if (key.Contains("_"))
-                key = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(key).Replace("_", string.Empty);
-
             foreach (Type nested_type in typeof(Defaults).GetNestedTypes())
             {
                 foreach (FieldInfo field in nested_type.GetFields())
@@ -55,6 +50,7 @@
                 }
             }
 
+            Logger.Warn(string.Format("Key {0} not found in default settings.", key));
             return string.Empty;
         }
     }
