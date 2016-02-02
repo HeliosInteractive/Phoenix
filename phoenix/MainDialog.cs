@@ -1,13 +1,13 @@
-﻿using System;
-using System.IO;
-using System.Threading;
-using System.Diagnostics;
-using System.Windows.Forms;
-using System.Security.Cryptography;
-using System.Windows.Forms.DataVisualization.Charting;
-
-namespace phoenix
+﻿namespace phoenix
 {
+    using System;
+    using System.IO;
+    using System.Threading;
+    using System.Diagnostics;
+    using System.Windows.Forms;
+    using System.Security.Cryptography;
+    using System.Windows.Forms.DataVisualization.Charting;
+
     public partial class MainDialog : Form
     {
         private IniSettings         m_AppSettings;
@@ -21,23 +21,25 @@ namespace phoenix
         static Mutex                m_SingleInstanceMutex;
         private UpdateManager       m_UpdateManager;
         private RemoteManager       m_RemoteManager;
+        private ReportManager       m_ReportManager;
 
         public MainDialog()
         {
             InitializeComponent();
-            SetupTracer();
-
             HandleCreated += MainDialog_HandleCreated;
         }
 
         private void MainDialog_HandleCreated(object sender, EventArgs e)
         {
+            SetupTracer();
+
             m_AppSettings   = new IniSettings("phoenix.ini");
             m_ProcessRunner = new ProcessRunner();
             m_FileDialog    = new OpenFileDialog();
             m_FolderDialog  = new FolderBrowserDialog();
             m_UpdateManager = new UpdateManager("http://localhost/helios/feed.xml");
             m_RemoteManager = new RemoteManager();
+            m_ReportManager = new ReportManager();
 
             ApplySettings();
 
@@ -45,7 +47,6 @@ namespace phoenix
             m_CpuUsageSeries    = cpu_chart.Series[0];
 
             notify_icon.Icon = Icon;
-
             process_monitor_timer.Start();
 
             // These are executed in a separate thread
@@ -70,7 +71,7 @@ namespace phoenix
 
         private void SendCrashEmail()
         {
-            ReportManager.Send(
+            m_ReportManager.SendEmail(
                 gmail_address.Text,
                 gmail_password.Text,
                 email_address.Text,
