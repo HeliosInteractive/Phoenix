@@ -80,12 +80,6 @@
     <Compile Include="HotkeyManager.cs" />
     <Compile Include="IniSettings.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="ManageDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ManageDialog.Designer.cs">
-      <DependentUpon>ManageDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="RemoteManager.cs" />
     <Compile Include="ReportManager.cs" />
     <Compile Include="TextboxWriterTraceListener.cs" />
@@ -104,9 +98,6 @@
     <Compile Include="UpdateManager.cs" />
     <EmbeddedResource Include="MainDialog.resx">
       <DependentUpon>MainDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ManageDialog.resx">
-      <DependentUpon>ManageDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

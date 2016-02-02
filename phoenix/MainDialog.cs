@@ -21,7 +21,6 @@ namespace phoenix
         static Mutex                m_SingleInstanceMutex;
         private UpdateManager       m_UpdateManager;
         private RemoteManager       m_RemoteManager;
-        private ManageDialog        m_ManageDialog;
 
         public MainDialog()
         {
@@ -67,10 +66,6 @@ namespace phoenix
 
             Logger.Info("Phoenix is up and running.");
             m_PhoenixReady = true;
-
-            m_ManageDialog = new ManageDialog();
-            m_ManageDialog.Show();
-            
         }
 
         private void SendCrashEmail()
