@@ -33,6 +33,10 @@
         {
             SetupTracer();
 
+            about_browser.DocumentStream = Assembly.
+                GetExecutingAssembly().
+                GetManifestResourceStream("phoenix.Resources.about.html");
+
             m_AppSettings   = new IniSettings("phoenix.ini");
             m_ProcessRunner = new ProcessRunner();
             m_FileDialog    = new OpenFileDialog();

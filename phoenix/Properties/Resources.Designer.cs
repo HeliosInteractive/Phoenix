@@ -61,6 +61,21 @@ namespace phoenix.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;pre style=&quot;overflow-x:auto;word-wrap: break-word;&quot;&gt;
+        ///Copyright 2015 - Helios Interactive
+        ///301 8th St. Suite 250, San Francisco, CA 94103
+        ///
+        ///This is a proprietary technology, meant solely to be used by clients of Helios Interactive. If you have received this software in error or by accident please delete it immidiately.
+        ///
+        ///This software comes as-is and its source code is available and will be furnished upon your request without any preconditions to the authorized clients of Helios Interactive as mentioned a [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string about {
+            get {
+                return ResourceManager.GetString("about", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         internal static byte[] rsync {
