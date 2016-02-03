@@ -26,8 +26,8 @@
         {
             public static string MqttServerAddress = "test.mosquitto.org";
             public static string RsyncServerAddress = "";
+            public static ushort RsyncServerPort = 22;
             public static string RsyncServerUsername = "";
-            public static string RsyncServerPassword = "";
             public static string RemoteDirectory = "";
             public static string LocalDirectory = "";
         }

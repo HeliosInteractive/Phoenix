@@ -78,7 +78,7 @@
             this.public_key = new System.Windows.Forms.RichTextBox();
             this.rsync_server_password_label = new System.Windows.Forms.Label();
             this.rsync_server_username_label = new System.Windows.Forms.Label();
-            this.rsync_server_password = new System.Windows.Forms.TextBox();
+            this.rsync_server_port = new System.Windows.Forms.TextBox();
             this.rsync_server_username = new System.Windows.Forms.TextBox();
             this.rsync_server_address = new System.Windows.Forms.TextBox();
             this.rsync_server_address_label = new System.Windows.Forms.Label();
@@ -99,15 +99,15 @@
             this.gmail_address_label = new System.Windows.Forms.Label();
             this.log = new System.Windows.Forms.TabPage();
             this.log_box = new System.Windows.Forms.RichTextBox();
+            this.about_tab = new System.Windows.Forms.TabPage();
+            this.update_feed_address_label = new System.Windows.Forms.Label();
+            this.update_feed_address = new System.Windows.Forms.TextBox();
+            this.about_browser = new System.Windows.Forms.WebBrowser();
             this.process_monitor_timer = new System.Windows.Forms.Timer(this.components);
             this.notify_icon = new System.Windows.Forms.NotifyIcon(this.components);
             this.context_menu_strip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toggleUIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitPhoenixToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.about_tab = new System.Windows.Forms.TabPage();
-            this.about_browser = new System.Windows.Forms.WebBrowser();
-            this.update_feed_address = new System.Windows.Forms.TextBox();
-            this.update_feed_address_label = new System.Windows.Forms.Label();
             this.main_tab.SuspendLayout();
             this.tab_local.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.memory_chart)).BeginInit();
@@ -115,8 +115,8 @@
             this.remote_tab.SuspendLayout();
             this.report_tab.SuspendLayout();
             this.log.SuspendLayout();
-            this.context_menu_strip.SuspendLayout();
             this.about_tab.SuspendLayout();
+            this.context_menu_strip.SuspendLayout();
             this.SuspendLayout();
             // 
             // main_tab
@@ -460,7 +460,7 @@
             this.remote_tab.Controls.Add(this.public_key);
             this.remote_tab.Controls.Add(this.rsync_server_password_label);
             this.remote_tab.Controls.Add(this.rsync_server_username_label);
-            this.remote_tab.Controls.Add(this.rsync_server_password);
+            this.remote_tab.Controls.Add(this.rsync_server_port);
             this.remote_tab.Controls.Add(this.rsync_server_username);
             this.remote_tab.Controls.Add(this.rsync_server_address);
             this.remote_tab.Controls.Add(this.rsync_server_address_label);
@@ -534,8 +534,9 @@
             this.pull_update.Name = "pull_update";
             this.pull_update.Size = new System.Drawing.Size(173, 24);
             this.pull_update.TabIndex = 12;
-            this.pull_update.Text = "Pull update manually";
+            this.pull_update.Text = "Pull updates manually";
             this.pull_update.UseVisualStyleBackColor = true;
+            this.pull_update.Click += new System.EventHandler(this.OnPullUpdateClick);
             // 
             // generate_new_keys
             // 
@@ -592,26 +593,27 @@
             this.rsync_server_password_label.AutoSize = true;
             this.rsync_server_password_label.Location = new System.Drawing.Point(285, 60);
             this.rsync_server_password_label.Name = "rsync_server_password_label";
-            this.rsync_server_password_label.Size = new System.Drawing.Size(81, 13);
+            this.rsync_server_password_label.Size = new System.Drawing.Size(53, 13);
             this.rsync_server_password_label.TabIndex = 25;
-            this.rsync_server_password_label.Text = "SSH Password:";
+            this.rsync_server_password_label.Text = "SSH port:";
             // 
             // rsync_server_username_label
             // 
             this.rsync_server_username_label.AutoSize = true;
             this.rsync_server_username_label.Location = new System.Drawing.Point(193, 60);
             this.rsync_server_username_label.Name = "rsync_server_username_label";
-            this.rsync_server_username_label.Size = new System.Drawing.Size(83, 13);
+            this.rsync_server_username_label.Size = new System.Drawing.Size(81, 13);
             this.rsync_server_username_label.TabIndex = 24;
-            this.rsync_server_username_label.Text = "SSH Username:";
+            this.rsync_server_username_label.Text = "SSH username:";
             // 
-            // rsync_server_password
+            // rsync_server_port
             // 
-            this.rsync_server_password.Location = new System.Drawing.Point(285, 80);
-            this.rsync_server_password.Name = "rsync_server_password";
-            this.rsync_server_password.Size = new System.Drawing.Size(81, 20);
-            this.rsync_server_password.TabIndex = 6;
-            this.rsync_server_password.TextChanged += new System.EventHandler(this.StoreControlValue);
+            this.rsync_server_port.Location = new System.Drawing.Point(285, 80);
+            this.rsync_server_port.Name = "rsync_server_port";
+            this.rsync_server_port.Size = new System.Drawing.Size(81, 20);
+            this.rsync_server_port.TabIndex = 6;
+            this.rsync_server_port.TextChanged += new System.EventHandler(this.StoreControlValue);
+            this.rsync_server_port.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FilterDigitKeys);
             // 
             // rsync_server_username
             // 
@@ -634,9 +636,9 @@
             this.rsync_server_address_label.AutoSize = true;
             this.rsync_server_address_label.Location = new System.Drawing.Point(8, 60);
             this.rsync_server_address_label.Name = "rsync_server_address_label";
-            this.rsync_server_address_label.Size = new System.Drawing.Size(161, 13);
+            this.rsync_server_address_label.Size = new System.Drawing.Size(104, 13);
             this.rsync_server_address_label.TabIndex = 4;
-            this.rsync_server_address_label.Text = "RSYNC server address and port:";
+            this.rsync_server_address_label.Text = "SSH server address:";
             // 
             // mqtt_server_address
             // 
@@ -652,9 +654,9 @@
             this.rabbitmq_server_address_label.AutoSize = true;
             this.rabbitmq_server_address_label.Location = new System.Drawing.Point(8, 10);
             this.rabbitmq_server_address_label.Name = "rabbitmq_server_address_label";
-            this.rabbitmq_server_address_label.Size = new System.Drawing.Size(155, 13);
+            this.rabbitmq_server_address_label.Size = new System.Drawing.Size(176, 13);
             this.rabbitmq_server_address_label.TabIndex = 2;
-            this.rabbitmq_server_address_label.Text = "MQTT server address and port:";
+            this.rabbitmq_server_address_label.Text = "MQTT server address (port = 1883):";
             // 
             // report_tab
             // 
@@ -813,6 +815,50 @@
             this.log_box.Text = "";
             this.log_box.WordWrap = false;
             // 
+            // about_tab
+            // 
+            this.about_tab.Controls.Add(this.update_feed_address_label);
+            this.about_tab.Controls.Add(this.update_feed_address);
+            this.about_tab.Controls.Add(this.about_browser);
+            this.about_tab.Location = new System.Drawing.Point(4, 22);
+            this.about_tab.Name = "about_tab";
+            this.about_tab.Padding = new System.Windows.Forms.Padding(3);
+            this.about_tab.Size = new System.Drawing.Size(376, 312);
+            this.about_tab.TabIndex = 6;
+            this.about_tab.Text = "About";
+            this.about_tab.UseVisualStyleBackColor = true;
+            // 
+            // update_feed_address_label
+            // 
+            this.update_feed_address_label.AutoSize = true;
+            this.update_feed_address_label.Location = new System.Drawing.Point(8, 283);
+            this.update_feed_address_label.Name = "update_feed_address_label";
+            this.update_feed_address_label.Size = new System.Drawing.Size(148, 13);
+            this.update_feed_address_label.TabIndex = 10;
+            this.update_feed_address_label.Text = "Phoenix update feed address:";
+            // 
+            // update_feed_address
+            // 
+            this.update_feed_address.Location = new System.Drawing.Point(192, 280);
+            this.update_feed_address.Name = "update_feed_address";
+            this.update_feed_address.Size = new System.Drawing.Size(173, 20);
+            this.update_feed_address.TabIndex = 2;
+            this.update_feed_address.TextChanged += new System.EventHandler(this.StoreControlValue);
+            // 
+            // about_browser
+            // 
+            this.about_browser.AllowNavigation = false;
+            this.about_browser.AllowWebBrowserDrop = false;
+            this.about_browser.Dock = System.Windows.Forms.DockStyle.Top;
+            this.about_browser.IsWebBrowserContextMenuEnabled = false;
+            this.about_browser.Location = new System.Drawing.Point(3, 3);
+            this.about_browser.MinimumSize = new System.Drawing.Size(20, 20);
+            this.about_browser.Name = "about_browser";
+            this.about_browser.ScriptErrorsSuppressed = true;
+            this.about_browser.Size = new System.Drawing.Size(370, 263);
+            this.about_browser.TabIndex = 1;
+            this.about_browser.WebBrowserShortcutsEnabled = false;
+            // 
             // process_monitor_timer
             // 
             this.process_monitor_timer.Interval = 60;
@@ -846,50 +892,6 @@
             this.exitPhoenixToolStripMenuItem.Text = "Exit Phoenix";
             this.exitPhoenixToolStripMenuItem.Click += new System.EventHandler(this.OnExitPhoenixToolStripMenuItemClick);
             // 
-            // about_tab
-            // 
-            this.about_tab.Controls.Add(this.update_feed_address_label);
-            this.about_tab.Controls.Add(this.update_feed_address);
-            this.about_tab.Controls.Add(this.about_browser);
-            this.about_tab.Location = new System.Drawing.Point(4, 22);
-            this.about_tab.Name = "about_tab";
-            this.about_tab.Padding = new System.Windows.Forms.Padding(3);
-            this.about_tab.Size = new System.Drawing.Size(376, 312);
-            this.about_tab.TabIndex = 6;
-            this.about_tab.Text = "About";
-            this.about_tab.UseVisualStyleBackColor = true;
-            // 
-            // about_browser
-            // 
-            this.about_browser.AllowNavigation = false;
-            this.about_browser.AllowWebBrowserDrop = false;
-            this.about_browser.Dock = System.Windows.Forms.DockStyle.Top;
-            this.about_browser.IsWebBrowserContextMenuEnabled = false;
-            this.about_browser.Location = new System.Drawing.Point(3, 3);
-            this.about_browser.MinimumSize = new System.Drawing.Size(20, 20);
-            this.about_browser.Name = "about_browser";
-            this.about_browser.ScriptErrorsSuppressed = true;
-            this.about_browser.Size = new System.Drawing.Size(370, 263);
-            this.about_browser.TabIndex = 1;
-            this.about_browser.WebBrowserShortcutsEnabled = false;
-            // 
-            // update_feed_address
-            // 
-            this.update_feed_address.Location = new System.Drawing.Point(192, 280);
-            this.update_feed_address.Name = "update_feed_address";
-            this.update_feed_address.Size = new System.Drawing.Size(173, 20);
-            this.update_feed_address.TabIndex = 2;
-            this.update_feed_address.TextChanged += new System.EventHandler(this.StoreControlValue);
-            // 
-            // update_feed_address_label
-            // 
-            this.update_feed_address_label.AutoSize = true;
-            this.update_feed_address_label.Location = new System.Drawing.Point(8, 283);
-            this.update_feed_address_label.Name = "update_feed_address_label";
-            this.update_feed_address_label.Size = new System.Drawing.Size(148, 13);
-            this.update_feed_address_label.TabIndex = 10;
-            this.update_feed_address_label.Text = "Phoenix update feed address:";
-            // 
             // MainDialog
             // 
             this.AccessibleDescription = "Monitors and restarts crashed applications.";
@@ -915,9 +917,9 @@
             this.report_tab.ResumeLayout(false);
             this.report_tab.PerformLayout();
             this.log.ResumeLayout(false);
-            this.context_menu_strip.ResumeLayout(false);
             this.about_tab.ResumeLayout(false);
             this.about_tab.PerformLayout();
+            this.context_menu_strip.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -960,7 +962,7 @@
         private System.Windows.Forms.TextBox working_directory;
         private System.Windows.Forms.TextBox script_to_execute_on_start;
         private System.Windows.Forms.Label start_script_label;
-        private System.Windows.Forms.TextBox rsync_server_password;
+        private System.Windows.Forms.TextBox rsync_server_port;
         private System.Windows.Forms.TextBox rsync_server_username;
         private System.Windows.Forms.Label rsync_server_password_label;
         private System.Windows.Forms.Label rsync_server_username_label;

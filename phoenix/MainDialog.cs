@@ -473,5 +473,22 @@
         {
             Logger.Info(string.Format("MQTT message received: ({0}) from ({1}).", message, topic));
         }
+
+        private void OnPullUpdateClick(object sender, EventArgs e)
+        {
+            try
+            {
+                RsyncClient.Execute(
+                    remote_directory.Text,
+                    local_directory.Text,
+                    rsync_server_username.Text,
+                    rsync_server_address.Text,
+                    ushort.Parse(rsync_server_port.Text));
+            }
+            catch
+            {
+                Logger.Error("[RSYNC] Unable to execute.");
+            }
+        }
     }
 }
