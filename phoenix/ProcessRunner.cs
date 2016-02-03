@@ -222,18 +222,28 @@
         /// <summary>
         /// Stops monitoring the Process
         /// </summary>
-        public void Stop()
+        public void Stop(bool raise_events = false)
         {
             if (m_Process != null)
             {
-                m_Process.EnableRaisingEvents = false;
+                m_Process.EnableRaisingEvents = raise_events;
 
                 try
                 {
                     if (HasMainWindow())
                         m_Process.CloseMainWindow(); // gently ask to close
+
+                    if (!m_Process.HasExited)
+                    {
+                        m_Process.Kill();
+                        m_Process.Close();
+                        m_Process.WaitForExit();
+                    }
                 }
-                catch( InvalidOperationException ) { /* no-op */ }
+                catch
+                {
+                    Logger.Error("An error occurred while trying to shutdown the process.");
+                }
 
                 m_Process.Dispose();
             }
@@ -258,7 +268,7 @@
             if (AssumeCrashIfNotResponsive && !m_Process.Responding)
             {
                 // This will raise the Exited event.
-                try { m_Process.Kill(); } catch { /* no-op */ }
+                Stop(true);
             }
 
             if (ForceAlwaysOnTop && HasMainWindow())
@@ -311,15 +321,14 @@
         /// <returns></returns>
         bool Monitorable()
         {
-            return !(m_PauseMonitor || m_Process == null || m_Process.HasExited);
+            try { return !(m_PauseMonitor || m_Process == null || m_Process.HasExited); }
+            catch { return false; }
         }
 
         bool HasMainWindow()
         {
-            bool has = false;
-            try { has = (m_Process != null && !m_Process.HasExited && m_Process.MainWindowHandle != IntPtr.Zero); }
-            catch { has = false; }
-            return has;
+            try { return (m_Process != null && !m_Process.HasExited && m_Process.MainWindowHandle != IntPtr.Zero); }
+            catch { return false; }
         }
 
         /// <summary>
@@ -379,7 +388,8 @@
         /// </summary>
         void ExecuteProcess()
         {
-            if (!m_Validated) return;
+            if (!m_Validated || Monitoring)
+                return;
 
             CallScript(m_StartScript);
 

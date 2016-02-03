@@ -139,7 +139,8 @@
 
         private bool EnsureSingleInstanceMode()
         {
-            if (application_to_watch.Text == string.Empty)
+            if (application_to_watch.Text == string.Empty ||
+                !File.Exists(application_to_watch.Text))
                 return false;
 
             try
@@ -487,8 +488,8 @@
                     rsync_server_username.Text,
                     rsync_server_address.Text,
                     ushort.Parse(rsync_server_port.Text),
-                    m_ProcessRunner.Stop,
-                    m_ProcessRunner.Start);
+                    ()=>{ m_ProcessRunner.Stop(false); },
+                    ValidateAndStartMonitoring);
             }
             catch
             {

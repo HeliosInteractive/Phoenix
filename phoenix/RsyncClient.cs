@@ -12,22 +12,23 @@
         private static readonly string s_PrivateKeyPath  = Path.Combine(s_ClientDirectory, MachineIdentity);
         private static readonly string s_PublicKeyPath   = Path.Combine(s_ClientDirectory, string.Format("{0}.pub",MachineIdentity));
         private static readonly string s_ResourceUri     = "phoenix.Resources.rsync.zip";
-        private Process                m_RsyncProcess    = new Process();
+        private Process                m_RsyncProcess    = null;
 
         public static string PathToCygwinPath(string path)
         {
-            if (String.IsNullOrWhiteSpace(path) || path.StartsWith("cygdrive/"))
+            if (String.IsNullOrWhiteSpace(path) || path.StartsWith("/cygdrive/"))
                 return path;
 
             if (Path.IsPathRooted(path))
             {
                 path = path.Replace("\\", "/");
                 path = path.Replace(":", string.Empty);
-                path = string.Format("cygdrive/{0}", path);
+                path = string.Format("/cygdrive/{0}", path);
             }
 
             return path.Trim();
         }
+
         public static string PrivateKey
         {
             get
@@ -69,7 +70,7 @@
                 return
                     File.Exists(Path.Combine(s_ClientDirectory, "ssh.exe")) &&
                     File.Exists(Path.Combine(s_ClientDirectory, "rsync.exe")) &&
-                    File.Exists(Path.Combine(s_ClientDirectory, "ssh-kegen.exe")) &&
+                    File.Exists(Path.Combine(s_ClientDirectory, "ssh-keygen.exe")) &&
                     File.Exists(Path.Combine(s_ClientDirectory, "cygz.dll")) &&
                     File.Exists(Path.Combine(s_ClientDirectory, "cygwin1.dll")) &&
                     File.Exists(Path.Combine(s_ClientDirectory, "cygssp-0.dll")) &&
@@ -104,60 +105,96 @@
                 return machine_name.Trim();
             }
         }
-        private static void ExtractClient()
+        private static bool ExtractClient()
         {
-            if (!Directory.Exists(s_ClientDirectory))
-                Directory.CreateDirectory(s_ClientDirectory);
-
-            if (ClientExtracted)
-                return;
-
-            using (ZipArchive archive = new ZipArchive(
-                Assembly.
-                GetExecutingAssembly().
-                GetManifestResourceStream(s_ResourceUri)))
+            try
             {
-                foreach (ZipArchiveEntry entry in archive.Entries)
+                if (!Directory.Exists(s_ClientDirectory))
+                    Directory.CreateDirectory(s_ClientDirectory);
+
+                if (ClientExtracted)
+                    return true;
+
+                using (ZipArchive archive = new ZipArchive(
+                    Assembly.
+                    GetExecutingAssembly().
+                    GetManifestResourceStream(s_ResourceUri)))
                 {
-                    string extract_path = Path.Combine(s_ClientDirectory, entry.Name);
-                    
-                    if (!File.Exists(extract_path))
+                    foreach (ZipArchiveEntry entry in archive.Entries)
                     {
-                        entry.ExtractToFile(extract_path, true);
+                        string extract_path = Path.Combine(s_ClientDirectory, entry.Name);
+
+                        if (!File.Exists(extract_path))
+                        {
+                            entry.ExtractToFile(extract_path, true);
+                        }
                     }
                 }
+
+                // this checks if everything is extracted
+                return ClientExtracted;
+            }
+            catch
+            {
+                Logger.Error("[RSYNC] Unable to extract rsync from resources.");
+                return false;
             }
         }
 
-        private static void GenerateKeys()
+        private static bool GenerateKeys()
         {
-            if (!ClientExtracted)
-                ExtractClient();
-
-            ProcessStartInfo process_info   = new ProcessStartInfo();
-            process_info.Arguments          = string.Format("-q -t rsa -f '{0}' -N ''", MachineIdentity);
-            process_info.FileName           = Path.Combine(s_ClientDirectory, "ssh-keygen.exe");
-            process_info.WorkingDirectory   = s_ClientDirectory;
-            process_info.UseShellExecute    = false;
-            process_info.CreateNoWindow     = true;
-
-            using (Process process = new Process())
+            if (!ClientExtracted && !ExtractClient())
             {
-                process.StartInfo = process_info;
-                process.Start();
-                process.WaitForExit();
+                Logger.Error("[RSYNC] Cannot generate keys because client does not exist.");
+                return false;
+            }
+
+            try
+            {
+                ProcessStartInfo process_info = new ProcessStartInfo();
+                process_info.Arguments = string.Format("-q -t rsa -f '{0}' -N ''", MachineIdentity);
+                process_info.FileName = Path.Combine(s_ClientDirectory, "ssh-keygen.exe");
+                process_info.WorkingDirectory = s_ClientDirectory;
+                process_info.UseShellExecute = false;
+                process_info.CreateNoWindow = true;
+
+                using (Process process = new Process())
+                {
+                    process.StartInfo = process_info;
+                    process.Start();
+                    process.WaitForExit();
+                }
+
+                // double checks both keys exist
+                return KeysExist;
+            }
+            catch
+            {
+                Logger.Error("[RSYNC] Unable to generate key pairs.");
+                return false;
             }
         }
 
         public static void RegenerateKeys()
         {
-            if (KeysExist)
+            try
             {
-                File.Delete(s_PublicKeyPath);
-                File.Delete(s_PrivateKeyPath);
+                if (KeysExist)
+                {
+                    File.Delete(s_PublicKeyPath);
+                    File.Delete(s_PrivateKeyPath);
+                }
+            }
+            catch
+            {
+                Logger.Error("[RSYNC] Unable to remove old key pairs.");
+                return;
             }
 
-            GenerateKeys();
+            if (!GenerateKeys())
+            {
+                Logger.Error("[RSYNC] Unable to re-generate key pairs.");
+            }
         }
 
         public void Execute(
@@ -175,11 +212,17 @@
                 String.IsNullOrWhiteSpace(address))
                 return;
 
-            if (!ClientExtracted)
-                ExtractClient();
+            if (!ClientExtracted && !ExtractClient())
+            {
+                Logger.Error("[RSYNC] Cannot execute because client does not exist.");
+                return;
+            }
 
-            if (!KeysExist)
-                GenerateKeys();
+            if (!KeysExist && !GenerateKeys())
+            {
+                Logger.Error("[RSYNC] Cannot execute because keys do not exist.");
+                return;
+            }
 
             // Make sure we have an established home directory for SSH
             string home_directory = Path.Combine(s_ClientDirectory, "home");
@@ -207,11 +250,14 @@
 
             try
             {
-                m_RsyncProcess.Refresh();
-                if (m_RsyncProcess.HasExited)
+                if (m_RsyncProcess != null)
                 {
-                    m_RsyncProcess.CloseMainWindow();
-                    m_RsyncProcess.Close();
+                    m_RsyncProcess.Refresh();
+                    if (!m_RsyncProcess.HasExited)
+                    {
+                        m_RsyncProcess.CloseMainWindow();
+                        m_RsyncProcess.Close();
+                    }
                 }
             }
             catch
@@ -219,7 +265,9 @@
                 Logger.Warn("[RSYNC] Unable to shutdown previous rsync session.");
             }
 
+            m_RsyncProcess = new Process();
             m_RsyncProcess.StartInfo = start_info;
+            m_RsyncProcess.EnableRaisingEvents = true;
 
             m_RsyncProcess.OutputDataReceived += new DataReceivedEventHandler((sender, e) =>
             {
@@ -247,15 +295,23 @@
             if (post_update != null)
             {
                 int id = m_RsyncProcess.Id;
-                m_RsyncProcess.Exited += (s, e) =>
+                m_RsyncProcess.Exited += new EventHandler((s, e) =>
                 {
-                    Logger.Info("[RSYNC] session finished.");
                     // make sure we are the same one, discard ow.
                     if (m_RsyncProcess.Id == id)
+                    {
+                        if (!m_RsyncProcess.HasExited)
+                        {
+                            m_RsyncProcess.Close();
+                            m_RsyncProcess.WaitForExit();
+                        }
+
+                        Logger.Info("[RSYNC] session finished.");
                         post_update();
+                    }
                     else
-                        Logger.Error("[RSYNC] stalled a session.");
-                };
+                        Logger.Error("[RSYNC] stalled a session. Did you issue an update in the middle of another one?");
+                });
             }
         }
 
@@ -266,7 +322,7 @@
         {
             if (!disposedValue)
             {
-                if (disposing)
+                if (disposing && m_RsyncProcess != null)
                 {
                     m_RsyncProcess.Dispose();
                 }
