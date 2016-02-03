@@ -388,7 +388,7 @@
         /// </summary>
         void ExecuteProcess()
         {
-            if (!m_Validated || Monitoring)
+            if (!m_Validated)
                 return;
 
             CallScript(m_StartScript);

@@ -73,24 +73,11 @@
             ResetWatchButtonLabel();
             ResetReportTabStatus();
 
-            Logger.Info("Phoenix is up and running.");
+            Logger.Info(string.Format("Phoenix is up and running on [{0}]."
+                , RsyncClient.MachineIdentity));
+
             m_UpdateManager.Check();
             m_PhoenixReady = true;
-        }
-
-        private void SendCrashEmail()
-        {
-            m_ReportManager.SendEmail(
-                gmail_address.Text,
-                gmail_password.Text,
-                email_address.Text,
-                email_subject.Text
-                    .Replace("#MACHINE_IDENTITY#", RsyncClient.MachineIdentity),
-                email_body.Text
-                    .Replace("#MACHINE_IDENTITY#", RsyncClient.MachineIdentity)
-                    .Replace("#RSYNC_ADDRESS#", rsync_server_address.Text)
-                    .Replace("#MQTT_ADDRESS#", mqtt_server_address.Text),
-                attachment.Text);
         }
 
         private void SetupTracer()
@@ -98,43 +85,6 @@
             Trace.Listeners.Add(new TextboxWriterTraceListener(log_box, "PhoenixTextboxLog"));
             Trace.Listeners.Add(new TextWriterTraceListener("phoenix.log", "PhoneixFileLog"));
             Trace.Listeners["PhoneixFileLog"].TraceOutputOptions |= TraceOptions.DateTime;
-        }
-
-        private void ResetMqttConnectionLabel()
-        {
-            if (mqtt_connection_status == null ||
-                mqtt_connection_status.IsDisposed ||
-                m_RemoteManager == null)
-                return;
-
-            try {
-                mqtt_connection_status.Invoke((MethodInvoker)(() =>
-                {
-                    if (m_RemoteManager.Connected)
-                        mqtt_connection_status.Text = "CONNECTED";
-                    else
-                        mqtt_connection_status.Text = "DISCONNECTED";
-                }));
-            } catch {
-                /* shrug */
-                return;
-            }
-        }
-
-        private void ResetWatchButtonLabel()
-        {
-            watch_button.Invoke((MethodInvoker)(() =>
-            {
-                if (m_ProcessRunner.Monitoring)
-                    watch_button.Text = "Stop Watching ( ALT+F10 )";
-                else
-                    watch_button.Text = "Start Watching ( ALT+F10 )";
-            }));
-        }
-
-        private void ResetReportTabStatus()
-        {
-            (report_tab as Control).Enabled = enable_report_on_crash.Checked;
         }
 
         private bool EnsureSingleInstanceMode()
@@ -488,13 +438,96 @@
                     rsync_server_username.Text,
                     rsync_server_address.Text,
                     ushort.Parse(rsync_server_port.Text),
-                    ()=>{ m_ProcessRunner.Stop(false); },
-                    ValidateAndStartMonitoring);
+                    StopProcessRunner,
+                    StartProcessRunner);
             }
             catch
             {
                 Logger.Error("[RSYNC] Unable to execute.");
             }
+        }
+
+        private void ExecuteOnUiThread(Action action)
+        {
+            if (action == null)
+                return;
+
+            try
+            {
+                main_tab.Invoke((MethodInvoker)(action.Invoke));
+            }
+            catch
+            {
+                Logger.Error(string.Format("{0}\n{1}",
+                    "Method execution on UI thread failed.",
+                    "perhaps you are calling something after exit?"));
+            }
+        }
+
+        private void StopProcessRunner()
+        {
+            ExecuteOnUiThread(()=> { m_ProcessRunner.Stop(false); });
+        }
+
+        private void StartProcessRunner()
+        {
+            ExecuteOnUiThread(ValidateAndStartMonitoring);
+        }
+
+        private void ResetMqttConnectionLabel()
+        {
+            if (mqtt_connection_status == null ||
+                mqtt_connection_status.IsDisposed ||
+                m_RemoteManager == null)
+                return;
+
+            ExecuteOnUiThread(() =>
+            {
+                if (m_RemoteManager.Connected)
+                    mqtt_connection_status.Text = "CONNECTED";
+                else
+                    mqtt_connection_status.Text = "DISCONNECTED";
+            });
+        }
+
+        private void ResetWatchButtonLabel()
+        {
+            ExecuteOnUiThread(() =>
+            {
+                if (m_ProcessRunner.Monitoring)
+                    watch_button.Text = "Stop Watching ( ALT+F10 )";
+                else
+                    watch_button.Text = "Start Watching ( ALT+F10 )";
+            });
+        }
+
+        private void ResetReportTabStatus()
+        {
+            ExecuteOnUiThread(() =>
+            {
+                (report_tab as Control).Enabled = enable_report_on_crash.Checked;
+            });
+        }
+
+        private void SendCrashEmail()
+        {
+            ExecuteOnUiThread(() =>
+            {
+                if (!enable_report_on_crash.Checked)
+                    return;
+
+                m_ReportManager.SendEmail(
+                    gmail_address.Text,
+                    gmail_password.Text,
+                    email_address.Text,
+                    email_subject.Text
+                        .Replace("#MACHINE_IDENTITY#", RsyncClient.MachineIdentity),
+                    email_body.Text
+                        .Replace("#MACHINE_IDENTITY#", RsyncClient.MachineIdentity)
+                        .Replace("#RSYNC_ADDRESS#", rsync_server_address.Text)
+                        .Replace("#MQTT_ADDRESS#", mqtt_server_address.Text),
+                    attachment.Text);
+            });
         }
     }
 }
