@@ -175,10 +175,10 @@
             }
             catch
             {
-                MessageBox.Show(
-                    "Could not properly ensure single instance mode.\n" +
-                    "This can cause multi-instance issues.\n" +
-                    "Try running as Administrator.",
+                MessageBox.Show(string.Format("{0}\n{1}\n{2}",
+                    "Could not properly ensure single instance mode.",
+                    "This can cause multi-instance issues.",
+                    "Try running as Administrator."),
                     "Failed to ensure single instance mode");
             }
 
@@ -215,7 +215,7 @@
             }
 
             if (control as TextBoxBase != null)
-                ((TextBoxBase)control).Text = m_AppSettings.Read(section, name, value.ToString().Replace("<br>", "\n"));
+                ((TextBoxBase)control).Text = m_AppSettings.Read(section, name, value.ToString());
             else if (control as CheckBox != null)
                 ((CheckBox)control).Checked = m_AppSettings.Read(section, name, (bool)value);
             else
@@ -245,7 +245,7 @@
             OnControlValidate(control);
 
             if (control as TextBoxBase != null)
-                m_AppSettings.Store(Defaults.GetSectionByKey(control_name_cc), control_name_cc, (sender as TextBox).Text.Replace("\n", "<br>"));
+                m_AppSettings.Store(Defaults.GetSectionByKey(control_name_cc), control_name_cc, (sender as TextBox).Text);
             else if (control as CheckBox != null)
                 m_AppSettings.Store(Defaults.GetSectionByKey(control_name_cc), control_name_cc, (sender as CheckBox).Checked);
             else

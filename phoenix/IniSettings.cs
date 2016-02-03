@@ -77,6 +77,9 @@
             if (to_be_stored.StartsWith("\"") && to_be_stored.EndsWith("\""))
                 to_be_stored = string.Format("\"{0}\"", to_be_stored);
 
+            if (to_be_stored.Contains("\n"))
+                to_be_stored = to_be_stored.Replace("\n", "<br>");
+
             m_Settings[Section][Key] = to_be_stored;
         }
 
@@ -92,19 +95,22 @@
         {
             StringBuilder strb = new StringBuilder(2048);
 
+            T temporary_holder = default(T);
+            bool success = false;
+
             if (NativeMethods.GetPrivateProfileString(Section, Key, "", strb, strb.Capacity, m_Path) > 0
                 && CanChangeType(strb.ToString(), typeof(T)))
             {
                 try
                 {
-                    T temp_val = (T)Convert.ChangeType(strb.ToString(), typeof(T));
-                    Store(Section, Key, temp_val);
-                    return temp_val;
+                    temporary_holder = (T)Convert.ChangeType(strb.ToString(), typeof(T));
+                    Store(Section, Key, temporary_holder);
+                    success = true;
                 }
                 catch
                 {
                     Logger.Warn(string.Format(
-                        "Failed to change INI entry type in section {0} and key {1}. Default value: {2}",
+                        "Failed to comvert INI entry type in section {0} and key {1}. Default value: {2}",
                         Section,
                         Key,
                         DefaultValue));
@@ -118,8 +124,18 @@
                     Key));
             }
 
-            Store(Section, Key, DefaultValue);
-            return DefaultValue;
+            if (!success)
+            {
+                Store(Section, Key, DefaultValue);
+                temporary_holder = DefaultValue;
+            }
+
+            return temporary_holder;
+        }
+
+        public string Read(string Section, string Key, string DefaultValue)
+        {
+            return Read<string>(Section, Key, DefaultValue).Replace("<br>", "\n");
         }
 
         /// <summary>
