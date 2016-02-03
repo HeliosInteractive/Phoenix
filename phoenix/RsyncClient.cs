@@ -8,21 +8,24 @@
 
     class RsyncClient
     {
-        private static string s_ClientDirectory = string.Format("{0}phoenix{1}", Path.GetTempPath(), Path.DirectorySeparatorChar);
-        private static string s_PrivateKeyPath  = string.Format("{0}{1}", s_ClientDirectory, MachineIdentity);
-        private static string s_PublicKeyPath   = string.Format("{0}{1}.pub", s_ClientDirectory, MachineIdentity);
-        private static string s_ResourceUri     = "phoenix.Resources.rsync.zip";
+        private static readonly string s_ClientDirectory = Path.Combine(Path.GetTempPath(), "phoenix");
+        private static readonly string s_PrivateKeyPath  = Path.Combine(s_ClientDirectory, MachineIdentity);
+        private static readonly string s_PublicKeyPath   = Path.Combine(s_ClientDirectory, string.Format("{0}.pub",MachineIdentity));
+        private static readonly string s_ResourceUri     = "phoenix.Resources.rsync.zip";
 
         public static string PathToCygwinPath(string path)
         {
-            if (path == string.Empty || path.StartsWith("cygdrive/")) return path;
-            if (Directory.Exists(path) && Path.IsPathRooted(path))
+            if (String.IsNullOrWhiteSpace(path) || path.StartsWith("cygdrive/"))
+                return path;
+
+            if (Path.IsPathRooted(path))
             {
                 path = path.Replace("\\", "/");
                 path = path.Replace(":", string.Empty);
                 path = string.Format("cygdrive/{0}", path);
             }
-            return path;
+
+            return path.Trim();
         }
         public static string PrivateKey
         {
@@ -38,7 +41,7 @@
             set
             {
                 try { File.WriteAllText(s_PrivateKeyPath, value); }
-                catch { /* no-op */ }
+                catch { Logger.Error("Unable to write private key."); }
             }
         }
         public static string PublicKey
@@ -55,7 +58,7 @@
             set
             {
                 try { File.WriteAllText(s_PublicKeyPath, value); }
-                catch { /* no-op */ }
+                catch { Logger.Error("Unable to write public key."); }
             }
         }
         private static bool ClientExtracted
@@ -63,15 +66,15 @@
             get
             {
                 return
-                    File.Exists(string.Format("{0}ssh.exe", s_ClientDirectory)) &&
-                    File.Exists(string.Format("{0}rsync.exe", s_ClientDirectory)) &&
-                    File.Exists(string.Format("{0}ssh-keygen.exe", s_ClientDirectory)) &&
-                    File.Exists(string.Format("{0}cygz.dll", s_ClientDirectory)) &&
-                    File.Exists(string.Format("{0}cygwin1.dll", s_ClientDirectory)) &&
-                    File.Exists(string.Format("{0}cygssp-0.dll", s_ClientDirectory)) &&
-                    File.Exists(string.Format("{0}cygiconv-2.dll", s_ClientDirectory)) &&
-                    File.Exists(string.Format("{0}cyggcc_s-1.dll", s_ClientDirectory)) &&
-                    File.Exists(string.Format("{0}cygcrypto-1.0.0.dll", s_ClientDirectory));
+                    File.Exists(Path.Combine(s_ClientDirectory, "ssh.exe")) &&
+                    File.Exists(Path.Combine(s_ClientDirectory, "rsync.exe")) &&
+                    File.Exists(Path.Combine(s_ClientDirectory, "ssh-kegen.exe")) &&
+                    File.Exists(Path.Combine(s_ClientDirectory, "cygz.dll")) &&
+                    File.Exists(Path.Combine(s_ClientDirectory, "cygwin1.dll")) &&
+                    File.Exists(Path.Combine(s_ClientDirectory, "cygssp-0.dll")) &&
+                    File.Exists(Path.Combine(s_ClientDirectory, "cygiconv-2.dll")) &&
+                    File.Exists(Path.Combine(s_ClientDirectory, "cyggcc_s-1.dll")) &&
+                    File.Exists(Path.Combine(s_ClientDirectory, "cygcrypto-1.0.0.dll"));
             }
         }
         private static bool KeysExist
@@ -115,7 +118,7 @@
             {
                 foreach (ZipArchiveEntry entry in archive.Entries)
                 {
-                    var extract_path = string.Format("{0}{1}", s_ClientDirectory, entry.Name);
+                    string extract_path = Path.Combine(s_ClientDirectory, entry.Name);
                     
                     if (!File.Exists(extract_path))
                     {
@@ -130,12 +133,12 @@
             if (!ClientExtracted)
                 ExtractClient();
 
-            ProcessStartInfo process_info = new ProcessStartInfo();
-            process_info.Arguments = string.Format("-q -t rsa -f '{0}' -N ''", MachineIdentity);
-            process_info.FileName = string.Format("{0}ssh-keygen.exe", s_ClientDirectory);
-            process_info.WorkingDirectory = s_ClientDirectory;
-            process_info.UseShellExecute = false;
-            process_info.CreateNoWindow = true;
+            ProcessStartInfo process_info   = new ProcessStartInfo();
+            process_info.Arguments          = string.Format("-q -t rsa -f '{0}' -N ''", MachineIdentity);
+            process_info.FileName           = Path.Combine(s_ClientDirectory, "ssh-keygen.exe");
+            process_info.WorkingDirectory   = s_ClientDirectory;
+            process_info.UseShellExecute    = false;
+            process_info.CreateNoWindow     = true;
 
             using (Process process = new Process())
             {
@@ -156,8 +159,14 @@
             GenerateKeys();
         }
 
-        private static void Execute(string remote, string local, string username, string address, ushort port)
+        public static void Execute(string remote, string local, string username, string address, ushort port)
         {
+            if (String.IsNullOrWhiteSpace(remote) ||
+                String.IsNullOrWhiteSpace(local) ||
+                String.IsNullOrWhiteSpace(username) ||
+                String.IsNullOrWhiteSpace(address))
+                return;
+
             if (!ClientExtracted)
                 ExtractClient();
 
@@ -165,13 +174,13 @@
                 GenerateKeys();
 
             // Make sure we have an established home directory for SSH
-            string home_directory = string.Format("{0}home", s_ClientDirectory);
+            string home_directory = Path.Combine(s_ClientDirectory, "home");
 
             if (!Directory.Exists(home_directory))
                 Directory.CreateDirectory(home_directory);
 
             ProcessStartInfo start_info = new ProcessStartInfo();
-            start_info.FileName = string.Format("{0}rsync.exe", s_ClientDirectory);
+            start_info.FileName = Path.Combine(s_ClientDirectory, "rsync.exe");
             start_info.EnvironmentVariables["HOME"] = home_directory;
             start_info.EnvironmentVariables["PATH"] = s_ClientDirectory;
             start_info.WorkingDirectory = s_ClientDirectory;
@@ -191,20 +200,23 @@
             using (Process rsync_process = new Process())
             {
                 rsync_process.StartInfo = start_info;
+
                 rsync_process.OutputDataReceived += new DataReceivedEventHandler((sender, e) =>
                 {
                     if (!String.IsNullOrEmpty(e.Data))
                     {
-                        Debug.WriteLine(e.Data);
+                        Logger.Info(string.Format("[RSYNC] {0}", e.Data));
                     }
                 });
+
                 rsync_process.ErrorDataReceived += new DataReceivedEventHandler((sender, e) =>
                 {
                     if (!String.IsNullOrEmpty(e.Data))
                     {
-                        Debug.WriteLine(e.Data);
+                        Logger.Error(string.Format("[RSYNC] {0}", e.Data));
                     }
                 });
+
                 rsync_process.Start();
                 rsync_process.BeginOutputReadLine();
                 rsync_process.BeginErrorReadLine();
