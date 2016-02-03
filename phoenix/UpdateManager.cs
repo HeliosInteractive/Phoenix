@@ -14,25 +14,27 @@
         Uri     m_FeedAddress;
         string  m_FeedChannel;
 
-        public UpdateManager(string feed_address)
+        public UpdateManager()
         {
             m_CurrentVersion = Assembly.GetExecutingAssembly().GetName().Version;
             m_UpdateVersion  = Version.Parse("0.0.0.0");
-            m_FeedAddress    = new Uri(feed_address);
             m_FeedChannel    = "alpha"; // change this if you are working on a different branch.
-
-            Logger.Info(string.Format("Update Manager is up with feed address: {0} on channel: {1}",
-                m_FeedAddress,
-                m_FeedChannel));
 
             Logger.Info(string.Format("Update Manager reports current version is: {0}",
                 m_CurrentVersion));
+        }
 
-            Check();
+        public string FeedAddress
+        {
+            get { if (m_FeedAddress != null) return m_FeedAddress.OriginalString; else return string.Empty; }
+            set { if (!String.IsNullOrEmpty(value)) m_FeedAddress = new Uri(value); }
         }
 
         public void Check()
         {
+            if (String.IsNullOrEmpty(FeedAddress))
+                return;
+
             Logger.Info("Checking for updates...");
             XmlDocument feed_xml = new XmlDocument();
 

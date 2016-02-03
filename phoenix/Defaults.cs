@@ -41,6 +41,11 @@
             public static string EmailAttachment = "";
         }
 
+        public class About
+        {
+            public static string UpdateFeedAddress = "http://localhost/helios/feed.xml";
+        }
+
         public static string GetSectionByKey(string key)
         {
             foreach (Type nested_type in typeof(Defaults).GetNestedTypes())

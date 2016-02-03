@@ -41,7 +41,7 @@
             m_ProcessRunner = new ProcessRunner();
             m_FileDialog    = new OpenFileDialog();
             m_FolderDialog  = new FolderBrowserDialog();
-            m_UpdateManager = new UpdateManager("http://localhost/helios/feed.xml");
+            m_UpdateManager = new UpdateManager();
             m_RemoteManager = new RemoteManager();
             m_ReportManager = new ReportManager();
 
@@ -72,6 +72,7 @@
             ResetReportTabStatus();
 
             Logger.Info("Phoenix is up and running.");
+            m_UpdateManager.Check();
             m_PhoenixReady = true;
         }
 
@@ -310,6 +311,8 @@
                 m_ProcessRunner.WorkingDirectory = working_directory.Text;
             } else if (control == script_to_execute_on_start) {
                 m_ProcessRunner.StartScript = script_to_execute_on_start.Text;
+            } else if (control == update_feed_address) {
+                m_UpdateManager.FeedAddress = update_feed_address.Text;
             }
         }
 
