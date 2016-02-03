@@ -352,7 +352,7 @@
             this.watch_button.TabIndex = 17;
             this.watch_button.Text = "Start Watching ( ALT+F10 )";
             this.watch_button.UseVisualStyleBackColor = true;
-            this.watch_button.Click += new System.EventHandler(this.watch_button_Click);
+            this.watch_button.Click += new System.EventHandler(this.OnWatchButtonClick);
             // 
             // script_to_execute_on_crash
             // 

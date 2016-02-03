@@ -318,7 +318,7 @@
             }
         }
 
-        private void watch_button_Click(object sender, EventArgs e)
+        private void OnWatchButtonClick(object sender, EventArgs e)
         {
             ValidateAndStartMonitoring();
         }
@@ -480,6 +480,7 @@
         {
             try
             {
+                main_tab.SelectedTab = log;
                 m_RsyncClient.Execute(
                     remote_directory.Text,
                     local_directory.Text,
