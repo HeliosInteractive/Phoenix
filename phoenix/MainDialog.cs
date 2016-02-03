@@ -22,6 +22,7 @@
         private UpdateManager       m_UpdateManager;
         private RemoteManager       m_RemoteManager;
         private ReportManager       m_ReportManager;
+        private RsyncClient         m_RsyncClient;
 
         public MainDialog()
         {
@@ -44,6 +45,7 @@
             m_UpdateManager = new UpdateManager();
             m_RemoteManager = new RemoteManager();
             m_ReportManager = new ReportManager();
+            m_RsyncClient   = new RsyncClient();
 
             ApplySettings();
 
@@ -478,12 +480,14 @@
         {
             try
             {
-                RsyncClient.Execute(
+                m_RsyncClient.Execute(
                     remote_directory.Text,
                     local_directory.Text,
                     rsync_server_username.Text,
                     rsync_server_address.Text,
-                    ushort.Parse(rsync_server_port.Text));
+                    ushort.Parse(rsync_server_port.Text),
+                    m_ProcessRunner.Stop,
+                    m_ProcessRunner.Start);
             }
             catch
             {

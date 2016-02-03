@@ -6,12 +6,13 @@
     using System.Diagnostics;
     using System.IO.Compression;
 
-    class RsyncClient
+    class RsyncClient : IDisposable
     {
         private static readonly string s_ClientDirectory = Path.Combine(Path.GetTempPath(), "phoenix");
         private static readonly string s_PrivateKeyPath  = Path.Combine(s_ClientDirectory, MachineIdentity);
         private static readonly string s_PublicKeyPath   = Path.Combine(s_ClientDirectory, string.Format("{0}.pub",MachineIdentity));
         private static readonly string s_ResourceUri     = "phoenix.Resources.rsync.zip";
+        private Process                m_RsyncProcess    = new Process();
 
         public static string PathToCygwinPath(string path)
         {
@@ -159,7 +160,14 @@
             GenerateKeys();
         }
 
-        public static void Execute(string remote, string local, string username, string address, ushort port)
+        public void Execute(
+            string remote,
+            string local,
+            string username,
+            string address,
+            ushort port,
+            Action pre_update,
+            Action post_update)
         {
             if (String.IsNullOrWhiteSpace(remote) ||
                 String.IsNullOrWhiteSpace(local) ||
@@ -197,30 +205,80 @@
             start_info.RedirectStandardOutput = true;
             start_info.CreateNoWindow = true;
 
-            using (Process rsync_process = new Process())
+            try
             {
-                rsync_process.StartInfo = start_info;
-
-                rsync_process.OutputDataReceived += new DataReceivedEventHandler((sender, e) =>
+                m_RsyncProcess.Refresh();
+                if (m_RsyncProcess.HasExited)
                 {
-                    if (!String.IsNullOrEmpty(e.Data))
-                    {
-                        Logger.Info(string.Format("[RSYNC] {0}", e.Data));
-                    }
-                });
+                    m_RsyncProcess.CloseMainWindow();
+                    m_RsyncProcess.Close();
+                }
+            }
+            catch
+            {
+                Logger.Warn("[RSYNC] Unable to shutdown previous rsync session.");
+            }
 
-                rsync_process.ErrorDataReceived += new DataReceivedEventHandler((sender, e) =>
+            m_RsyncProcess.StartInfo = start_info;
+
+            m_RsyncProcess.OutputDataReceived += new DataReceivedEventHandler((sender, e) =>
+            {
+                if (!String.IsNullOrEmpty(e.Data))
                 {
-                    if (!String.IsNullOrEmpty(e.Data))
-                    {
-                        Logger.Error(string.Format("[RSYNC] {0}", e.Data));
-                    }
-                });
+                    Logger.Info(string.Format("[RSYNC] {0}", e.Data));
+                }
+            });
 
-                rsync_process.Start();
-                rsync_process.BeginOutputReadLine();
-                rsync_process.BeginErrorReadLine();
+            m_RsyncProcess.ErrorDataReceived += new DataReceivedEventHandler((sender, e) =>
+            {
+                if (!String.IsNullOrEmpty(e.Data))
+                {
+                    Logger.Error(string.Format("[RSYNC] {0}", e.Data));
+                }
+            });
+
+            if (pre_update != null)
+                pre_update();
+
+            m_RsyncProcess.Start();
+            m_RsyncProcess.BeginOutputReadLine();
+            m_RsyncProcess.BeginErrorReadLine();
+
+            if (post_update != null)
+            {
+                int id = m_RsyncProcess.Id;
+                m_RsyncProcess.Exited += (s, e) =>
+                {
+                    Logger.Info("[RSYNC] session finished.");
+                    // make sure we are the same one, discard ow.
+                    if (m_RsyncProcess.Id == id)
+                        post_update();
+                    else
+                        Logger.Error("[RSYNC] stalled a session.");
+                };
             }
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    m_RsyncProcess.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+        #endregion
     }
 }
