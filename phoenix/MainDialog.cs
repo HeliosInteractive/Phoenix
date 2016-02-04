@@ -171,7 +171,7 @@
             else if (control as CheckBox != null)
                 ((CheckBox)control).Checked = m_AppSettings.Read(section, name, (bool)value);
             else
-                throw new ArgumentException();
+                Logger.Error("Invalid control type is detected.");
         }
 
         private void UpdateKeyPair()
