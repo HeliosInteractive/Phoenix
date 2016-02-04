@@ -56,15 +56,14 @@
             process_monitor_timer.Start();
 
             // These are executed in a separate thread
-            m_ProcessRunner.MonitorStarted += ResetWatchButtonLabel;
-            m_ProcessRunner.MonitorStopped += ResetWatchButtonLabel;
-            m_ProcessRunner.ProcessStarted += ResetWatchButtonLabel;
-            m_ProcessRunner.ProcessStopped += ResetWatchButtonLabel;
-            m_ProcessRunner.ProcessStopped += SendCrashEmail;
+            m_ProcessRunner.MonitorStarted += () => { ExecuteOnUiThread(OnProcessStart); };
+            m_ProcessRunner.ProcessStarted += () => { ExecuteOnUiThread(OnProcessStart); };
+            m_ProcessRunner.MonitorStopped += () => { ExecuteOnUiThread(OnMonitorStop); };
+            m_ProcessRunner.ProcessStopped += () => { ExecuteOnUiThread(OnProcessStop); };
 
-            m_RemoteManager.OnConnectionOpened += ResetMqttConnectionLabel;
-            m_RemoteManager.OnConnectionClosed += ResetMqttConnectionLabel;
-            m_RemoteManager.OnMessage += OnMqttMessage;
+            m_RemoteManager.OnConnectionOpened += () => { ExecuteOnUiThread(OnMqttConnectionOpen); };
+            m_RemoteManager.OnConnectionClosed += () => { ExecuteOnUiThread(OnMqttConnectionClose); };
+            m_RemoteManager.OnMessage += (m,t) => { ExecuteOnUiThread(() => { OnMqttMessage(m, t); }); };
 
             HotkeyManager.Register(Handle);
 
@@ -422,11 +421,6 @@
             e.Effect = DragDropEffects.All;
         }
 
-        private void OnMqttMessage(string message, string topic)
-        {
-            Logger.Info(string.Format("MQTT message received: ({0}) from ({1}).", message, topic));
-        }
-
         private void OnPullUpdateClick(object sender, EventArgs e)
         {
             try
@@ -481,53 +475,42 @@
                 m_RemoteManager == null)
                 return;
 
-            ExecuteOnUiThread(() =>
-            {
-                if (m_RemoteManager.Connected)
-                    mqtt_connection_status.Text = "CONNECTED";
-                else
-                    mqtt_connection_status.Text = "DISCONNECTED";
-            });
+            if (m_RemoteManager.Connected)
+                mqtt_connection_status.Text = "CONNECTED";
+            else
+                mqtt_connection_status.Text = "DISCONNECTED";
         }
 
         private void ResetWatchButtonLabel()
         {
-            ExecuteOnUiThread(() =>
-            {
-                if (m_ProcessRunner.Monitoring)
-                    watch_button.Text = "Stop Watching ( ALT+F10 )";
-                else
-                    watch_button.Text = "Start Watching ( ALT+F10 )";
-            });
+            if (m_ProcessRunner.Monitoring)
+                watch_button.Text = "Stop Watching ( ALT+F10 )";
+            else
+                watch_button.Text = "Start Watching ( ALT+F10 )";
         }
 
         private void ResetReportTabStatus()
         {
-            ExecuteOnUiThread(() =>
-            {
-                (report_tab as Control).Enabled = enable_report_on_crash.Checked;
-            });
+            (report_tab as Control).Enabled
+                = enable_report_on_crash.Checked;
         }
 
         private void SendCrashEmail()
         {
-            ExecuteOnUiThread(() =>
-            {
-                if (!enable_report_on_crash.Checked)
-                    return;
+            if (!enable_report_on_crash.Checked)
+                return;
 
-                m_ReportManager.SendEmail(
-                    gmail_address.Text,
-                    gmail_password.Text,
-                    email_address.Text,
-                    email_subject.Text
-                        .Replace("#MACHINE_IDENTITY#", RsyncClient.MachineIdentity),
-                    email_body.Text
-                        .Replace("#MACHINE_IDENTITY#", RsyncClient.MachineIdentity)
-                        .Replace("#RSYNC_ADDRESS#", rsync_server_address.Text)
-                        .Replace("#MQTT_ADDRESS#", mqtt_server_address.Text),
-                    attachment.Text);
-            });
+            m_ReportManager.SendEmail(
+                gmail_address.Text,
+                gmail_password.Text,
+                email_address.Text,
+                email_subject.Text
+                    .Replace("#MACHINE_IDENTITY#", RsyncClient.MachineIdentity),
+                email_body.Text
+                    .Replace("#MACHINE_IDENTITY#", RsyncClient.MachineIdentity)
+                    .Replace("#RSYNC_ADDRESS#", rsync_server_address.Text)
+                    .Replace("#MQTT_ADDRESS#", mqtt_server_address.Text),
+                attachment.Text);
         }
     }
 }

@@ -80,6 +80,9 @@
     <Compile Include="HotkeyManager.cs" />
     <Compile Include="IniSettings.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="MainDialogCallbacks.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="RemoteManager.cs" />
     <Compile Include="ReportManager.cs" />
     <Compile Include="TextboxWriterTraceListener.cs" />
