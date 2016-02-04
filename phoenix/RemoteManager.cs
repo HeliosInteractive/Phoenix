@@ -52,12 +52,20 @@
             }
         }
 
-        public void Publish(string message)
+        public void Publish(string message, string channel = "")
         {
-            if (m_client == null || m_client.IsConnected || m_channel == string.Empty || message == string.Empty)
+            if (m_client == null || !m_client.IsConnected || message == string.Empty)
                 return;
 
-            m_client.Publish(m_channel, Encoding.UTF8.GetBytes(message), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, false);
+            if (String.IsNullOrWhiteSpace(channel))
+                channel = m_channel;
+
+            if (!String.IsNullOrWhiteSpace(channel))
+                m_client.Publish(
+                    channel,
+                    Encoding.UTF8.GetBytes(message),
+                    MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE,
+                    false); // retain flag
         }
 
         void MqttMessageReceived(object sender, MqttMsgPublishEventArgs e)
