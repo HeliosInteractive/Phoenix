@@ -18,6 +18,7 @@
                 m_ProcessRunner.Dispose();
                 m_RemoteManager.Dispose();
                 m_ReportManager.Dispose();
+                m_RsyncClient.Dispose();
                 components.Dispose();
             }
             base.Dispose(disposing);
