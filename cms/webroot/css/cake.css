@@ -565,3 +565,8 @@ div.message.hidden {
     margin-bottom: 10px;
     border-bottom: 0px;
 }
+
+.content td {
+	text-overflow: ellipsis;
+    overflow: hidden;
+}
