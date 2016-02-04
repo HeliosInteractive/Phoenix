@@ -1,0 +1,25 @@
+language: php
+
+sudo: false
+
+php:
+  - 5.4
+  - 5.5
+  - 5.6
+  - hhvm-nightly
+
+matrix:
+  allow_failures:
+    - php: hhvm-nightly
+  include:
+    - php: 5.4
+      env: PHPCS=1
+
+before_script: composer install --prefer-dist --dev
+
+script:
+  - sh -c "if [ '$PHPCS' != '1' ]; then phpunit; fi"
+  - sh -c "if [ '$PHPCS' = '1' ]; then vendor/bin/phpcs -p -n --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests; fi"
+
+notifications:
+  email: false
