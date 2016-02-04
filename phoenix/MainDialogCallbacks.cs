@@ -1,5 +1,7 @@
 ﻿namespace phoenix
 {
+    using Properties;
+
     // All of these callbacks are called on UI thread
     public partial class MainDialog
     {
@@ -42,7 +44,7 @@
 
         private void OnMqttMessage(string message, string topic)
         {
-            Logger.Info(string.Format("MQTT message received: ({0}) from ({1}).", message, topic));
+            Logger.Info(string.Format("MQTT message received: ({0}) from ({1}).", message, Resources.MqttTopic));
         }
     }
 }

@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using Properties;
     using System.Threading;
     using System.Reflection;
     using System.Diagnostics;
@@ -254,7 +255,7 @@
                 else
                     m_ProcessRunner.Attempts = Int32.Parse(maximum_retries.Text);
             } else if (control == mqtt_server_address) {
-                m_RemoteManager.Connect(mqtt_server_address.Text, "/helios/phoenix");
+                m_RemoteManager.Connect(mqtt_server_address.Text, Resources.MqttTopic);
             } else if (control == application_to_watch) {
                 m_ProcessRunner.ProcessPath = application_to_watch.Text;
             } else if (control == script_to_execute_on_crash) {

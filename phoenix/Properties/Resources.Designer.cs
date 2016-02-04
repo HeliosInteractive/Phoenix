@@ -67,11 +67,20 @@ namespace phoenix.Properties {
         ///
         ///This is a proprietary technology, meant solely to be used by clients of Helios Interactive. If you have received this software in error or by accident please delete it immidiately.
         ///
-        ///This software comes as-is and its source code is available and will be furnished upon your request without any preconditions to the authorized clients of Helios Interactive as mentioned a [rest of string was truncated]&quot;;.
+        ///This software comes as-is and its source code is available and will be furnished upon request without any preconditions to the authorized clients of Helios Interactive as mentioned above. [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string about {
             get {
                 return ResourceManager.GetString("about", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /helios/phoenix.
+        /// </summary>
+        internal static string MqttTopic {
+            get {
+                return ResourceManager.GetString("MqttTopic", resourceCulture);
             }
         }
         

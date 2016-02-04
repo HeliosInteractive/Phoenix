@@ -121,6 +121,10 @@
   <data name="about" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\about.html;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="MqttTopic" xml:space="preserve">
+    <value>/helios/phoenix</value>
+    <comment>mqtt channel to receive commands from</comment>
+  </data>
   <data name="rsync" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\rsync.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     <comment>cwRsync zip archive</comment>
