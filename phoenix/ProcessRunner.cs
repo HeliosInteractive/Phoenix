@@ -236,7 +236,6 @@
                     if (!m_Process.HasExited)
                     {
                         m_Process.Kill();
-                        m_Process.Close();
                         m_Process.WaitForExit();
                     }
                 }
