@@ -331,7 +331,7 @@
         }
 
         /// <summary>
-        /// Validate members. Sets a flag that prevents Run() from operating
+        /// Validate members. Sets a flag that prevents monitor from operating
         /// if members are incorrectly set.
         /// </summary>
         void Validate()
@@ -444,7 +444,7 @@
         }
 
         /// <summary>
-        /// Calls a script and forgets about it. Used to call start/stop scripts
+        /// Calls a script and waits for its exit. Used to call start/stop scripts
         /// </summary>
         /// <param name="path"></param>
         static void CallScript(string path)
@@ -463,7 +463,7 @@
         }
         
         /// <summary>
-        /// Clean a script and returns it as a clean file/folder path
+        /// Clean a string and returns it as a clean file/folder path
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
