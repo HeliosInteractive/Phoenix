@@ -1,3 +1,11 @@
+window.log = function() {
+	log.history = log.history || [];
+	log.history.push(arguments);
+	if(this.console){
+		console.log( Array.prototype.slice.call(arguments) );
+	}
+};
+
 function BaseChannelPath() {
 	var base_channel = "/helios/phoenix"
 	return base_channel;
@@ -9,7 +17,7 @@ function SubChannelPath(path) {
 
 function AddMachineEntry(payload, columns) {
 	try { var msg = $.parseJSON(payload); }
-	catch(e) { console.log("Failed to parse: " + payload); return; }
+	catch(e) { log("Failed to parse: " + payload); return; }
 	
 	var row = $('.content table')
 			.find('tbody')
@@ -37,7 +45,7 @@ $(document).ready(function() {
 		if (topic == SubChannelPath("machines"))
 			AddMachineEntry(payload, columns);
 		else
-			console.log([topic, payload].join(" : "));
+			log([topic, payload].join(" : "));
 		
 		client.end();
 	});
