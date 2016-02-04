@@ -45,6 +45,17 @@
         private void OnMqttMessage(string message, string topic)
         {
             Logger.Info(string.Format("MQTT message received: ({0}) from ({1}).", message, Resources.MqttTopic));
+
+            if (topic != Resources.MqttTopic)
+                return;
+
+            if (message == "echo") {
+                string echo = string.Format("{{ \"name\":\"{0}\", \"public_key\":\"{1}\" }}",
+                    RsyncClient.MachineIdentity,
+                    RsyncClient.PublicKey.Trim('\n'));
+
+                m_RemoteManager.Publish(echo, string.Format("{0}/machines", Resources.MqttTopic));
+            }
         }
     }
 }
