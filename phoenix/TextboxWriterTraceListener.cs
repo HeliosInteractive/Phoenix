@@ -21,7 +21,7 @@
 
             try
             {
-                logbox.Invoke((MethodInvoker)(() =>
+                logbox.BeginInvoke((MethodInvoker)(() =>
                 {
                 // double check pattern, I hate C#
                 if (logbox == null || logbox.IsDisposed)
