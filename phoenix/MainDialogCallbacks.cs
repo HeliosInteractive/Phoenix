@@ -1,10 +1,12 @@
 ﻿namespace phoenix
 {
     using Properties;
+    using System.Threading.Tasks;
 
     // All of these callbacks are called on UI thread
     public partial class MainDialog
     {
+        private int m_MqttRetryMinutes = 2;
         private void OnProcessStop()
         {
             ResetWatchButtonLabel();
@@ -38,8 +40,14 @@
 
         private void OnMqttConnectionClose()
         {
-            Logger.Warn("MQTT connection closed.");
             ResetMqttConnectionLabel();
+            Logger.Warn(string.Format("MQTT connection closed, retrying in {0} minutes."
+                , m_MqttRetryMinutes));
+
+            Task.Delay(new System.TimeSpan(0, m_MqttRetryMinutes, 0)).ContinueWith(fn => {
+                Logger.Info("MQTT attempting to reconnect.");
+                m_RemoteManager.Connect(mqtt_server_address.Text, Resources.MqttTopic);
+            });
         }
 
         private void OnMqttMessage(string message, string topic)
