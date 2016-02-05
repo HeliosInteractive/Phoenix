@@ -35,7 +35,12 @@
                     OnConnectionClosed();
             };
 
-            m_client.Connect(RsyncClient.MachineIdentity);
+            try {
+                m_client.Connect(RsyncClient.MachineIdentity);
+            } catch {
+                Logger.Error("Unable to connect to MQTT server.");
+                return;
+            }
 
             if (m_client.IsConnected)
             {
