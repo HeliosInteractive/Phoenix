@@ -33,12 +33,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea8 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend8 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainDialog));
             this.main_tab = new System.Windows.Forms.TabControl();
             this.tab_local = new System.Windows.Forms.TabPage();
@@ -87,16 +87,16 @@
             this.rabbitmq_server_address_label = new System.Windows.Forms.Label();
             this.report_tab = new System.Windows.Forms.TabPage();
             this.attachment_label = new System.Windows.Forms.Label();
-            this.attachment = new System.Windows.Forms.TextBox();
+            this.email_attachment = new System.Windows.Forms.TextBox();
             this.email_body = new System.Windows.Forms.RichTextBox();
             this.email_body_label = new System.Windows.Forms.Label();
             this.email_subject_label = new System.Windows.Forms.Label();
             this.email_subject = new System.Windows.Forms.TextBox();
-            this.gmail_password = new System.Windows.Forms.TextBox();
+            this.from_email_password = new System.Windows.Forms.TextBox();
             this.gmail_password_label = new System.Windows.Forms.Label();
-            this.email_address = new System.Windows.Forms.TextBox();
+            this.to_email_address = new System.Windows.Forms.TextBox();
             this.email_address_label = new System.Windows.Forms.Label();
-            this.gmail_address = new System.Windows.Forms.TextBox();
+            this.from_email_address = new System.Windows.Forms.TextBox();
             this.gmail_address_label = new System.Windows.Forms.Label();
             this.log = new System.Windows.Forms.TabPage();
             this.log_box = new System.Windows.Forms.RichTextBox();
@@ -210,38 +210,38 @@
             // memory_chart
             // 
             this.memory_chart.BorderlineWidth = 0;
-            chartArea7.AxisX.IsMarginVisible = false;
-            chartArea7.AxisX.LabelStyle.Enabled = false;
-            chartArea7.AxisX.LineWidth = 0;
-            chartArea7.AxisX.MajorGrid.Enabled = false;
-            chartArea7.AxisX.MajorTickMark.Enabled = false;
-            chartArea7.AxisY.IsMarginVisible = false;
-            chartArea7.AxisY.LabelStyle.Enabled = false;
-            chartArea7.AxisY.LineWidth = 0;
-            chartArea7.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
-            chartArea7.AxisY.MajorTickMark.Enabled = false;
-            chartArea7.BackColor = System.Drawing.Color.Snow;
-            chartArea7.BorderWidth = 0;
-            chartArea7.Name = "metrics_chart_area";
-            chartArea7.Position.Auto = false;
-            chartArea7.Position.Height = 100F;
-            chartArea7.Position.Width = 100F;
-            this.memory_chart.ChartAreas.Add(chartArea7);
-            legend7.Alignment = System.Drawing.StringAlignment.Far;
-            legend7.BackColor = System.Drawing.Color.Transparent;
-            legend7.DockedToChartArea = "metrics_chart_area";
-            legend7.Name = "mem_legend";
-            this.memory_chart.Legends.Add(legend7);
+            chartArea1.AxisX.IsMarginVisible = false;
+            chartArea1.AxisX.LabelStyle.Enabled = false;
+            chartArea1.AxisX.LineWidth = 0;
+            chartArea1.AxisX.MajorGrid.Enabled = false;
+            chartArea1.AxisX.MajorTickMark.Enabled = false;
+            chartArea1.AxisY.IsMarginVisible = false;
+            chartArea1.AxisY.LabelStyle.Enabled = false;
+            chartArea1.AxisY.LineWidth = 0;
+            chartArea1.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
+            chartArea1.AxisY.MajorTickMark.Enabled = false;
+            chartArea1.BackColor = System.Drawing.Color.Snow;
+            chartArea1.BorderWidth = 0;
+            chartArea1.Name = "metrics_chart_area";
+            chartArea1.Position.Auto = false;
+            chartArea1.Position.Height = 100F;
+            chartArea1.Position.Width = 100F;
+            this.memory_chart.ChartAreas.Add(chartArea1);
+            legend1.Alignment = System.Drawing.StringAlignment.Far;
+            legend1.BackColor = System.Drawing.Color.Transparent;
+            legend1.DockedToChartArea = "metrics_chart_area";
+            legend1.Name = "mem_legend";
+            this.memory_chart.Legends.Add(legend1);
             this.memory_chart.Location = new System.Drawing.Point(193, 158);
             this.memory_chart.Name = "memory_chart";
             this.memory_chart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Berry;
-            series7.ChartArea = "metrics_chart_area";
-            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series7.IsXValueIndexed = true;
-            series7.Legend = "mem_legend";
-            series7.LegendText = "% Memory Usage";
-            series7.Name = "memory_usage_series";
-            this.memory_chart.Series.Add(series7);
+            series1.ChartArea = "metrics_chart_area";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.IsXValueIndexed = true;
+            series1.Legend = "mem_legend";
+            series1.LegendText = "% Memory Usage";
+            series1.Name = "memory_usage_series";
+            this.memory_chart.Series.Add(series1);
             this.memory_chart.Size = new System.Drawing.Size(173, 76);
             this.memory_chart.TabIndex = 0;
             this.memory_chart.TabStop = false;
@@ -249,39 +249,39 @@
             // cpu_chart
             // 
             this.cpu_chart.BorderlineWidth = 0;
-            chartArea8.AxisX.IsMarginVisible = false;
-            chartArea8.AxisX.LabelStyle.Enabled = false;
-            chartArea8.AxisX.LineWidth = 0;
-            chartArea8.AxisX.MajorGrid.Enabled = false;
-            chartArea8.AxisX.MajorTickMark.Enabled = false;
-            chartArea8.AxisY.IsMarginVisible = false;
-            chartArea8.AxisY.LabelStyle.Enabled = false;
-            chartArea8.AxisY.LineWidth = 0;
-            chartArea8.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
-            chartArea8.AxisY.MajorTickMark.Enabled = false;
-            chartArea8.BackColor = System.Drawing.Color.Snow;
-            chartArea8.BorderWidth = 0;
-            chartArea8.Name = "metrics_chart_area";
-            chartArea8.Position.Auto = false;
-            chartArea8.Position.Height = 100F;
-            chartArea8.Position.Width = 100F;
-            this.cpu_chart.ChartAreas.Add(chartArea8);
-            legend8.Alignment = System.Drawing.StringAlignment.Far;
-            legend8.BackColor = System.Drawing.Color.Transparent;
-            legend8.DockedToChartArea = "metrics_chart_area";
-            legend8.IsTextAutoFit = false;
-            legend8.Name = "cpu_legend";
-            this.cpu_chart.Legends.Add(legend8);
+            chartArea2.AxisX.IsMarginVisible = false;
+            chartArea2.AxisX.LabelStyle.Enabled = false;
+            chartArea2.AxisX.LineWidth = 0;
+            chartArea2.AxisX.MajorGrid.Enabled = false;
+            chartArea2.AxisX.MajorTickMark.Enabled = false;
+            chartArea2.AxisY.IsMarginVisible = false;
+            chartArea2.AxisY.LabelStyle.Enabled = false;
+            chartArea2.AxisY.LineWidth = 0;
+            chartArea2.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
+            chartArea2.AxisY.MajorTickMark.Enabled = false;
+            chartArea2.BackColor = System.Drawing.Color.Snow;
+            chartArea2.BorderWidth = 0;
+            chartArea2.Name = "metrics_chart_area";
+            chartArea2.Position.Auto = false;
+            chartArea2.Position.Height = 100F;
+            chartArea2.Position.Width = 100F;
+            this.cpu_chart.ChartAreas.Add(chartArea2);
+            legend2.Alignment = System.Drawing.StringAlignment.Far;
+            legend2.BackColor = System.Drawing.Color.Transparent;
+            legend2.DockedToChartArea = "metrics_chart_area";
+            legend2.IsTextAutoFit = false;
+            legend2.Name = "cpu_legend";
+            this.cpu_chart.Legends.Add(legend2);
             this.cpu_chart.Location = new System.Drawing.Point(8, 158);
             this.cpu_chart.Name = "cpu_chart";
             this.cpu_chart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.SeaGreen;
-            series8.ChartArea = "metrics_chart_area";
-            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series8.IsXValueIndexed = true;
-            series8.Legend = "cpu_legend";
-            series8.LegendText = "% CPU Usage";
-            series8.Name = "cpu_usage_series";
-            this.cpu_chart.Series.Add(series8);
+            series2.ChartArea = "metrics_chart_area";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series2.IsXValueIndexed = true;
+            series2.Legend = "cpu_legend";
+            series2.LegendText = "% CPU Usage";
+            series2.Name = "cpu_usage_series";
+            this.cpu_chart.Series.Add(series2);
             this.cpu_chart.Size = new System.Drawing.Size(173, 76);
             this.cpu_chart.TabIndex = 0;
             this.cpu_chart.TabStop = false;
@@ -662,16 +662,16 @@
             // report_tab
             // 
             this.report_tab.Controls.Add(this.attachment_label);
-            this.report_tab.Controls.Add(this.attachment);
+            this.report_tab.Controls.Add(this.email_attachment);
             this.report_tab.Controls.Add(this.email_body);
             this.report_tab.Controls.Add(this.email_body_label);
             this.report_tab.Controls.Add(this.email_subject_label);
             this.report_tab.Controls.Add(this.email_subject);
-            this.report_tab.Controls.Add(this.gmail_password);
+            this.report_tab.Controls.Add(this.from_email_password);
             this.report_tab.Controls.Add(this.gmail_password_label);
-            this.report_tab.Controls.Add(this.email_address);
+            this.report_tab.Controls.Add(this.to_email_address);
             this.report_tab.Controls.Add(this.email_address_label);
-            this.report_tab.Controls.Add(this.gmail_address);
+            this.report_tab.Controls.Add(this.from_email_address);
             this.report_tab.Controls.Add(this.gmail_address_label);
             this.report_tab.Location = new System.Drawing.Point(4, 22);
             this.report_tab.Name = "report_tab";
@@ -690,18 +690,18 @@
             this.attachment_label.TabIndex = 9;
             this.attachment_label.Text = "File to attach: (NOTE: use crash script to upload it if file is too large!)";
             // 
-            // attachment
+            // email_attachment
             // 
-            this.attachment.AllowDrop = true;
-            this.attachment.BackColor = System.Drawing.Color.White;
-            this.attachment.Location = new System.Drawing.Point(8, 130);
-            this.attachment.Name = "attachment";
-            this.attachment.Size = new System.Drawing.Size(358, 20);
-            this.attachment.TabIndex = 10;
-            this.attachment.TextChanged += new System.EventHandler(this.StoreControlValue);
-            this.attachment.DragDrop += new System.Windows.Forms.DragEventHandler(this.DragDropAcceptFirstFile);
-            this.attachment.DragEnter += new System.Windows.Forms.DragEventHandler(this.DragEnterEffectChange);
-            this.attachment.DoubleClick += new System.EventHandler(this.SelectFileDialog);
+            this.email_attachment.AllowDrop = true;
+            this.email_attachment.BackColor = System.Drawing.Color.White;
+            this.email_attachment.Location = new System.Drawing.Point(8, 130);
+            this.email_attachment.Name = "email_attachment";
+            this.email_attachment.Size = new System.Drawing.Size(358, 20);
+            this.email_attachment.TabIndex = 10;
+            this.email_attachment.TextChanged += new System.EventHandler(this.StoreControlValue);
+            this.email_attachment.DragDrop += new System.Windows.Forms.DragEventHandler(this.DragDropAcceptFirstFile);
+            this.email_attachment.DragEnter += new System.Windows.Forms.DragEventHandler(this.DragEnterEffectChange);
+            this.email_attachment.DoubleClick += new System.EventHandler(this.SelectFileDialog);
             // 
             // email_body
             // 
@@ -739,15 +739,15 @@
             this.email_subject.TabIndex = 8;
             this.email_subject.TextChanged += new System.EventHandler(this.StoreControlValue);
             // 
-            // gmail_password
+            // from_email_password
             // 
-            this.gmail_password.BackColor = System.Drawing.Color.White;
-            this.gmail_password.Location = new System.Drawing.Point(8, 80);
-            this.gmail_password.Name = "gmail_password";
-            this.gmail_password.PasswordChar = '*';
-            this.gmail_password.Size = new System.Drawing.Size(173, 20);
-            this.gmail_password.TabIndex = 6;
-            this.gmail_password.TextChanged += new System.EventHandler(this.StoreControlValue);
+            this.from_email_password.BackColor = System.Drawing.Color.White;
+            this.from_email_password.Location = new System.Drawing.Point(8, 80);
+            this.from_email_password.Name = "from_email_password";
+            this.from_email_password.PasswordChar = '*';
+            this.from_email_password.Size = new System.Drawing.Size(173, 20);
+            this.from_email_password.TabIndex = 6;
+            this.from_email_password.TextChanged += new System.EventHandler(this.StoreControlValue);
             // 
             // gmail_password_label
             // 
@@ -758,14 +758,14 @@
             this.gmail_password_label.TabIndex = 5;
             this.gmail_password_label.Text = "GMAIL password [FROM]:";
             // 
-            // email_address
+            // to_email_address
             // 
-            this.email_address.BackColor = System.Drawing.Color.White;
-            this.email_address.Location = new System.Drawing.Point(193, 30);
-            this.email_address.Name = "email_address";
-            this.email_address.Size = new System.Drawing.Size(173, 20);
-            this.email_address.TabIndex = 4;
-            this.email_address.TextChanged += new System.EventHandler(this.StoreControlValue);
+            this.to_email_address.BackColor = System.Drawing.Color.White;
+            this.to_email_address.Location = new System.Drawing.Point(193, 30);
+            this.to_email_address.Name = "to_email_address";
+            this.to_email_address.Size = new System.Drawing.Size(173, 20);
+            this.to_email_address.TabIndex = 4;
+            this.to_email_address.TextChanged += new System.EventHandler(this.StoreControlValue);
             // 
             // email_address_label
             // 
@@ -776,14 +776,14 @@
             this.email_address_label.TabIndex = 3;
             this.email_address_label.Text = "GMAIL email address [TO]:";
             // 
-            // gmail_address
+            // from_email_address
             // 
-            this.gmail_address.BackColor = System.Drawing.Color.White;
-            this.gmail_address.Location = new System.Drawing.Point(8, 30);
-            this.gmail_address.Name = "gmail_address";
-            this.gmail_address.Size = new System.Drawing.Size(173, 20);
-            this.gmail_address.TabIndex = 2;
-            this.gmail_address.TextChanged += new System.EventHandler(this.StoreControlValue);
+            this.from_email_address.BackColor = System.Drawing.Color.White;
+            this.from_email_address.Location = new System.Drawing.Point(8, 30);
+            this.from_email_address.Name = "from_email_address";
+            this.from_email_address.Size = new System.Drawing.Size(173, 20);
+            this.from_email_address.TabIndex = 2;
+            this.from_email_address.TextChanged += new System.EventHandler(this.StoreControlValue);
             // 
             // gmail_address_label
             // 
@@ -981,16 +981,16 @@
         private System.Windows.Forms.Label mqtt_connection_status;
         private System.Windows.Forms.TabPage report_tab;
         private System.Windows.Forms.Label gmail_address_label;
-        private System.Windows.Forms.TextBox gmail_address;
+        private System.Windows.Forms.TextBox from_email_address;
         private System.Windows.Forms.Label email_address_label;
-        private System.Windows.Forms.TextBox email_address;
+        private System.Windows.Forms.TextBox to_email_address;
         private System.Windows.Forms.Label gmail_password_label;
-        private System.Windows.Forms.TextBox gmail_password;
+        private System.Windows.Forms.TextBox from_email_password;
         private System.Windows.Forms.TextBox email_subject;
         private System.Windows.Forms.Label email_subject_label;
         private System.Windows.Forms.Label email_body_label;
         private System.Windows.Forms.RichTextBox email_body;
-        private System.Windows.Forms.TextBox attachment;
+        private System.Windows.Forms.TextBox email_attachment;
         private System.Windows.Forms.Label attachment_label;
         private System.Windows.Forms.TabPage about_tab;
         private System.Windows.Forms.WebBrowser about_browser;

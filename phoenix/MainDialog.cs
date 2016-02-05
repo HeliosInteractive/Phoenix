@@ -502,16 +502,16 @@
                 return;
 
             m_ReportManager.SendEmail(
-                gmail_address.Text,
-                gmail_password.Text,
-                email_address.Text,
+                from_email_address.Text,
+                from_email_password.Text,
+                to_email_address.Text,
                 email_subject.Text
                     .Replace("#MACHINE_IDENTITY#", RsyncClient.MachineIdentity),
                 email_body.Text
                     .Replace("#MACHINE_IDENTITY#", RsyncClient.MachineIdentity)
                     .Replace("#RSYNC_ADDRESS#", rsync_server_address.Text)
                     .Replace("#MQTT_ADDRESS#", mqtt_server_address.Text),
-                attachment.Text);
+                email_attachment.Text);
         }
     }
 }
