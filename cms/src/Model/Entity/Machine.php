@@ -12,7 +12,6 @@ use Cake\ORM\Entity;
  * @property string $name
  * @property string $public_key
  * @property bool $is_authorized
- * @property string $last_meta_received
  */
 class Machine extends Entity
 {

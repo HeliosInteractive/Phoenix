@@ -19,10 +19,6 @@
             <td><?= h($machine->public_key) ?></td>
         </tr>
         <tr>
-            <th><?= __('Last Meta Received') ?></th>
-            <td><?= h($machine->last_meta_received) ?></td>
-        </tr>
-        <tr>
             <th><?= __('Id') ?></th>
             <td><?= $this->Number->format($machine->id) ?></td>
         </tr>

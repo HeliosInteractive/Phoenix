@@ -57,9 +57,6 @@ class MachinesTable extends Table
             ->requirePresence('is_authorized', 'create')
             ->notEmpty('is_authorized');
 
-        $validator
-            ->allowEmpty('last_meta_received');
-
         return $validator;
     }
 }
