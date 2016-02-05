@@ -102,4 +102,35 @@ class MachinesController extends AppController
         }
         return $this->redirect(['action' => 'index']);
     }
+	
+	/**
+	 * Authorize method
+	 */
+	public function authorize()
+	{
+		$this->request->allowMethod(['post']);
+			
+		$name = $this->request->data['name'];
+		$public_key = $this->request->data['public_key'];
+		$exist = $this->Machines->exists(['Machines.name >' => $name, 'Machines.public_key' => $public_key]);
+		
+		if ($exist) {
+			$entry = $this->Machines->find('all')
+				->where(['Machines.name >' => $name, 'Machines.public_key' => $public_key])
+				->limit(1)
+				->first();
+			$entry->is_authorized = true;
+			$this->Machines->save($entry);
+		} else {
+			$entity = $this->Machines->newEntity();
+
+			$entity->name = $name;
+			$entity->is_authorized = true;
+			$entity->public_key = $public_key;
+
+			$this->Machines->save($entity);
+		}
+		
+		return $this->redirect(['action' => 'index']);
+	}
 }

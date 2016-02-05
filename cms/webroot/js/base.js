@@ -15,17 +15,32 @@ function SubChannelPath(path) {
 	return BaseChannelPath() + "/" + path;
 }
 
+function AuthorizeMachine(info){
+	console.log(info);
+	$.post("/machines/authorize", info, function(data) {
+		log("Machine authorized: " + data);
+	});
+}
+
 function AddMachineEntry(payload, columns) {
 	try { var msg = $.parseJSON(payload); }
 	catch(e) { log("Failed to parse: " + payload); return; }
 	
-	var row = $('.content table')
-			.find('tbody')
-			.append($('<tr>'));
-	
+	var row = $('<tr>');
 	columns.forEach(function(col) {
-		row.append($('<td>').text((col in msg) ? msg[col] : ''));
+		if (col == "is_authorized") {
+			row.append($('<td>').append(
+				$('<a>')
+				.click(function() { AuthorizeMachine(msg); return false; })
+				.text('authorize'))
+			);
+		} else {
+			row.append($('<td>').text((col in msg) ? msg[col] : ''));
+		}
 	});
+	$('.content table')
+		.find('tbody')
+		.append(row);
 }
 
 $(document).ready(function() {
