@@ -53,7 +53,7 @@ $(document).ready(function() {
 			columns.push(header);
 		});
 	
-	var client = mqtt.connect("ws://test.mosquitto.org:8080/");
+	var client = mqtt.connect("ws://192.168.56.1:8080/");
 	client.subscribe(SubChannelPath("machines"));
 
 	client.on("message", function(topic, payload) {
