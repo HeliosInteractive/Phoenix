@@ -437,7 +437,7 @@
             OnProcessStopped();
             CallScript(m_CrashScript);
 
-            Task.Delay(1000 * DelaySeconds)
+            Task.Delay(new TimeSpan(0, 0, DelaySeconds))
                 .ContinueWith( fn => ExecuteProcess() );
 
             m_CurrAttempt++;
