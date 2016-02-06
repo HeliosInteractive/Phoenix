@@ -1,3 +1,9 @@
+<script type="text/javascript">
+	var registered_systems = [];
+	<?php foreach ($machines as $machine): ?>
+	registered_systems.push({ "name":"<?php echo $machine->name; ?>", "public_key":"<?php echo $machine->public_key; ?>" });
+	<?php endforeach; ?>
+</script>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
