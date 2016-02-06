@@ -28,19 +28,25 @@ function AddMachineEntry(payload, columns) {
 	
 	var row = $('<tr>');
 	columns.forEach(function(col) {
-		if (col == "is_authorized") {
-			row.append($('<td>').append(
-				$('<a>')
-				.click(function() { AuthorizeMachine(msg); return false; })
-				.text('authorize'))
-			);
-		} else {
-			row.append($('<td>').text((col in msg) ? msg[col] : ''));
+		if (!MachineAuthorized(msg)) {
+			if (col == "actions") {
+				row.append($('<td>').append(
+					$('<a>')
+					.click(function() { AuthorizeMachine(msg); return false; })
+					.text('Authorize'))
+				);
+			} else {
+				row.append($('<td>').text((col in msg) ? msg[col] : ''));
+			}
 		}
 	});
 	$('.content table')
 		.find('tbody')
 		.append(row);
+}
+
+function MachineAuthorized(obj) {
+	return (registered_systems || obj in registered_systems)
 }
 
 $(document).ready(function() {
