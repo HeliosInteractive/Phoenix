@@ -11,7 +11,6 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\Time $modified
  * @property string $name
  * @property string $public_key
- * @property bool $is_authorized
  */
 class Machine extends Entity
 {

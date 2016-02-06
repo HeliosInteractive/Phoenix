@@ -17,7 +17,6 @@
         <?php
             echo $this->Form->input('name');
             echo $this->Form->input('public_key');
-            echo $this->Form->input('is_authorized');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

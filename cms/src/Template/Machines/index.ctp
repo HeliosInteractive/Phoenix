@@ -11,7 +11,6 @@
             <tr>
                 <th><?= $this->Paginator->sort('name') ?></th>
                 <th><?= $this->Paginator->sort('public_key') ?></th>
-                <th><?= $this->Paginator->sort('is_authorized') ?></th>
                 <th class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
@@ -20,7 +19,6 @@
             <tr>
                 <td><?= h($machine->name) ?></td>
                 <td><?= h($machine->public_key) ?></td>
-                <td><?= h($machine->is_authorized) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $machine->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $machine->id]) ?>

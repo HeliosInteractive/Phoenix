@@ -30,9 +30,5 @@
             <th><?= __('Modified') ?></th>
             <td><?= h($machine->modified) ?></td>
         </tr>
-        <tr>
-            <th><?= __('Is Authorized') ?></th>
-            <td><?= $machine->is_authorized ? __('Yes') : __('No'); ?></td>
-         </tr>
     </table>
 </div>

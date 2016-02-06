@@ -52,11 +52,6 @@ class MachinesTable extends Table
             ->requirePresence('public_key', 'create')
             ->notEmpty('public_key');
 
-        $validator
-            ->add('is_authorized', 'valid', ['rule' => 'boolean'])
-            ->requirePresence('is_authorized', 'create')
-            ->notEmpty('is_authorized');
-
         return $validator;
     }
 }
