@@ -13,6 +13,7 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
+use Cake\Routing\Router;
 $cakeDescription = 'CakePHP: the rapid development php framework';
 ?>
 <!DOCTYPE html>
@@ -29,6 +30,11 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->Html->css('base.css') ?>
     <?= $this->Html->css('cake.css') ?>
 	
+	<script type="text/javascript">
+	var cake = {
+		"base_url" : "<?php echo Router::url('/', true); ?>"
+	};
+	</script>
     <?= $this->Html->script('jquery-2.2.0.min') ?>
     <?= $this->Html->script('mqttjs-1.7.0.min') ?>
     <?= $this->Html->script('base') ?>
