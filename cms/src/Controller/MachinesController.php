@@ -18,7 +18,7 @@ class MachinesController extends AppController
      */
     public function index()
     {
-        $this->set('machines', $this->paginate($this->Machines));
+        $this->set('machines', $this->Machines->find('all'));
         $this->set('_serialize', ['machines']);
     }
 
