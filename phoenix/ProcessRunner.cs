@@ -4,6 +4,7 @@
     using System.IO;
     using System.Diagnostics;
     using System.Threading.Tasks;
+    using Microsoft.VisualBasic.Devices;
 
     class ProcessRunner : IDisposable
     {
@@ -20,6 +21,7 @@
         double[]                m_MemoryUsage   = new double[m_NumSamples];
         double[]                m_CpuUsage      = new double[m_NumSamples];
         double[]                m_UsageIndices  = new double[m_NumSamples];
+        double                  m_MaxMemory     = 1d;
         const int               m_NumSamples    = 100;
         int                     m_DelaySeconds  = 0;
         int                     m_Attempts      = 10;
@@ -137,6 +139,9 @@
                 m_MemoryUsage[index] = 0;
                 m_CpuUsage[index] = 0;
             }
+
+            try { m_MaxMemory = new ComputerInfo().AvailablePhysicalMemory; }
+            catch { m_MaxMemory = -1d; }
         }
 
         // This is here solely because I need to remove this
@@ -204,7 +209,7 @@
             if (type == ExecType.NORMAL)
                 m_CurrAttempt = 0;
 
-            Stop(type);
+            Stop(ExecType.NORMAL);
             CallScript(m_StartScript);
 
             m_Process = new Process {
@@ -258,8 +263,8 @@
                 m_CpuUsage[index - 1] = m_CpuUsage[index];
             }
 
-            m_MemoryUsage[m_NumSamples - 1] = m_Process.WorkingSet64 / (double)m_Process.PeakWorkingSet64;
-            try { m_CpuUsage[m_NumSamples - 1] = m_PerfCounter.NextValue() / 100d; }
+            m_MemoryUsage[m_NumSamples - 1] = m_Process.WorkingSet64 / m_MaxMemory;
+            try { m_CpuUsage[m_NumSamples - 1] = m_PerfCounter.NextValue() / (Environment.ProcessorCount * 100d); }
             catch { m_CpuUsage[m_NumSamples - 1] = 0; }
         }
 

@@ -220,6 +220,8 @@
             chartArea1.AxisY.LineWidth = 0;
             chartArea1.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
             chartArea1.AxisY.MajorTickMark.Enabled = false;
+            chartArea1.AxisY.Maximum = 1D;
+            chartArea1.AxisY.Minimum = 0D;
             chartArea1.BackColor = System.Drawing.Color.Snow;
             chartArea1.BorderWidth = 0;
             chartArea1.Name = "metrics_chart_area";
@@ -259,6 +261,8 @@
             chartArea2.AxisY.LineWidth = 0;
             chartArea2.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
             chartArea2.AxisY.MajorTickMark.Enabled = false;
+            chartArea2.AxisY.Maximum = 1D;
+            chartArea2.AxisY.Minimum = 0D;
             chartArea2.BackColor = System.Drawing.Color.Snow;
             chartArea2.BorderWidth = 0;
             chartArea2.Name = "metrics_chart_area";
