@@ -17,7 +17,7 @@
         string                  m_CrashScript   = string.Empty;
         string                  m_ProcessPath   = string.Empty;
         string                  m_CommandLine   = string.Empty;
-        string                  m_CachedName   = string.Empty;
+        string                  m_CachedName    = string.Empty;
         double[]                m_MemoryUsage   = new double[m_NumSamples];
         double[]                m_CpuUsage      = new double[m_NumSamples];
         double[]                m_UsageIndices  = new double[m_NumSamples];
