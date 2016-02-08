@@ -147,6 +147,7 @@
                 }
             }
 
+            m_ProcessRunner.CachedTitle = m_AppSettings.Read("Internal", "CachedName", m_ProcessRunner.CachedTitle);
             UpdateKeyPair();
         }
 
@@ -250,16 +251,21 @@
                     m_ProcessRunner.Attempts = 0;
                 else
                     m_ProcessRunner.Attempts = Int32.Parse(maximum_retries.Text);
+                m_ProcessRunner.CurrentAttempt = 0;
             } else if (control == mqtt_server_address) {
                 m_RemoteManager.Connect(mqtt_server_address.Text, Resources.MqttTopic);
             } else if (control == application_to_watch) {
                 m_ProcessRunner.ProcessPath = application_to_watch.Text;
+                if (m_Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
             } else if (control == script_to_execute_on_crash) {
                 m_ProcessRunner.CrashScript = script_to_execute_on_crash.Text;
+                if (m_Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
             } else if (control == working_directory) {
                 m_ProcessRunner.WorkingDirectory = working_directory.Text;
+                if (m_Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
             } else if (control == script_to_execute_on_start) {
                 m_ProcessRunner.StartScript = script_to_execute_on_start.Text;
+                if (m_Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
             } else if (control == update_feed_address) {
                 m_UpdateManager.FeedAddress = update_feed_address.Text;
             }
@@ -302,11 +308,11 @@
                 }
 
                 if (validated)
-                    m_ProcessRunner.Start();
+                    m_ProcessRunner.Start(ProcessRunner.ExecType.NORMAL);
             }
             else
             {
-                m_ProcessRunner.Stop();
+                m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
             }
         }
 
@@ -353,7 +359,8 @@
                 else if (hotkey_id == HotkeyManager.TOGGLE_CONTROL_PANEL_UI_ID)
                     Visible = !Visible;
                 else if (hotkey_id == HotkeyManager.TOGGLE_MONITORING_ID)
-                    if (m_Monitoring) m_ProcessRunner.Stop(); else m_ProcessRunner.Start();
+                    if (m_Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
+                    else m_ProcessRunner.Start(ProcessRunner.ExecType.NORMAL);
                 else if (hotkey_id == HotkeyManager.TAKE_SCREENSHOT_ID)
                     ScreenCapture.TakeScreenShot();
             }
@@ -457,7 +464,7 @@
 
         private void StopProcessRunner()
         {
-            ExecuteOnUiThread(()=> { m_ProcessRunner.Stop(); });
+            ExecuteOnUiThread(()=> { m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL); });
         }
 
         private void StartProcessRunner()

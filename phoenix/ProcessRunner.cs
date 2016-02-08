@@ -2,7 +2,6 @@
 {
     using System;
     using System.IO;
-    using System.Threading;
     using System.Diagnostics;
     using System.Threading.Tasks;
 
@@ -10,22 +9,24 @@
     {
         #region Private Members
 
-        PerformanceCounter  m_PerfCounter   = null;
-        Process             m_Process       = null;
-        string              m_WorkingDir    = string.Empty;
-        string              m_StartScript   = string.Empty;
-        string              m_CrashScript   = string.Empty;
-        string              m_ProcessPath   = string.Empty;
-        string              m_CommandLine   = string.Empty;
-        double[]            m_MemoryUsage   = new double[m_NumSamples];
-        double[]            m_CpuUsage      = new double[m_NumSamples];
-        double[]            m_UsageIndices  = new double[m_NumSamples];
-        const int           m_NumSamples    = 100;
-        int                 m_DelaySeconds  = 0;
-        int                 m_Attempts      = 10;
-        int                 m_CurrAttempt   = 0;
-        bool                m_AlwaysOnTop   = false;
-        bool                m_CrashIfUnresp = false;
+        PerformanceCounter      m_PerfCounter   = null;
+        Process                 m_Process       = null;
+        string                  m_WorkingDir    = string.Empty;
+        string                  m_StartScript   = string.Empty;
+        string                  m_CrashScript   = string.Empty;
+        string                  m_ProcessPath   = string.Empty;
+        string                  m_CommandLine   = string.Empty;
+        string                  m_CachedName   = string.Empty;
+        double[]                m_MemoryUsage   = new double[m_NumSamples];
+        double[]                m_CpuUsage      = new double[m_NumSamples];
+        double[]                m_UsageIndices  = new double[m_NumSamples];
+        const int               m_NumSamples    = 100;
+        int                     m_DelaySeconds  = 0;
+        int                     m_Attempts      = 10;
+        int                     m_CurrAttempt   = 0;
+        bool                    m_AlwaysOnTop   = false;
+        bool                    m_CrashIfUnresp = false;
+        public enum ExecType    { CRASHED, NORMAL }
 
         #endregion
 
@@ -65,6 +66,11 @@
             get { return m_Attempts; }
             set { m_Attempts = value; Validate(); }
         }
+        public int CurrentAttempt
+        {
+            get { return m_CurrAttempt; }
+            set { m_CurrAttempt = value; }
+        }
         public int DelaySeconds
         {
             get { return m_DelaySeconds; }
@@ -80,6 +86,11 @@
             get { return m_CommandLine; }
             set { m_CommandLine = value; Validate(); }
         }
+        public string CachedTitle
+        {
+            get { return m_CachedName; }
+            set { m_CachedName = value; }
+        }
 
         #endregion
 
@@ -88,24 +99,29 @@
         public Action ProcessStarted;
         public Action ProcessStopped;
 
-        protected virtual void OnProcessStarted()
+        void OnProcessStarted(ExecType type)
         {
             ResetPerformanceCounter();
+            m_CachedName = m_Process.ProcessName;
 
             if (ProcessStarted != null)
                 ProcessStarted();
         }
-        protected virtual void OnProcessStopped()
+
+        void OnProcessStopped(ExecType type)
         {
-            if (m_Attempts > 0 && m_CurrAttempt == m_Attempts)
-                return;
+            if (type == ExecType.CRASHED)
+            {
+                if (!(m_Attempts > 0 && m_CurrAttempt >= m_Attempts))
+                {
+                    CallScript(m_CrashScript);
 
-            CallScript(m_CrashScript);
+                    Task.Delay(new TimeSpan(0, 0, DelaySeconds))
+                        .ContinueWith(fn => Start(ExecType.CRASHED));
 
-            Task.Delay(new TimeSpan(0, 0, DelaySeconds))
-                .ContinueWith(fn => Start());
-
-            m_CurrAttempt++;
+                    m_CurrAttempt++;
+                }
+            }
 
             if (ProcessStopped != null)
                 ProcessStopped();
@@ -123,12 +139,18 @@
             }
         }
 
-        public void Stop()
+        // This is here solely because I need to remove this
+        // subscriber in case of a NORMAL Stop() request.
+        void OnProcessCrashed(object sender, EventArgs e)
+        { OnProcessStopped(ExecType.CRASHED); }
+
+        public void Stop(ExecType type)
         {
             if (m_Process != null)
             {
                 // do not raise events if we are stopping
                 m_Process.EnableRaisingEvents = false;
+                m_Process.Exited -= OnProcessCrashed;
 
                 try
                 {
@@ -149,9 +171,8 @@
                     // Step 3. task kill that mo-fo, fo-sho
                     if (!m_Process.HasExited)
                     {
-                        ExecuteScript(
-                            "taskkill",
-                            string.Format("/F /IM /T {0}", m_Process.ProcessName));
+                        ExecuteScript("taskkill",
+                            string.Format("/F /T /IM {0}.exe", m_Process.ProcessName));
                     }
                 }
                 catch
@@ -162,14 +183,28 @@
                 m_Process.Dispose();
                 m_Process = null;
             }
+
+            if (!String.IsNullOrWhiteSpace(m_CachedName))
+            {
+                if (Process.GetProcessesByName(m_CachedName).Length > 0)
+                {
+                    ExecuteScript("taskkill",
+                        string.Format("/F /T /IM {0}.exe", m_CachedName));
+                }
+            }
+
+            OnProcessStopped(type);
         }
 
-        public void Start()
+        public void Start(ExecType type)
         {
-            if (!Validate())
+            if (!Validate() || m_Disposed)
                 return;
 
-            Stop();
+            if (type == ExecType.NORMAL)
+                m_CurrAttempt = 0;
+
+            Stop(type);
             CallScript(m_StartScript);
 
             m_Process = new Process {
@@ -183,14 +218,18 @@
                 EnableRaisingEvents = true,
             };
             
-            m_Process.Exited += (s,e)=> { OnProcessStopped(); };
+            m_Process.Exited += OnProcessCrashed;
             m_Process.Start();
             m_Process.WaitForInputIdle(5000);
 
             if (m_Process.Responding)
-                OnProcessStarted();
-            else
-                Stop();
+                OnProcessStarted(type);
+        }
+
+        public void Restart()
+        {
+            Stop(ExecType.NORMAL);
+            Start(ExecType.NORMAL);
         }
 
         public void Monitor()
@@ -201,16 +240,11 @@
             m_Process.Refresh();
 
             if (AssumeCrashIfNotResponsive && !m_Process.Responding)
-            {
-                Stop();
-                OnProcessStopped();
-            }
+                Stop(ExecType.CRASHED);
 
             if (ForceAlwaysOnTop && HasMainWindow())
-            {
                 if (NativeMethods.GetForegroundWindow() != m_Process.MainWindowHandle)
                     NativeMethods.SetForegroundWindow(m_Process.MainWindowHandle);
-            }
         }
 
         public void UpdateMetrics()
@@ -335,11 +369,11 @@
         }
 
         #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
+        private bool m_Disposed = false;
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!m_Disposed)
             {
                 if (disposing)
                 {
@@ -350,15 +384,13 @@
                         m_Process.Close();
                 }
                 // free native resources
-                disposedValue = true;
+                m_Disposed = true;
             }
         }
 
-        // This code added to correctly implement the disposable pattern.
         public void Dispose()
         {
-            Stop();
-            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Stop(ExecType.NORMAL);
             Dispose(true);
         }
         #endregion

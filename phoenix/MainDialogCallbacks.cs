@@ -19,6 +19,7 @@
         {
             m_Monitoring = true;
             ResetWatchButtonLabel();
+            m_AppSettings.Store("Internal", "CachedName", m_ProcessRunner.CachedTitle);
             Logger.Info(string.Format("Process started ({0}).", m_ProcessRunner.ProcessPath));
         }
 
