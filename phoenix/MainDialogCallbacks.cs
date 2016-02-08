@@ -9,6 +9,7 @@
         private int m_MqttRetryMinutes = 2;
         private void OnProcessStop()
         {
+            m_Monitoring = false;
             SendCrashEmail();
             ResetWatchButtonLabel();
             Logger.Warn(string.Format("Process stopped ({0}).", m_ProcessRunner.ProcessPath));
@@ -16,20 +17,9 @@
 
         private void OnProcessStart()
         {
+            m_Monitoring = true;
             ResetWatchButtonLabel();
             Logger.Info(string.Format("Process started ({0}).", m_ProcessRunner.ProcessPath));
-        }
-
-        private void OnMonitorStop()
-        {
-            Logger.Warn("Monitor stopped.");
-            ResetWatchButtonLabel();
-        }
-
-        private void OnMonitorStart()
-        {
-            Logger.Info("Monitor started.");
-            ResetWatchButtonLabel();
         }
 
         private void OnMqttConnectionOpen()

@@ -16,7 +16,8 @@
         private ProcessRunner       m_ProcessRunner;
         private OpenFileDialog      m_FileDialog;
         private FolderBrowserDialog m_FolderDialog;
-        private bool                m_PhoenixReady = false;
+        private bool                m_PhoenixReady  = false;
+        private bool                m_Monitoring    = false;
         private Series              m_CpuUsageSeries;
         private Series              m_MemoryUsageSeries;
         static Mutex                m_SingleInstanceMutex;
@@ -57,9 +58,7 @@
             process_monitor_timer.Start();
 
             // These are executed in a separate thread
-            m_ProcessRunner.MonitorStarted += () => { ExecuteOnUiThread(OnProcessStart); };
             m_ProcessRunner.ProcessStarted += () => { ExecuteOnUiThread(OnProcessStart); };
-            m_ProcessRunner.MonitorStopped += () => { ExecuteOnUiThread(OnMonitorStop); };
             m_ProcessRunner.ProcessStopped += () => { ExecuteOnUiThread(OnProcessStop); };
 
             m_RemoteManager.OnConnectionOpened += () => { ExecuteOnUiThread(OnMqttConnectionOpen); };
@@ -210,8 +209,7 @@
         private void OnControlValidate(Control control)
         {
             if (control == application_to_watch) {
-                application_to_watch.Text =
-                    ProcessRunner.CleanStringAsPath(application_to_watch.Text);
+                application_to_watch.Text = application_to_watch.Text.CleanForPath();
 
                 if (application_to_watch.Text != string.Empty &&
                     File.Exists(application_to_watch.Text) &&
@@ -224,11 +222,9 @@
                 control == script_to_execute_on_start ||
                 control == remote_directory ||
                 control == working_directory) {
-                (control as TextBoxBase).Text =
-                    ProcessRunner.CleanStringAsPath((control as TextBoxBase).Text);
+                (control as TextBoxBase).Text = ((control as TextBoxBase).Text).CleanForPath();
             } else if (control == local_directory) {
-                local_directory.Text =
-                    ProcessRunner.CleanStringAsPath(local_directory.Text);
+                local_directory.Text = local_directory.Text.CleanForPath();
                 local_directory.Text =
                     RsyncClient.PathToCygwinPath(local_directory.Text);
             }
@@ -276,7 +272,7 @@
 
         private void ValidateAndStartMonitoring()
         {
-            if (!m_ProcessRunner.Monitoring)
+            if (!m_Monitoring)
             {
                 if (!EnsureSingleInstanceMode())
                     return; // silently
@@ -357,7 +353,7 @@
                 else if (hotkey_id == HotkeyManager.TOGGLE_CONTROL_PANEL_UI_ID)
                     Visible = !Visible;
                 else if (hotkey_id == HotkeyManager.TOGGLE_MONITORING_ID)
-                    if (m_ProcessRunner.Monitoring) m_ProcessRunner.Stop(); else m_ProcessRunner.Start();
+                    if (m_Monitoring) m_ProcessRunner.Stop(); else m_ProcessRunner.Start();
                 else if (hotkey_id == HotkeyManager.TAKE_SCREENSHOT_ID)
                     ScreenCapture.TakeScreenShot();
             }
@@ -461,7 +457,7 @@
 
         private void StopProcessRunner()
         {
-            ExecuteOnUiThread(()=> { m_ProcessRunner.Stop(false); });
+            ExecuteOnUiThread(()=> { m_ProcessRunner.Stop(); });
         }
 
         private void StartProcessRunner()
@@ -484,7 +480,7 @@
 
         private void ResetWatchButtonLabel()
         {
-            if (m_ProcessRunner.Monitoring)
+            if (m_Monitoring)
                 watch_button.Text = "Stop Watching ( ALT+F10 )";
             else
                 watch_button.Text = "Start Watching ( ALT+F10 )";

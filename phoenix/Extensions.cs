@@ -1,5 +1,6 @@
 ﻿namespace phoenix
 {
+    using System.IO;
     using System.Linq;
     using System.Globalization;
 
@@ -21,6 +22,16 @@
                 .TextInfo
                 .ToTitleCase(input)
                 .Replace("_", string.Empty);
+        }
+
+        public static string CleanForPath(this string input)
+        {
+            foreach (var c in Path.GetInvalidPathChars())
+            {
+                input = input.Replace(c.ToString(), string.Empty);
+            }
+
+            return input.Trim();
         }
     }
 }
