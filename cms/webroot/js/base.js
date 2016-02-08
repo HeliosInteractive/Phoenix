@@ -16,9 +16,8 @@ function SubChannelPath(path) {
 }
 
 function AuthorizeMachine(info){
-	console.log(info);
-	$.post("/machines/authorize", info, function(data) {
-		log("Machine authorized: " + data);
+	$.post("/machines/add", info, function(data) {
+		window.location.reload();
 	});
 }
 
@@ -46,7 +45,15 @@ function AddMachineEntry(payload, columns) {
 }
 
 function MachineAuthorized(obj) {
-	return (registered_systems || obj in registered_systems)
+	if (registered_systems == undefined)
+		return false;
+	
+	var found = false;
+	registered_systems.forEach(function(val) {
+		found = (val.name == obj.name && val.public_key == obj.public_key);
+	});
+	
+	return found;
 }
 
 $(document).ready(function() {
