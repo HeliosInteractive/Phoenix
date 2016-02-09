@@ -25,12 +25,13 @@
             FileInfo logger_cfg = new FileInfo(
                 Path.Combine(phoenix.Program.Directory, "logger.xml"));
 
-            if (logger_cfg.Exists)
+            if (!logger_cfg.Exists)
             {
                 // configure from the configuration
-                XmlConfigurator.Configure(logger_cfg);
+                File.WriteAllText(logger_cfg.FullName, Properties.Resources.logger);
             }
 
+            XmlConfigurator.Configure(logger_cfg);
             BasicConfigurator.Configure(new TextBoxAppender(log_box, owner));
             LogManager.GetLogger(typeof(phoenix.Logger)).Info("==============================");
         }

@@ -145,6 +145,7 @@
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />
     <Content Include="helios-flat-logo.ico" />
+    <None Include="Resources\logger.xml" />
     <EmbeddedResource Include="Resources\about.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -76,6 +76,28 @@ namespace phoenix.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;log4net&gt;
+        ///    &lt;appender name=&quot;PhoenixRollingFile&quot; type=&quot;log4net.Appender.RollingFileAppender&quot;&gt;
+        ///        &lt;file value=&quot;phoenix.log&quot; /&gt;
+        ///        &lt;appendToFile value=&quot;true&quot; /&gt;
+        ///        &lt;maximumFileSize value=&quot;1MB&quot; /&gt;
+        ///        &lt;maxSizeRollBackups value=&quot;20&quot; /&gt;
+        ///
+        ///        &lt;layout type=&quot;log4net.Layout.PatternLayout&quot;&gt;
+        ///            &lt;conversionPattern value=&quot;%5level [%2thread] [%21logger@%3line] - %message%newline&quot; /&gt;
+        ///        &lt;/layout&gt;
+        ///    &lt;/appender&gt;
+        ///    &lt;root&gt;
+        ///        &lt;level value=&quot;ALL&quot; /&gt;
+        ///        &lt;appender-r [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string logger {
+            get {
+                return ResourceManager.GetString("logger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /helios/phoenix.
         /// </summary>
         internal static string MqttTopic {
