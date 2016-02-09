@@ -98,8 +98,8 @@
 
         #region Events
 
-        public Action ProcessStarted;
-        public Action ProcessStopped;
+        public Action<ExecType> ProcessStarted;
+        public Action<ExecType> ProcessStopped;
 
         void OnProcessStarted(ExecType type)
         {
@@ -107,7 +107,7 @@
             m_CachedName = m_Process.ProcessName;
 
             if (ProcessStarted != null)
-                ProcessStarted();
+                ProcessStarted(type);
         }
 
         void OnProcessStopped(ExecType type)
@@ -126,7 +126,7 @@
             }
 
             if (ProcessStopped != null)
-                ProcessStopped();
+                ProcessStopped(type);
         }
 
         #endregion

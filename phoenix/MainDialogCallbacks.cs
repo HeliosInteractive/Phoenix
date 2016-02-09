@@ -7,15 +7,18 @@
     public partial class MainDialog
     {
         private int m_MqttRetryMinutes = 2;
-        private void OnProcessStop()
+        private void OnProcessStop(ProcessRunner.ExecType type)
         {
             m_Monitoring = false;
-            SendCrashEmail();
+
+            if (m_PhoenixReady && type == ProcessRunner.ExecType.CRASHED)
+                SendCrashEmail();
+
             ResetWatchButtonLabel();
             Logger.MainDialog.WarnFormat("Process stopped ({0}).", m_ProcessRunner.ProcessPath);
         }
 
-        private void OnProcessStart()
+        private void OnProcessStart(ProcessRunner.ExecType type)
         {
             m_Monitoring = true;
             ResetWatchButtonLabel();
