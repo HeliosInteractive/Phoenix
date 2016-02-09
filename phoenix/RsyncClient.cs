@@ -43,7 +43,7 @@
             set
             {
                 try { File.WriteAllText(s_PrivateKeyPath, value); }
-                catch { Logger.Error("Unable to write private key."); }
+                catch { Logger.RsyncClient.Error("Unable to write private key."); }
             }
         }
         public static string PublicKey
@@ -60,7 +60,7 @@
             set
             {
                 try { File.WriteAllText(s_PublicKeyPath, value); }
-                catch { Logger.Error("Unable to write public key."); }
+                catch { Logger.RsyncClient.Error("Unable to write public key."); }
             }
         }
         private static bool ClientExtracted
@@ -136,7 +136,7 @@
             }
             catch
             {
-                Logger.Error("[RSYNC] Unable to extract rsync from resources.");
+                Logger.RsyncClient.Error("Unable to extract rsync from resources.");
                 return false;
             }
         }
@@ -145,7 +145,7 @@
         {
             if (!ClientExtracted && !ExtractClient())
             {
-                Logger.Error("[RSYNC] Cannot generate keys because client does not exist.");
+                Logger.RsyncClient.Error("Cannot generate keys because client does not exist.");
                 return false;
             }
 
@@ -170,7 +170,7 @@
             }
             catch
             {
-                Logger.Error("[RSYNC] Unable to generate key pairs.");
+                Logger.RsyncClient.Error("Unable to generate key pairs.");
                 return false;
             }
         }
@@ -187,13 +187,13 @@
             }
             catch
             {
-                Logger.Error("[RSYNC] Unable to remove old key pairs.");
+                Logger.RsyncClient.Error("Unable to remove old key pairs.");
                 return;
             }
 
             if (!GenerateKeys())
             {
-                Logger.Error("[RSYNC] Unable to re-generate key pairs.");
+                Logger.RsyncClient.Error("Unable to re-generate key pairs.");
             }
         }
 
@@ -214,13 +214,13 @@
 
             if (!ClientExtracted && !ExtractClient())
             {
-                Logger.Error("[RSYNC] Cannot execute because client does not exist.");
+                Logger.RsyncClient.Error("Cannot execute because client does not exist.");
                 return;
             }
 
             if (!KeysExist && !GenerateKeys())
             {
-                Logger.Error("[RSYNC] Cannot execute because keys do not exist.");
+                Logger.RsyncClient.Error("Cannot execute because keys do not exist.");
                 return;
             }
 
@@ -262,7 +262,7 @@
             }
             catch
             {
-                Logger.Warn("[RSYNC] Unable to shutdown previous rsync session.");
+                Logger.RsyncClient.Warn("Unable to shutdown previous rsync session.");
             }
 
             m_RsyncProcess = new Process();
@@ -273,7 +273,7 @@
             {
                 if (!String.IsNullOrEmpty(e.Data))
                 {
-                    Logger.Info(string.Format("[RSYNC] {0}", e.Data));
+                    Logger.RsyncClient.Info(e.Data);
                 }
             });
 
@@ -281,7 +281,7 @@
             {
                 if (!String.IsNullOrEmpty(e.Data))
                 {
-                    Logger.Error(string.Format("[RSYNC] {0}", e.Data));
+                    Logger.RsyncClient.Error(e.Data);
                 }
             });
 
@@ -306,28 +306,28 @@
                             m_RsyncProcess.WaitForExit();
                         }
 
-                        Logger.Info("[RSYNC] session finished.");
+                        Logger.RsyncClient.Info("session finished.");
                         post_update();
                     }
                     else
-                        Logger.Error("[RSYNC] stalled a session. Did you issue an update in the middle of another one?");
+                        Logger.RsyncClient.Error("stalled a session. Did you issue an update in the middle of another one?");
                 });
             }
         }
 
         #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
+        private bool m_Disposed = false; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!m_Disposed)
             {
                 if (disposing && m_RsyncProcess != null)
                 {
                     m_RsyncProcess.Dispose();
                 }
 
-                disposedValue = true;
+                m_Disposed = true;
             }
         }
 

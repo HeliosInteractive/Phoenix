@@ -32,7 +32,7 @@
             if (!File.Exists(m_Path))
                 File.Create(m_Path).Dispose();
 
-            Logger.Info(string.Format("path to settings files is: {0}", m_Path));
+            Logger.IniSettings.InfoFormat("path to settings files is: {0}", m_Path);
         }
 
         ~IniSettings()
@@ -51,11 +51,11 @@
         {
             if (!NativeMethods.WritePrivateProfileString(Section, Key, Value, m_Path))
             {
-                Logger.Error(string.Format(
+                Logger.IniSettings.ErrorFormat(
                     "Failed to write INI entry in section {0} with key {1} and value {2}",
                     Section,
                     Key,
-                    Value));
+                    Value);
             }
         }
 
@@ -109,19 +109,19 @@
                 }
                 catch
                 {
-                    Logger.Warn(string.Format(
+                    Logger.IniSettings.WarnFormat(
                         "Failed to comvert INI entry type in section {0} and key {1}. Default value: {2}",
                         Section,
                         Key,
-                        DefaultValue));
+                        DefaultValue);
                 }
             }
             else
             {
-                Logger.Warn(string.Format(
+                Logger.IniSettings.WarnFormat(
                     "Failed to read INI entry in section {0} and key {1} or entry is empty.",
                     Section,
-                    Key));
+                    Key);
             }
 
             if (!success)
@@ -143,7 +143,7 @@
         /// </summary>
         public void SaveReadEntries()
         {
-            Logger.Info("Saving INI entries back to settings file.");
+            Logger.IniSettings.Info("Saving INI entries back to settings file.");
 
             foreach (var keys in m_Settings)
             {

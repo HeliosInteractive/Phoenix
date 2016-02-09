@@ -48,7 +48,7 @@
             catch
             {
                 path = string.Empty;
-                Logger.Error("Capturing screen shot failed.");
+                Logger.ScreenCapture.Error("Capturing screen shot failed.");
             }
 
             return path;

@@ -57,7 +57,7 @@
                 }
             }
 
-            Logger.Warn(string.Format("Key {0} not found in default settings.", key));
+            Logger.Defaults.ErrorFormat("Key {0} not found in default settings.", key);
             return string.Empty;
         }
     }

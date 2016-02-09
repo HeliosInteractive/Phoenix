@@ -30,7 +30,7 @@
 
             m_client.MqttMsgPublishReceived += MqttMessageReceived;
             m_client.ConnectionClosed += (s, e) => {
-                Logger.Warn("MQTT connection closed.");
+                Logger.RemoteManager.Warn("MQTT connection closed.");
                 if (OnConnectionClosed != null)
                     OnConnectionClosed();
             };
@@ -38,7 +38,7 @@
             try {
                 m_client.Connect(RsyncClient.MachineIdentity);
             } catch {
-                Logger.Error("Unable to connect to MQTT server.");
+                Logger.RemoteManager.Error("Unable to connect to MQTT server.");
                 return;
             }
 
@@ -49,8 +49,8 @@
                     new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
                 m_channel = channel;
 
-                Logger.Info(string.Format("Established an MQTT connection to {0} and subscribed to {1}.",
-                    address, channel));
+                Logger.RemoteManager.InfoFormat("Established an MQTT connection to {0} and subscribed to {1}.",
+                    address, channel);
 
                 if (OnConnectionOpened != null)
                     OnConnectionOpened();
@@ -77,8 +77,8 @@
         {
             string msg = Encoding.UTF8.GetString(e.Message);
 
-            Logger.Info(string.Format("MQTT message received: ({0}) from ({1}).",
-                msg, e.Topic));
+            Logger.RemoteManager.InfoFormat("MQTT message received: ({0}) from ({1}).",
+                msg, e.Topic);
 
             if (OnMessage != null)
                 OnMessage(msg, e.Topic);
@@ -90,11 +90,11 @@
         }
 
         #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
+        private bool m_Disposed = false; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!m_Disposed)
             {
                 if (disposing)
                 {
@@ -102,7 +102,7 @@
                         m_client.Disconnect();
                 }
 
-                disposedValue = true;
+                m_Disposed = true;
             }
         }
 

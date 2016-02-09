@@ -12,7 +12,7 @@
             m_Monitoring = false;
             SendCrashEmail();
             ResetWatchButtonLabel();
-            Logger.Warn(string.Format("Process stopped ({0}).", m_ProcessRunner.ProcessPath));
+            Logger.MainDialog.WarnFormat("Process stopped ({0}).", m_ProcessRunner.ProcessPath);
         }
 
         private void OnProcessStart()
@@ -20,30 +20,31 @@
             m_Monitoring = true;
             ResetWatchButtonLabel();
             m_AppSettings.Store("Internal", "CachedName", m_ProcessRunner.CachedTitle);
-            Logger.Info(string.Format("Process started ({0}).", m_ProcessRunner.ProcessPath));
+            Logger.MainDialog.InfoFormat("Process started ({0}).", m_ProcessRunner.ProcessPath);
         }
 
         private void OnMqttConnectionOpen()
         {
-            Logger.Info("MQTT connection established.");
             ResetMqttConnectionLabel();
+            Logger.MainDialog.Info("MQTT connection established.");
         }
 
         private void OnMqttConnectionClose()
         {
             ResetMqttConnectionLabel();
-            Logger.Warn(string.Format("MQTT connection closed, retrying in {0} minutes."
-                , m_MqttRetryMinutes));
+            Logger.MainDialog.WarnFormat("MQTT connection closed, retrying in {0} minutes."
+                , m_MqttRetryMinutes);
 
             Task.Delay(new System.TimeSpan(0, m_MqttRetryMinutes, 0)).ContinueWith(fn => {
-                Logger.Info("MQTT attempting to reconnect.");
+                Logger.MainDialog.Info("MQTT attempting to reconnect.");
                 m_RemoteManager.Connect(mqtt_server_address.Text, Resources.MqttTopic);
             });
         }
 
         private void OnMqttMessage(string message, string topic)
         {
-            Logger.Info(string.Format("MQTT message received: ({0}) from ({1}).", message, Resources.MqttTopic));
+            Logger.MainDialog.InfoFormat("MQTT message received: ({0}) from ({1})."
+                , message, Resources.MqttTopic);
 
             if (topic != Resources.MqttTopic)
                 return;

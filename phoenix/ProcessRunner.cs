@@ -182,7 +182,7 @@
                 }
                 catch
                 {
-                    Logger.Error("An error occurred while trying to shutdown the process.");
+                    Logger.ProcessRunner.Error("An error occurred while trying to shutdown the process.");
                 }
 
                 m_Process.Dispose();

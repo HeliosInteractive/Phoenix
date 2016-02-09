@@ -34,7 +34,7 @@
 
         private void OnHandleCreated(object sender, EventArgs e)
         {
-            SetupTracer();
+            Logger.Configure();
 
             about_browser.DocumentStream = Assembly.
                 GetExecutingAssembly().
@@ -72,18 +72,11 @@
             ResetWatchButtonLabel();
             ResetReportTabStatus();
 
-            Logger.Info(string.Format("Phoenix is up and running on [{0}]."
-                , RsyncClient.MachineIdentity));
+            Logger.MainDialog.InfoFormat("Phoenix is up and running on [{0}]."
+                , RsyncClient.MachineIdentity);
 
             m_UpdateManager.Check();
             m_PhoenixReady = true;
-        }
-
-        private void SetupTracer()
-        {
-            Trace.Listeners.Add(new TextboxWriterTraceListener(log_box, "PhoenixTextboxLog"));
-            Trace.Listeners.Add(new TextWriterTraceListener("phoenix.log", "PhoneixFileLog"));
-            Trace.Listeners["PhoneixFileLog"].TraceOutputOptions |= TraceOptions.DateTime;
         }
 
         private bool EnsureSingleInstanceMode()
@@ -163,7 +156,7 @@
             }
 
             if (control == null) {
-                Logger.Error(string.Format("Could not lookup control element of entry {0} in {1}", name, section));
+                Logger.MainDialog.ErrorFormat("Could not lookup control element of entry {0} in {1}", name, section);
                 return;
             }
 
@@ -172,7 +165,7 @@
             else if (control as CheckBox != null)
                 ((CheckBox)control).Checked = m_AppSettings.Read(section, name, (bool)value);
             else
-                Logger.Error("Invalid control type is detected.");
+                Logger.MainDialog.Error("Invalid control type is detected.");
         }
 
         private void UpdateKeyPair()
@@ -202,7 +195,7 @@
             else if (control as CheckBox != null)
                 m_AppSettings.Store(Defaults.GetSectionByKey(control_name_cc), control_name_cc, (sender as CheckBox).Checked);
             else
-                Logger.Error("Control type is not supported.");
+                Logger.MainDialog.Error("Control type is not supported.");
 
             OnControlValueChanged(control);
         }
@@ -441,7 +434,7 @@
             }
             catch
             {
-                Logger.Error("[RSYNC] Unable to execute.");
+                Logger.MainDialog.Error("Unable to execute rsync.");
             }
         }
 
@@ -456,9 +449,9 @@
             }
             catch
             {
-                Logger.Error(string.Format("{0}\n{1}",
+                Logger.MainDialog.ErrorFormat("{0}\n{1}",
                     "Method execution on UI thread failed.",
-                    "perhaps you are calling something after exit?"));
+                    "perhaps you are calling something after exit?");
             }
         }
 

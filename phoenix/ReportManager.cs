@@ -21,11 +21,11 @@
             m_Smtp.SendCompleted += (s, e) =>
             {
                 if (e.Cancelled) {
-                    Logger.Warn(string.Format("ReportManager canceled email operation ({0}).", e.UserState));
+                    Logger.ReportManager.WarnFormat("ReportManager canceled email operation ({0}).", e.UserState);
                 } else if (e.Error != null) {
-                    Logger.Error(string.Format("ReportManager email op encountered an error ({0}).", e.UserState));
+                    Logger.ReportManager.ErrorFormat("ReportManager email op encountered an error ({0}).", e.UserState);
                 } else {
-                    Logger.Info(string.Format("ReportManager sent a crash report email ({0}).", e.UserState));
+                    Logger.ReportManager.InfoFormat("ReportManager sent a crash report email ({0}).", e.UserState);
                 }
             };
         }
@@ -99,7 +99,7 @@
             }
             catch
             {
-                Logger.Error("ReportManager failed to send the crash report.");
+                Logger.ReportManager.Error("ReportManager failed to send the crash report.");
                 return;
             }
         }
@@ -162,18 +162,18 @@
         }
 
         #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
+        private bool m_Disposed = false; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!m_Disposed)
             {
                 if (disposing && m_Smtp != null)
                 {
                     m_Smtp.Dispose();
                 }
 
-                disposedValue = true;
+                m_Disposed = true;
             }
         }
 
