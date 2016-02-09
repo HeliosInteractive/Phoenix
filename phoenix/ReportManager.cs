@@ -3,7 +3,6 @@
     using System;
     using System.IO;
     using System.Net;
-    using System.Linq;
     using System.Net.Mail;
     using System.Globalization;
     using System.Text.RegularExpressions;
@@ -12,6 +11,7 @@
     {
         private SmtpClient      m_Smtp;
         private EmailValidator  m_Validator;
+        private static string   s_DumpDir = "dumps";
 
         public ReportManager()
         {
@@ -32,8 +32,9 @@
 
         public void SendEmail(string from, string from_password, string to, string subject, string body, string attachment = "")
         {
-            from = from.Trim();
-            to = to.Trim();
+            attachment  = attachment.CleanForPath();
+            from        = from.Trim();
+            to          = to.Trim();
 
             if (String.IsNullOrEmpty(from_password) ||
                 !m_Validator.IsValid(from) ||
@@ -49,17 +50,43 @@
                 message.Subject = subject;
                 message.Body = body;
 
+                if (!Directory.Exists(s_DumpDir))
+                    Directory.CreateDirectory(s_DumpDir);
+
+                long attachments_size = 0;
+                string stamp = DateTime.Now.Ticks.ToString();
+                FileInfo attachment_path = new FileInfo(Path.Combine(s_DumpDir,
+                        string.Format("{0}_{1}.{2}",
+                            Path.GetFileNameWithoutExtension(attachment),
+                            stamp,
+                            Path.GetExtension(attachment))));
+                FileInfo screenshot_path = new FileInfo(ScreenCapture.TakeScreenShot(Path.Combine(s_DumpDir,
+                        string.Format("screenshot_{0}.png", stamp))));
+                bool has_attachment = false;
+                bool has_screenshot = false;
+
                 if (!String.IsNullOrEmpty(attachment) && File.Exists(attachment))
-                    message.Attachments.Add(new Attachment(attachment));
+                {
+                    File.Copy(attachment, attachment_path.FullName);
+                    attachment_path.Refresh();
+                    attachments_size += attachment_path.Length;
+                    has_attachment = true;
+                }
 
-                ScreenCapture.TakeScreenShot();
-                DirectoryInfo screenshot_directory = new DirectoryInfo(ScreenCapture.ScreenShotDirectory);
-                FileInfo last_screenshot = screenshot_directory.GetFiles()
-                             .OrderByDescending(f => f.LastWriteTime)
-                             .First();
+                if (screenshot_path.Exists)
+                {
+                    attachments_size += screenshot_path.Length;
+                    has_screenshot = true;
+                }
 
-                if (last_screenshot.Exists)
-                    message.Attachments.Add(new Attachment(last_screenshot.FullName));
+                // safe attachment size is about 10 MB ~ 1e7 bytes.
+                if (attachments_size < 1e7)
+                {
+                    if (has_screenshot)
+                        message.Attachments.Add(new Attachment(screenshot_path.FullName));
+                    if (has_attachment)
+                        message.Attachments.Add(new Attachment(attachment_path.FullName));
+                }
 
                 m_Smtp.Port = 587;
                 m_Smtp.Host = "smtp.gmail.com";

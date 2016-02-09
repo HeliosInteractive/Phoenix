@@ -13,8 +13,10 @@
             get { return "captures"; }
         }
 
-        public static void TakeScreenShot()
+        public static string TakeScreenShot(string image_path = "")
         {
+            string path = string.Empty;
+
             using (Bitmap bmp = new Bitmap(
                 Screen.PrimaryScreen.Bounds.Width,
                 Screen.PrimaryScreen.Bounds.Height))
@@ -35,10 +37,17 @@
 
                     if (Directory.Exists(ScreenShotDirectory))
                     {
-                        bmp.Save(string.Format("{0}\\{1}.png", ScreenShotDirectory, DateTime.Now.Ticks), ImageFormat.Png);
+                        if (String.IsNullOrWhiteSpace(image_path))
+                            path = Path.Combine(ScreenShotDirectory, string.Format("{0}.png", DateTime.Now.Ticks));
+                        else
+                            path = image_path;
+
+                        bmp.Save(path, ImageFormat.Png);
                     }
                 }
             }
+
+            return path;
         }
     }
 }
