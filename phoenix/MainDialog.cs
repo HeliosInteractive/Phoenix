@@ -448,9 +448,9 @@
             }
             catch
             {
-                Logger.MainDialog.ErrorFormat("{0}\n{1}",
+                Logger.MainDialog.ErrorFormat("{0} {1}",
                     "Method execution on UI thread failed.",
-                    "perhaps you are calling something after exit?");
+                    "Perhaps you are calling something after exit?");
             }
         }
 

@@ -32,6 +32,7 @@
             }
 
             BasicConfigurator.Configure(new TextBoxAppender(log_box, owner));
+            LogManager.GetLogger(typeof(phoenix.Logger)).Info("==============================");
         }
 
         public class TextBoxAppender : AppenderSkeleton
