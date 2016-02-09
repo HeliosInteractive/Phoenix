@@ -215,20 +215,31 @@
             m_Process = new Process {
                 StartInfo = new ProcessStartInfo
                 {
-                    WorkingDirectory    = WorkingDirectory,
-                    UseShellExecute     = false,
-                    Arguments           = CommandLine,
-                    FileName            = ProcessPath,
+                    WorkingDirectory        = WorkingDirectory,
+                    UseShellExecute         = false,
+                    Arguments               = CommandLine,
+                    FileName                = ProcessPath
                 },
                 EnableRaisingEvents = true,
             };
-            
-            m_Process.Exited += OnProcessCrashed;
-            m_Process.Start();
-            m_Process.WaitForInputIdle(5000);
 
-            if (m_Process.Responding)
-                OnProcessStarted(type);
+            try
+            {
+                m_Process.Exited += OnProcessCrashed;
+                m_Process.Start();
+
+                if (HasMainWindow())
+                    m_Process.WaitForInputIdle(5000);
+
+                if (m_Process.Responding)
+                    OnProcessStarted(type);
+            }
+            catch(Exception ex)
+            {
+                Logger.ProcessRunner.ErrorFormat("Unable to start the process: {0}"
+                    , ex.Message);
+                Stop(ExecType.NORMAL);
+            }
         }
 
         public void Restart()
