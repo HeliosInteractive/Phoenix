@@ -178,6 +178,7 @@
                     // Step 2. Ask C# Kill API to handle it
                     if (!m_Process.HasExited)
                     {
+                        Logger.ProcessRunner.Warn("Failed to close with WM_CLOSE");
                         m_Process.Kill();
                         m_Process.WaitForExit(1000);
                     }
@@ -185,6 +186,7 @@
                     // Step 3. task kill that mo-fo, fo-sho
                     if (!m_Process.HasExited)
                     {
+                        Logger.ProcessRunner.Warn("Failed to close with Kill API");
                         ExecuteScript("taskkill",
                             string.Format("/F /T /IM {0}.exe", m_Process.ProcessName));
                     }
@@ -203,6 +205,8 @@
             {
                 if (Process.GetProcessesByName(m_CachedName).Length > 0)
                 {
+                    Logger.ProcessRunner.Warn("A leftover process found with the cached name.");
+
                     ExecuteScript("taskkill",
                         string.Format("/F /T /IM {0}.exe", m_CachedName));
                 }
