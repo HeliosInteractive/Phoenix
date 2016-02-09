@@ -15,8 +15,6 @@
         private ProcessRunner       m_ProcessRunner;
         private OpenFileDialog      m_FileDialog;
         private FolderBrowserDialog m_FolderDialog;
-        private bool                m_PhoenixReady  = false;
-        private bool                m_Monitoring    = false;
         private Series              m_CpuUsageSeries;
         private Series              m_MemoryUsageSeries;
         static Mutex                m_SingleInstanceMutex;
@@ -24,6 +22,8 @@
         private RemoteManager       m_RemoteManager;
         private ReportManager       m_ReportManager;
         private RsyncClient         m_RsyncClient;
+        private bool                m_PhoenixReady = false;
+
 
         public MainDialog()
         {
@@ -229,34 +229,37 @@
             } else if (control == force_always_on_top) {
                 m_ProcessRunner.ForceAlwaysOnTop = force_always_on_top.Checked;
             } else if (control == time_delay_before_launch) {
-                if (String.IsNullOrEmpty(time_delay_before_launch.Text.Trim()))
+                if (String.IsNullOrEmpty(time_delay_before_launch.Text.Trim())) {
                     m_ProcessRunner.DelaySeconds = 0;
-                else
+                } else {
                     m_ProcessRunner.DelaySeconds = Int32.Parse(time_delay_before_launch.Text);
+                }
             } else if (control == assume_crash_if_not_responsive) {
                 m_ProcessRunner.AssumeCrashIfNotResponsive = assume_crash_if_not_responsive.Checked;
             } else if (control == enable_report_on_crash) {
                 ResetReportTabStatus();
             } else if (control == maximum_retries) {
-                if (String.IsNullOrEmpty(maximum_retries.Text))
+                if (String.IsNullOrEmpty(maximum_retries.Text)) {
                     m_ProcessRunner.Attempts = 0;
-                else
+                } else {
                     m_ProcessRunner.Attempts = Int32.Parse(maximum_retries.Text);
+                }
                 m_ProcessRunner.CurrentAttempt = 0;
+                if (m_ProcessRunner.Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
             } else if (control == mqtt_server_address) {
                 m_RemoteManager.Connect(mqtt_server_address.Text, Resources.MqttTopic);
             } else if (control == application_to_watch) {
                 m_ProcessRunner.ProcessPath = application_to_watch.Text;
-                if (m_Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
+                if (m_ProcessRunner.Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
             } else if (control == script_to_execute_on_crash) {
                 m_ProcessRunner.CrashScript = script_to_execute_on_crash.Text;
-                if (m_Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
+                if (m_ProcessRunner.Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
             } else if (control == working_directory) {
                 m_ProcessRunner.WorkingDirectory = working_directory.Text;
-                if (m_Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
+                if (m_ProcessRunner.Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
             } else if (control == script_to_execute_on_start) {
                 m_ProcessRunner.StartScript = script_to_execute_on_start.Text;
-                if (m_Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
+                if (m_ProcessRunner.Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
             } else if (control == update_feed_address) {
                 m_UpdateManager.FeedAddress = update_feed_address.Text;
             }
@@ -269,7 +272,7 @@
 
         private void ToggleMonitoring()
         {
-            if (!m_Monitoring)
+            if (!m_ProcessRunner.Monitoring)
             {
                 if (!EnsureSingleInstanceMode())
                 {
@@ -338,7 +341,7 @@
                 else if (hotkey_id == HotkeyManager.TOGGLE_CONTROL_PANEL_UI_ID)
                     Visible = !Visible;
                 else if (hotkey_id == HotkeyManager.TOGGLE_MONITORING_ID)
-                    if (m_Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
+                    if (m_ProcessRunner.Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
                     else m_ProcessRunner.Start(ProcessRunner.ExecType.NORMAL);
                 else if (hotkey_id == HotkeyManager.TAKE_SCREENSHOT_ID)
                     ScreenCapture.TakeScreenShot();
@@ -466,7 +469,7 @@
 
         private void ResetWatchButtonLabel()
         {
-            if (m_Monitoring)
+            if (m_ProcessRunner.Monitoring)
                 watch_button.Text = "Stop Watching ( ALT+F10 )";
             else
                 watch_button.Text = "Start Watching ( ALT+F10 )";

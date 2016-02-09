@@ -28,6 +28,7 @@
         int                     m_CurrAttempt   = 0;
         bool                    m_AlwaysOnTop   = false;
         bool                    m_CrashIfUnresp = false;
+        bool                    m_Monitoring    = false;
         public enum ExecType    { CRASHED, NORMAL }
 
         #endregion
@@ -38,6 +39,7 @@
         public double[] MemoryUsage     { get { return m_MemoryUsage; } }
         public double[] CpuUsage        { get { return m_CpuUsage; } }
         public int      NumSamples      { get { return m_NumSamples; } }
+        public bool     Monitoring      { get { return m_Monitoring; } }
         public bool AssumeCrashIfNotResponsive
         {
             get { return m_CrashIfUnresp; }
@@ -104,6 +106,8 @@
         void OnProcessStarted(ExecType type)
         {
             ResetPerformanceCounter();
+
+            m_Monitoring = true;
             m_CachedName = m_Process.ProcessName;
 
             if (ProcessStarted != null)
@@ -112,6 +116,8 @@
 
         void OnProcessStopped(ExecType type)
         {
+            m_Monitoring = false;
+
             if (type == ExecType.CRASHED)
             {
                 if (!(m_Attempts > 0 && m_CurrAttempt >= m_Attempts))
@@ -119,7 +125,10 @@
                     CallScript(m_CrashScript);
 
                     Task.Delay(new TimeSpan(0, 0, DelaySeconds))
-                        .ContinueWith(fn => Start(ExecType.CRASHED));
+                        .ContinueWith((fn) => {
+                            if (!m_Monitoring)
+                                Start(ExecType.CRASHED);
+                        });
 
                     m_CurrAttempt++;
                 }
@@ -179,14 +188,15 @@
                         ExecuteScript("taskkill",
                             string.Format("/F /T /IM {0}.exe", m_Process.ProcessName));
                     }
-                }
-                catch
-                {
-                    Logger.ProcessRunner.Error("An error occurred while trying to shutdown the process.");
-                }
 
-                m_Process.Dispose();
-                m_Process = null;
+                    m_Process.Dispose();
+                    m_Process = null;
+                }
+                catch(Exception ex)
+                {
+                    Logger.ProcessRunner.ErrorFormat("Error shutting down the process: {0}",
+                        ex.Message);
+                }
             }
 
             if (!String.IsNullOrWhiteSpace(m_CachedName))

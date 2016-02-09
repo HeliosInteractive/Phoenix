@@ -9,8 +9,6 @@
         private int m_MqttRetryMinutes = 2;
         private void OnProcessStop(ProcessRunner.ExecType type)
         {
-            m_Monitoring = false;
-
             if (m_PhoenixReady && type == ProcessRunner.ExecType.CRASHED)
                 SendCrashEmail();
 
@@ -20,7 +18,6 @@
 
         private void OnProcessStart(ProcessRunner.ExecType type)
         {
-            m_Monitoring = true;
             ResetWatchButtonLabel();
             m_AppSettings.Store("Internal", "CachedName", m_ProcessRunner.CachedTitle);
             Logger.MainDialog.InfoFormat("Process started ({0}).", m_ProcessRunner.ProcessPath);
