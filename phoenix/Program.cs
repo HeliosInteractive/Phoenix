@@ -16,5 +16,14 @@
             Application.Run(new MainDialog());
             System.Diagnostics.Trace.Flush();
         }
+
+        public static string Directory
+        {
+            get
+            {
+                return System.IO.Path.GetDirectoryName(
+                    System.Reflection.Assembly.GetExecutingAssembly().Location);
+            }
+        }
     }
 }
