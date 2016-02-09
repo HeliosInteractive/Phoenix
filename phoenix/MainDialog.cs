@@ -66,7 +66,7 @@
 
             HotkeyManager.Register(Handle);
 
-            ValidateAndStartMonitoring();
+            ToggleMonitoring();
             ResetMqttConnectionLabel();
             ResetWatchButtonLabel();
             ResetReportTabStatus();
@@ -107,9 +107,8 @@
 
                     if (!result)
                     {
-                        MessageBox.Show(string.Format(
-                            "Another instance is already watching {0}.", application_to_watch.Text),
-                            "Multiple instances detected!");
+                        Logger.MainDialog.ErrorFormat("Another instance is already watching {0}."
+                            , application_to_watch.Text);
 
                         m_SingleInstanceMutex.Dispose();
                         m_SingleInstanceMutex = null;
@@ -117,13 +116,13 @@
                     }
                 }
             }
-            catch
+            catch(Exception ex)
             {
-                MessageBox.Show(string.Format("{0}\n{1}\n{2}",
+                Logger.MainDialog.ErrorFormat("{0} {1} {2} : {3}",
                     "Could not properly ensure single instance mode.",
                     "This can cause multi-instance issues.",
-                    "Try running as Administrator."),
-                    "Failed to ensure single instance mode");
+                    "Try running as Administrator.",
+                    ex.Message);
             }
 
             return true;
@@ -265,42 +264,30 @@
 
         private void OnWatchButtonClick(object sender, EventArgs e)
         {
-            ValidateAndStartMonitoring();
+            ToggleMonitoring();
         }
 
-        private void ValidateAndStartMonitoring()
+        private void ToggleMonitoring()
         {
             if (!m_Monitoring)
             {
                 if (!EnsureSingleInstanceMode())
-                    return; // silently
-
-                bool validated = true;
-
-                m_ProcessRunner.DelaySeconds = Int32.Parse(time_delay_before_launch.Text);
-                m_ProcessRunner.ProcessPath = application_to_watch.Text;
-
-                if (m_ProcessRunner.ProcessPath == string.Empty)
-                    validated = false; // silently
-
-                if (!File.Exists(m_ProcessRunner.ProcessPath))
                 {
-                    MessageBox.Show("The path you specified to watch does not exist.", "Invalid Monitor parameters");
-                    validated = false;
+                    Logger.MainDialog.Error("Could not guarantee single instance mode. Aborting.");
+                    return;
                 }
 
-                m_ProcessRunner.CommandLine = command_line_arguments.Text;
-                m_ProcessRunner.Attempts = Int32.Parse(maximum_retries.Text);
-                m_ProcessRunner.CrashScript = script_to_execute_on_crash.Text;
+                m_ProcessRunner.DelaySeconds                = String.IsNullOrWhiteSpace(time_delay_before_launch.Text) ? 0 : Int32.Parse(time_delay_before_launch.Text);
+                m_ProcessRunner.Attempts                    = String.IsNullOrWhiteSpace(maximum_retries.Text) ? 0 : Int32.Parse(maximum_retries.Text);
+                m_ProcessRunner.ProcessPath                 = application_to_watch.Text.CleanForPath();
+                m_ProcessRunner.CommandLine                 = command_line_arguments.Text.CleanForPath();
+                m_ProcessRunner.StartScript                 = script_to_execute_on_start.Text.CleanForPath();
+                m_ProcessRunner.CrashScript                 = script_to_execute_on_crash.Text.CleanForPath();
+                m_ProcessRunner.WorkingDirectory            = working_directory.Text.CleanForPath();
+                m_ProcessRunner.ForceAlwaysOnTop            = force_always_on_top.Checked;
+                m_ProcessRunner.AssumeCrashIfNotResponsive  = assume_crash_if_not_responsive.Checked;
 
-                if (m_ProcessRunner.CrashScript != string.Empty && !File.Exists(m_ProcessRunner.CrashScript))
-                {
-                    MessageBox.Show("The path you specified as crash script does not exist.", "Invalid Monitor parameters");
-                    validated = false;
-                }
-
-                if (validated)
-                    m_ProcessRunner.Start(ProcessRunner.ExecType.NORMAL);
+                m_ProcessRunner.Start(ProcessRunner.ExecType.NORMAL);
             }
             else
             {
@@ -461,7 +448,7 @@
 
         private void StartProcessRunner()
         {
-            ExecuteOnUiThread(ValidateAndStartMonitoring);
+            ExecuteOnUiThread(ToggleMonitoring);
         }
 
         private void ResetMqttConnectionLabel()
