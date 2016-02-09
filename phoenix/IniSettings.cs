@@ -32,11 +32,12 @@
             if (!File.Exists(m_Path))
                 File.Create(m_Path).Dispose();
 
-            Logger.IniSettings.InfoFormat("path to settings files is: {0}", m_Path);
+            Logger.IniSettings.InfoFormat("Path to settings files is: {0}", m_Path);
         }
 
         ~IniSettings()
         {
+            Logger.IniSettings.Info("Saving settings entries back to file.");
             // Save read values on destruction
             SaveReadEntries();
         }
@@ -56,6 +57,11 @@
                     Section,
                     Key,
                     Value);
+            }
+            else
+            {
+                Logger.IniSettings.InfoFormat("Wrote {0} in {1} with value {2}",
+                    Key, Section, Value);
             }
         }
 
@@ -81,6 +87,9 @@
                 to_be_stored = to_be_stored.Replace("\n", "<br>");
 
             m_Settings[Section][Key] = to_be_stored;
+
+            Logger.IniSettings.InfoFormat("Stored {0} in {1} with value {2}",
+                Key, Section, to_be_stored);
         }
 
         /// <summary>
@@ -130,6 +139,9 @@
                 temporary_holder = DefaultValue;
             }
 
+            Logger.IniSettings.InfoFormat("Read {0} in {1} with value {2}",
+                Key, Section, temporary_holder);
+
             return temporary_holder;
         }
 
@@ -158,9 +170,7 @@
         private static bool CanChangeType(object value, Type conversionType)
         {
             if (conversionType == null || value == null || (value as IConvertible) == null)
-            {
                 return false;
-            }
 
             return true;
         }
