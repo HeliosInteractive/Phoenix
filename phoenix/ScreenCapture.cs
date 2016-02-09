@@ -10,41 +10,45 @@
     {
         public static string ScreenShotDirectory
         {
-            get { return "captures"; }
+            get { return Path.Combine(Program.Directory, "captures"); }
         }
 
         public static string TakeScreenShot(string image_path = "")
         {
             string path = string.Empty;
 
-            using (Bitmap bmp = new Bitmap(
-                Screen.PrimaryScreen.Bounds.Width,
-                Screen.PrimaryScreen.Bounds.Height))
+            try
             {
-                using (Graphics graphics = Graphics.FromImage(bmp))
+                using (Bitmap bmp = new Bitmap(
+                    Screen.PrimaryScreen.Bounds.Width,
+                    Screen.PrimaryScreen.Bounds.Height))
                 {
-                    graphics.CopyFromScreen(
-                        Screen.PrimaryScreen.Bounds.X,
-                        Screen.PrimaryScreen.Bounds.Y,
-                        0, 0,
-                        bmp.Size,
-                        CopyPixelOperation.SourceCopy);
-
-                    if (!Directory.Exists(ScreenShotDirectory))
+                    using (Graphics graphics = Graphics.FromImage(bmp))
                     {
-                        Directory.CreateDirectory(ScreenShotDirectory);
-                    }
+                        graphics.CopyFromScreen(
+                            Screen.PrimaryScreen.Bounds.X,
+                            Screen.PrimaryScreen.Bounds.Y,
+                            0, 0,
+                            bmp.Size,
+                            CopyPixelOperation.SourceCopy);
 
-                    if (Directory.Exists(ScreenShotDirectory))
-                    {
+                        if (!Directory.Exists(ScreenShotDirectory))
+                            Directory.CreateDirectory(ScreenShotDirectory);
+
                         if (String.IsNullOrWhiteSpace(image_path))
-                            path = Path.Combine(ScreenShotDirectory, string.Format("{0}.png", DateTime.Now.Ticks));
+                            path = Path.Combine(ScreenShotDirectory,
+                                string.Format("{0}.png", DateTime.Now.Ticks));
                         else
                             path = image_path;
 
                         bmp.Save(path, ImageFormat.Png);
                     }
                 }
+            }
+            catch
+            {
+                path = string.Empty;
+                Logger.Error("Capturing screen shot failed.");
             }
 
             return path;
