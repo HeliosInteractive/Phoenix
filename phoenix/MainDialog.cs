@@ -5,7 +5,6 @@
     using Properties;
     using System.Threading;
     using System.Reflection;
-    using System.Diagnostics;
     using System.Windows.Forms;
     using System.Security.Cryptography;
     using System.Windows.Forms.DataVisualization.Charting;
@@ -34,7 +33,7 @@
 
         private void OnHandleCreated(object sender, EventArgs e)
         {
-            Logger.Configure();
+            Logger.Configure(this, log_box);
 
             about_browser.DocumentStream = Assembly.
                 GetExecutingAssembly().
@@ -58,8 +57,8 @@
             process_monitor_timer.Start();
 
             // These are executed in a separate thread
-            m_ProcessRunner.ProcessStarted += () => { ExecuteOnUiThread(OnProcessStart); };
-            m_ProcessRunner.ProcessStopped += () => { ExecuteOnUiThread(OnProcessStop); };
+            m_ProcessRunner.ProcessStarted += (type) => { ExecuteOnUiThread(() => { OnProcessStart(type); }); };
+            m_ProcessRunner.ProcessStopped += (type) => { ExecuteOnUiThread(() => { OnProcessStop(type); }); };
 
             m_RemoteManager.OnConnectionOpened += () => { ExecuteOnUiThread(OnMqttConnectionOpen); };
             m_RemoteManager.OnConnectionClosed += () => { ExecuteOnUiThread(OnMqttConnectionClose); };
