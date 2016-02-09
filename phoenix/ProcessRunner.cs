@@ -242,12 +242,6 @@
             }
         }
 
-        public void Restart()
-        {
-            Stop(ExecType.NORMAL);
-            Start(ExecType.NORMAL);
-        }
-
         public void Monitor()
         {
             if (!Monitorable())
