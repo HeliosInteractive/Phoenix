@@ -239,7 +239,7 @@
                     UseShellExecute         = false,
                     Arguments               = CommandLine,
                     FileName                = ProcessPath,
-                    RedirectStandardInput   = CaptureConsoleOutput,
+                    RedirectStandardOutput  = CaptureConsoleOutput,
                     RedirectStandardError   = CaptureConsoleOutput,
                 },
                 EnableRaisingEvents = true,
