@@ -7,6 +7,9 @@
     public partial class MainDialog
     {
         private int m_MqttRetryMinutes = 2;
+        private string m_MachineChannel = string.Format("{0}/{1}",
+                Resources.MqttTopic,
+                RsyncClient.MachineIdentity);
         private void OnProcessStop(ProcessRunner.ExecType type)
         {
             if (m_PhoenixReady && type == ProcessRunner.ExecType.CRASHED)
@@ -26,6 +29,7 @@
         private void OnMqttConnectionOpen()
         {
             ResetMqttConnectionLabel();
+            m_RemoteManager.Subscribe(m_MachineChannel);
             Logger.MainDialog.Info("MQTT connection established.");
         }
 
@@ -43,27 +47,44 @@
 
         private void OnMqttMessage(string message, string topic)
         {
-            if (topic != Resources.MqttTopic)
-                return;
+            if (topic == Resources.MqttTopic)
+            {
+                if (message == "echo")
+                {
+                    string echo = string.Format("{{ \"name\":\"{0}\", \"public_key\":\"{1}\" }}",
+                        RsyncClient.MachineIdentity,
+                        RsyncClient.PublicKey.Trim('\n'));
 
-            if (message == "echo") {
-                string echo = string.Format("{{ \"name\":\"{0}\", \"public_key\":\"{1}\" }}",
-                    RsyncClient.MachineIdentity,
-                    RsyncClient.PublicKey.Trim('\n'));
+                    m_RemoteManager.Publish(echo, string.Format("{0}/{1}",
+                        Resources.MqttTopic,
+                        message));
+                }
+                else if (message == "ping")
+                {
+                    string ping = string.Format("{{ \"name\":\"{0}\", \"cpu\":{1}, \"mem\":{2}, \"monitoring\":{3} }}",
+                        RsyncClient.MachineIdentity,
+                        m_ProcessRunner.LastCpuUsage,
+                        m_ProcessRunner.LastMemUsage,
+                        m_ProcessRunner.Monitoring.ToString().ToLower());
 
-                m_RemoteManager.Publish(echo, string.Format("{0}/{1}",
-                    Resources.MqttTopic,
-                    message));
+                    m_RemoteManager.Publish(ping, string.Format("{0}/{1}",
+                        Resources.MqttTopic,
+                        message));
+                }
             }
-            else if (message == "ping") {
-                string ping = string.Format("{{ \"name\":\"{0}\", \"cpu\":{1}, \"mem\":{2} }}",
-                    RsyncClient.MachineIdentity,
-                    m_ProcessRunner.LastCpuUsage,
-                    m_ProcessRunner.LastMemUsage);
-
-                m_RemoteManager.Publish(ping, string.Format("{0}/{1}",
-                    Resources.MqttTopic,
-                    message));
+            else if (topic == m_MachineChannel)
+            {
+                if (message == "stop") {
+                    m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
+                } else if (message == "start") {
+                    m_ProcessRunner.Start(ProcessRunner.ExecType.NORMAL);
+                } else if (message == "update") {
+                    OnPullUpdateClick(null, null);
+                } else if (message == "upgrade") {
+                    m_UpdateManager.Check();
+                } else if (message == "report") {
+                    SendCrashEmail();
+                }
             }
         }
     }
