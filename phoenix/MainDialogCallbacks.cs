@@ -43,9 +43,6 @@
 
         private void OnMqttMessage(string message, string topic)
         {
-            Logger.MainDialog.InfoFormat("MQTT message received: ({0}) from ({1})."
-                , message, Resources.MqttTopic);
-
             if (topic != Resources.MqttTopic)
                 return;
 
