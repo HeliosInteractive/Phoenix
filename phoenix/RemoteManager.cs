@@ -57,6 +57,22 @@
             }
         }
 
+        public void Subscribe(string channel)
+        {
+            if (m_client.IsConnected)
+            {
+                m_client.Subscribe(
+                    new string[] { channel },
+                    new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
+
+                Logger.RemoteManager.InfoFormat("Subscribed to {0}.", channel);
+            }
+            else
+            {
+                Logger.RemoteManager.Error("Cannot subscribe if connection is not established");
+            }
+        }
+
         public void Publish(string message, string channel = "")
         {
             if (m_client == null || !m_client.IsConnected || message == string.Empty)
