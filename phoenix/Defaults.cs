@@ -46,6 +46,11 @@
             public static string UpdateFeedAddress = "http://localhost/helios/feed.xml";
         }
 
+        public class Log
+        {
+            public static bool CaptureConsole = false;
+        }
+
         public static string GetSectionByKey(string key)
         {
             foreach (Type nested_type in typeof(Defaults).GetNestedTypes())

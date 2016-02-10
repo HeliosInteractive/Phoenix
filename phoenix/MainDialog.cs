@@ -262,6 +262,13 @@
                 if (m_ProcessRunner.Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
             } else if (control == update_feed_address) {
                 m_UpdateManager.FeedAddress = update_feed_address.Text;
+            } else if (control == capture_console) {
+                m_ProcessRunner.CaptureConsoleOutput = capture_console.Checked;
+                if (m_PhoenixReady &&
+                    m_ProcessRunner.Monitoring)
+                {
+                    m_ProcessRunner.Start(ProcessRunner.ExecType.NORMAL);
+                }
             }
         }
 
