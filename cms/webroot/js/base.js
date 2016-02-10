@@ -70,7 +70,8 @@ function HandlePing(payload) {
 				return;
 			
 			if ($(".name", elem).text() == msg.name) {
-				var status = "<b>online</b>";
+				var monitoring = msg.monitoring ? "monitoring" : "dead";
+				var status = "online <b>(" + monitoring + ")</b>";
 				status += "<br />cpu: " + (msg.cpu * 100).toFixed(2) + "%";
 				status += "<br />mem: " + (msg.mem * 100).toFixed(2) + "%";
 				$(".status", elem).html(status);
@@ -100,6 +101,10 @@ function HandleOfflines(dead_interval) {
 		});
 }
 
+window.Command = function(action, name) {
+	/* no-op */
+}
+
 $(document).ready(function() {
 	var columns = [];
 	var thead = $('.content table thead tr th')
@@ -124,6 +129,10 @@ $(document).ready(function() {
 		else if (topic == ping_channel)
 			HandlePing(payload);
 	});
+	
+	window.Command = function(action, name) {
+		client.publish(SubChannelPath(name), action);
+	}
 
 	client.publish(BaseChannelPath(), "echo");
 	client.publish(BaseChannelPath(), "ping");

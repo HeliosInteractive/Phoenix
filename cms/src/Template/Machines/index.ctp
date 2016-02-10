@@ -31,6 +31,13 @@
                     <?= $this->Html->link(__('View'), ['action' => 'view', $machine->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $machine->id]) ?>
                     <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $machine->id], ['confirm' => __('Are you sure you want to delete # {0}?', $machine->id)]) ?>
+					<br />
+					<a class="stop" onclick="Command('stop', '<?= $machine->name ?>')">Stop</a>
+					<a class="start" onclick="Command('start', '<?= $machine->name ?>')">Start</a>
+					<a class="report" onclick="Command('report', '<?= $machine->name ?>')">Report</a>
+					<br />
+					<a class="update" onclick="Command('update', '<?= $machine->name ?>')">Update</a>
+					<a class="upgrade" onclick="Command('upgrade', '<?= $machine->name ?>')">Upgrade</a>
                 </td>
             </tr>
             <?php endforeach; ?>
