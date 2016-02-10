@@ -43,8 +43,8 @@
         public double[] CpuUsage        { get { return m_CpuUsage; } }
         public int      NumSamples      { get { return m_NumSamples; } }
         public bool     Monitoring      { get { return m_Monitoring; } }
-        public double   LastCpuUsage    { get { return m_LastCpuUsage; } }
-        public double   LastMemUsage    { get { return m_LastMemUsage; } }
+        public double   LastCpuUsage    { get { return Monitoring ? m_LastCpuUsage : 0d; } }
+        public double   LastMemUsage    { get { return Monitoring ? m_LastMemUsage : 0d; } }
         public bool CaptureConsoleOutput
         {
             get { return m_CaptureOutput; }
