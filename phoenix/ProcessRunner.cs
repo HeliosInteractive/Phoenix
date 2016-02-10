@@ -29,6 +29,7 @@
         bool                    m_AlwaysOnTop   = false;
         bool                    m_CrashIfUnresp = false;
         bool                    m_Monitoring    = false;
+        bool                    m_CaptureOutput = false;
         public enum ExecType    { CRASHED, NORMAL }
 
         #endregion
@@ -40,6 +41,11 @@
         public double[] CpuUsage        { get { return m_CpuUsage; } }
         public int      NumSamples      { get { return m_NumSamples; } }
         public bool     Monitoring      { get { return m_Monitoring; } }
+        public bool CaptureConsoleOutput
+        {
+            get { return m_CaptureOutput; }
+            set { m_CaptureOutput = value; }
+        }
         public bool AssumeCrashIfNotResponsive
         {
             get { return m_CrashIfUnresp; }
@@ -232,10 +238,24 @@
                     WorkingDirectory        = WorkingDirectory,
                     UseShellExecute         = false,
                     Arguments               = CommandLine,
-                    FileName                = ProcessPath
+                    FileName                = ProcessPath,
+                    RedirectStandardInput   = CaptureConsoleOutput,
+                    RedirectStandardError   = CaptureConsoleOutput,
                 },
                 EnableRaisingEvents = true,
             };
+
+            if (CaptureConsoleOutput)
+            {
+                m_Process.OutputDataReceived += (s, e) => {
+                    if (!String.IsNullOrEmpty(e.Data))
+                        Logger.ProcessRunner.InfoFormat("stdout: {0}", e.Data);
+                };
+                m_Process.ErrorDataReceived += (s, e) => {
+                    if (!String.IsNullOrEmpty(e.Data))
+                        Logger.ProcessRunner.ErrorFormat("stderr: {0}", e.Data);
+                };
+            }
 
             try
             {
@@ -244,6 +264,12 @@
 
                 if (HasMainWindow())
                     m_Process.WaitForInputIdle(5000);
+
+                if (CaptureConsoleOutput)
+                {
+                    m_Process.BeginOutputReadLine();
+                    m_Process.BeginErrorReadLine();
+                }
 
                 if (m_Process.Responding)
                     OnProcessStarted(type);
