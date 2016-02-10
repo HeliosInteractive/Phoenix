@@ -54,7 +54,19 @@
                     RsyncClient.MachineIdentity,
                     RsyncClient.PublicKey.Trim('\n'));
 
-                m_RemoteManager.Publish(echo, string.Format("{0}/machines", Resources.MqttTopic));
+                m_RemoteManager.Publish(echo, string.Format("{0}/{1}",
+                    Resources.MqttTopic,
+                    message));
+            }
+            else if (message == "ping") {
+                string ping = string.Format("{{ \"name\":\"{0}\", \"cpu\":{1}, \"mem\":{2} }}",
+                    RsyncClient.MachineIdentity,
+                    m_ProcessRunner.LastCpuUsage,
+                    m_ProcessRunner.LastMemUsage);
+
+                m_RemoteManager.Publish(ping, string.Format("{0}/{1}",
+                    Resources.MqttTopic,
+                    message));
             }
         }
     }

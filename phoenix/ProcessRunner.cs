@@ -22,6 +22,8 @@
         double[]                m_CpuUsage      = new double[m_NumSamples];
         double[]                m_UsageIndices  = new double[m_NumSamples];
         double                  m_MaxMemory     = 1d;
+        double                  m_LastCpuUsage  = 0d,
+                                m_LastMemUsage  = 0d;
         const int               m_NumSamples    = 100;
         int                     m_DelaySeconds  = 0;
         int                     m_Attempts      = 10;
@@ -41,6 +43,8 @@
         public double[] CpuUsage        { get { return m_CpuUsage; } }
         public int      NumSamples      { get { return m_NumSamples; } }
         public bool     Monitoring      { get { return m_Monitoring; } }
+        public double   LastCpuUsage    { get { return m_LastCpuUsage; } }
+        public double   LastMemUsage    { get { return m_LastMemUsage; } }
         public bool CaptureConsoleOutput
         {
             get { return m_CaptureOutput; }
@@ -308,9 +312,13 @@
                 m_CpuUsage[index - 1] = m_CpuUsage[index];
             }
 
-            m_MemoryUsage[m_NumSamples - 1] = m_Process.WorkingSet64 / m_MaxMemory;
-            try { m_CpuUsage[m_NumSamples - 1] = m_PerfCounter.NextValue() / (Environment.ProcessorCount * 100d); }
-            catch { m_CpuUsage[m_NumSamples - 1] = 0; }
+            int sample_index = m_NumSamples - 1;
+            m_MemoryUsage[sample_index] = m_Process.WorkingSet64 / m_MaxMemory;
+            try { m_CpuUsage[sample_index] = m_PerfCounter.NextValue() / (Environment.ProcessorCount * 100d); }
+            catch { m_CpuUsage[sample_index] = 0; }
+
+            m_LastCpuUsage = m_CpuUsage[sample_index];
+            m_LastMemUsage = m_MemoryUsage[sample_index];
         }
 
         void ResetPerformanceCounter()
