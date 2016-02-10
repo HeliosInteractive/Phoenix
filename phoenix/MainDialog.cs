@@ -48,6 +48,10 @@
             m_ReportManager = new ReportManager();
             m_RsyncClient   = new RsyncClient();
 
+            m_RemoteManager.OnConnectionOpened += () => { ExecuteOnUiThread(OnMqttConnectionOpen); };
+            m_RemoteManager.OnConnectionClosed += () => { ExecuteOnUiThread(OnMqttConnectionClose); };
+            m_RemoteManager.OnMessage += (m, t) => { ExecuteOnUiThread(() => { OnMqttMessage(m, t); }); };
+
             ApplySettings();
 
             m_MemoryUsageSeries = memory_chart.Series[0];
@@ -59,10 +63,6 @@
             // These are executed in a separate thread
             m_ProcessRunner.ProcessStarted += (type) => { ExecuteOnUiThread(() => { OnProcessStart(type); }); };
             m_ProcessRunner.ProcessStopped += (type) => { ExecuteOnUiThread(() => { OnProcessStop(type); }); };
-
-            m_RemoteManager.OnConnectionOpened += () => { ExecuteOnUiThread(OnMqttConnectionOpen); };
-            m_RemoteManager.OnConnectionClosed += () => { ExecuteOnUiThread(OnMqttConnectionClose); };
-            m_RemoteManager.OnMessage += (m,t) => { ExecuteOnUiThread(() => { OnMqttMessage(m, t); }); };
 
             HotkeyManager.Register(Handle);
 
