@@ -4,13 +4,7 @@
 	registered_systems.push({ "name":"<?php echo $machine->name; ?>", "public_key":"<?php echo $machine->public_key; ?>" });
 	<?php endforeach; ?>
 </script>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Machine'), ['action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="machines index large-9 medium-8 columns content">
+<div class="machines index columns content">
     <h3><?= __('Machines') ?></h3>
     <table cellpadding="0" cellspacing="0">
         <thead>
