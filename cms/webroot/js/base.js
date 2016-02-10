@@ -122,7 +122,14 @@ $(document).ready(function() {
 	
 	client.subscribe(echo_channel);
 	client.subscribe(ping_channel);
-
+	
+	client.on("connect", function() {
+		$(".machines h3").text("Machines (connected)");
+	});
+	client.on("close", function() {
+		$(".machines h3").text("Machines (disconnected)");
+	});
+	
 	client.on("message", function(topic, payload) {
 		if (topic == echo_channel)
 			AddMachineEntry(payload, columns);
