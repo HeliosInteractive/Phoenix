@@ -117,6 +117,50 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <metadata name="tooltip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>460, 17</value>
+  </metadata>
+  <metadata name="tooltip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>460, 17</value>
+  </metadata>
+  <data name="remote_directory.ToolTip" xml:space="preserve">
+    <value>Remote directory on the SSH server where updated application is located
+NOTE: there is a deffierence between /some/path and /some/path/ in this field!
+NOTE: a trailing slash is probably what you want in this field!</value>
+  </data>
+  <metadata name="tooltip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>460, 17</value>
+  </metadata>
+  <metadata name="tooltip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>460, 17</value>
+  </metadata>
+  <metadata name="tooltip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>460, 17</value>
+  </metadata>
+  <metadata name="tooltip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>460, 17</value>
+  </metadata>
+  <data name="environment.ToolTip" xml:space="preserve">
+    <value>A list of environment variables to be merged with system environment before launching the executable.
+The syntax is:
+KEY1=VAL1
+KEY2=VAL2
+It is also possible to supply current variables (%VAR%) and extend them, for example:
+PATH=%PATH%;extension
+Appends the string "extension" to the current PATH variable.</value>
+  </data>
+  <metadata name="tooltip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>460, 17</value>
+  </metadata>
+  <data name="working_directory.ToolTip" xml:space="preserve">
+    <value>Current working directory of the executable being monitored.
+This value is auto-filled when you change the path to a new executable.
+The auto-filled value is the directory where the new executable is located.</value>
+  </data>
+  <data name="assume_crash_if_not_responsive.ToolTip" xml:space="preserve">
+    <value>Periodically check for responsiveness of the executable's main window and restart it if not responsive.
+NOTE: When an executable becomes unresponsive, it causes Phoenix itself to be unresponsive for a short amount of time.</value>
+  </data>
   <data name="email_body.Text" xml:space="preserve">
     <value>Helios Phoenix crash report,
 

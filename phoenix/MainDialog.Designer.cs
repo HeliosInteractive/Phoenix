@@ -33,13 +33,15 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea28 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend28 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series55 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series56 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainDialog));
             this.main_tab = new System.Windows.Forms.TabControl();
             this.tab_local = new System.Windows.Forms.TabPage();
+            this.environment_label = new System.Windows.Forms.Label();
+            this.environment = new System.Windows.Forms.TextBox();
             this.script_to_execute_on_start = new System.Windows.Forms.TextBox();
             this.start_script_label = new System.Windows.Forms.Label();
             this.working_directory = new System.Windows.Forms.TextBox();
@@ -107,8 +109,7 @@
             this.context_menu_strip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toggleUIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitPhoenixToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.environment = new System.Windows.Forms.TextBox();
-            this.environment_label = new System.Windows.Forms.Label();
+            this.tooltip = new System.Windows.Forms.ToolTip(this.components);
             this.main_tab.SuspendLayout();
             this.tab_local.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.metrics_chart)).BeginInit();
@@ -168,6 +169,26 @@
             this.tab_local.Text = "Local";
             this.tab_local.UseVisualStyleBackColor = true;
             // 
+            // environment_label
+            // 
+            this.environment_label.AutoSize = true;
+            this.environment_label.Location = new System.Drawing.Point(8, 160);
+            this.environment_label.Name = "environment_label";
+            this.environment_label.Size = new System.Drawing.Size(165, 13);
+            this.environment_label.TabIndex = 24;
+            this.environment_label.Text = "Env Vars (separate with ENTER):";
+            this.environment_label.TextChanged += new System.EventHandler(this.StoreControlValue);
+            // 
+            // environment
+            // 
+            this.environment.Location = new System.Drawing.Point(8, 180);
+            this.environment.Multiline = true;
+            this.environment.Name = "environment";
+            this.environment.Size = new System.Drawing.Size(173, 55);
+            this.environment.TabIndex = 12;
+            this.tooltip.SetToolTip(this.environment, resources.GetString("environment.ToolTip"));
+            this.environment.TextChanged += new System.EventHandler(this.StoreControlValue);
+            // 
             // script_to_execute_on_start
             // 
             this.script_to_execute_on_start.AllowDrop = true;
@@ -175,6 +196,7 @@
             this.script_to_execute_on_start.Name = "script_to_execute_on_start";
             this.script_to_execute_on_start.Size = new System.Drawing.Size(173, 20);
             this.script_to_execute_on_start.TabIndex = 7;
+            this.tooltip.SetToolTip(this.script_to_execute_on_start, "Path to a script to be called when the executable (re)starts");
             this.script_to_execute_on_start.TextChanged += new System.EventHandler(this.StoreControlValue);
             this.script_to_execute_on_start.DragDrop += new System.Windows.Forms.DragEventHandler(this.DragDropAcceptFirstFile);
             this.script_to_execute_on_start.DragEnter += new System.Windows.Forms.DragEventHandler(this.DragEnterEffectChange);
@@ -195,6 +217,7 @@
             this.working_directory.Name = "working_directory";
             this.working_directory.Size = new System.Drawing.Size(173, 20);
             this.working_directory.TabIndex = 3;
+            this.tooltip.SetToolTip(this.working_directory, resources.GetString("working_directory.ToolTip"));
             this.working_directory.TextChanged += new System.EventHandler(this.StoreControlValue);
             this.working_directory.DoubleClick += new System.EventHandler(this.SelectFolderDialog);
             // 
@@ -210,48 +233,48 @@
             // metrics_chart
             // 
             this.metrics_chart.BorderlineWidth = 0;
-            chartArea4.AxisX.IsMarginVisible = false;
-            chartArea4.AxisX.LabelStyle.Enabled = false;
-            chartArea4.AxisX.LineWidth = 0;
-            chartArea4.AxisX.MajorGrid.Enabled = false;
-            chartArea4.AxisX.MajorTickMark.Enabled = false;
-            chartArea4.AxisY.IsMarginVisible = false;
-            chartArea4.AxisY.LabelStyle.Enabled = false;
-            chartArea4.AxisY.LineWidth = 0;
-            chartArea4.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
-            chartArea4.AxisY.MajorTickMark.Enabled = false;
-            chartArea4.AxisY.Maximum = 1D;
-            chartArea4.AxisY.Minimum = 0D;
-            chartArea4.BackColor = System.Drawing.Color.Snow;
-            chartArea4.BorderWidth = 0;
-            chartArea4.Name = "metrics_chart_area";
-            chartArea4.Position.Auto = false;
-            chartArea4.Position.Height = 100F;
-            chartArea4.Position.Width = 100F;
-            this.metrics_chart.ChartAreas.Add(chartArea4);
-            legend4.Alignment = System.Drawing.StringAlignment.Far;
-            legend4.BackColor = System.Drawing.Color.Transparent;
-            legend4.DockedToChartArea = "metrics_chart_area";
-            legend4.IsTextAutoFit = false;
-            legend4.Name = "metrics_legend";
-            this.metrics_chart.Legends.Add(legend4);
+            chartArea28.AxisX.IsMarginVisible = false;
+            chartArea28.AxisX.LabelStyle.Enabled = false;
+            chartArea28.AxisX.LineWidth = 0;
+            chartArea28.AxisX.MajorGrid.Enabled = false;
+            chartArea28.AxisX.MajorTickMark.Enabled = false;
+            chartArea28.AxisY.IsMarginVisible = false;
+            chartArea28.AxisY.LabelStyle.Enabled = false;
+            chartArea28.AxisY.LineWidth = 0;
+            chartArea28.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
+            chartArea28.AxisY.MajorTickMark.Enabled = false;
+            chartArea28.AxisY.Maximum = 1D;
+            chartArea28.AxisY.Minimum = 0D;
+            chartArea28.BackColor = System.Drawing.Color.Snow;
+            chartArea28.BorderWidth = 0;
+            chartArea28.Name = "metrics_chart_area";
+            chartArea28.Position.Auto = false;
+            chartArea28.Position.Height = 100F;
+            chartArea28.Position.Width = 100F;
+            this.metrics_chart.ChartAreas.Add(chartArea28);
+            legend28.Alignment = System.Drawing.StringAlignment.Far;
+            legend28.BackColor = System.Drawing.Color.Transparent;
+            legend28.DockedToChartArea = "metrics_chart_area";
+            legend28.IsTextAutoFit = false;
+            legend28.Name = "metrics_legend";
+            this.metrics_chart.Legends.Add(legend28);
             this.metrics_chart.Location = new System.Drawing.Point(193, 158);
             this.metrics_chart.Name = "metrics_chart";
             this.metrics_chart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
-            series7.ChartArea = "metrics_chart_area";
-            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series7.IsXValueIndexed = true;
-            series7.Legend = "metrics_legend";
-            series7.LegendText = "% cpu";
-            series7.Name = "cpu_usage_series";
-            series8.ChartArea = "metrics_chart_area";
-            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series8.IsXValueIndexed = true;
-            series8.Legend = "metrics_legend";
-            series8.LegendText = "% mem";
-            series8.Name = "mem_usage_series";
-            this.metrics_chart.Series.Add(series7);
-            this.metrics_chart.Series.Add(series8);
+            series55.ChartArea = "metrics_chart_area";
+            series55.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series55.IsXValueIndexed = true;
+            series55.Legend = "metrics_legend";
+            series55.LegendText = "% cpu";
+            series55.Name = "cpu_usage_series";
+            series56.ChartArea = "metrics_chart_area";
+            series56.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series56.IsXValueIndexed = true;
+            series56.Legend = "metrics_legend";
+            series56.LegendText = "% mem";
+            series56.Name = "mem_usage_series";
+            this.metrics_chart.Series.Add(series55);
+            this.metrics_chart.Series.Add(series56);
             this.metrics_chart.Size = new System.Drawing.Size(173, 76);
             this.metrics_chart.TabIndex = 0;
             this.metrics_chart.TabStop = false;
@@ -271,6 +294,8 @@
             this.maximum_retries.Name = "maximum_retries";
             this.maximum_retries.Size = new System.Drawing.Size(81, 20);
             this.maximum_retries.TabIndex = 11;
+            this.tooltip.SetToolTip(this.maximum_retries, "Number of attempts to restart the crashed executable (leave 0 for infinite attemp" +
+        "ts)");
             this.maximum_retries.TextChanged += new System.EventHandler(this.StoreControlValue);
             this.maximum_retries.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FilterDigitKeys);
             // 
@@ -280,6 +305,8 @@
             this.time_delay_before_launch.Name = "time_delay_before_launch";
             this.time_delay_before_launch.Size = new System.Drawing.Size(81, 20);
             this.time_delay_before_launch.TabIndex = 10;
+            this.tooltip.SetToolTip(this.time_delay_before_launch, "The number of seconds which Phoenix waits in between crash and restart of the exe" +
+        "cutable");
             this.time_delay_before_launch.TextChanged += new System.EventHandler(this.StoreControlValue);
             this.time_delay_before_launch.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FilterDigitKeys);
             // 
@@ -291,6 +318,7 @@
             this.assume_crash_if_not_responsive.Size = new System.Drawing.Size(172, 17);
             this.assume_crash_if_not_responsive.TabIndex = 15;
             this.assume_crash_if_not_responsive.Text = "Assume crash if not responsive";
+            this.tooltip.SetToolTip(this.assume_crash_if_not_responsive, resources.GetString("assume_crash_if_not_responsive.ToolTip"));
             this.assume_crash_if_not_responsive.UseVisualStyleBackColor = true;
             this.assume_crash_if_not_responsive.CheckedChanged += new System.EventHandler(this.StoreControlValue);
             // 
@@ -301,6 +329,8 @@
             this.screenshot_button.Size = new System.Drawing.Size(173, 24);
             this.screenshot_button.TabIndex = 17;
             this.screenshot_button.Text = "Take a screenshot ( ALT+F9 )";
+            this.tooltip.SetToolTip(this.screenshot_button, "Take a screenshot of the primary monitor and store it in /captures folder\r\nCould " +
+        "be triggered with global ALT+F9 as well.");
             this.screenshot_button.UseVisualStyleBackColor = true;
             this.screenshot_button.Click += new System.EventHandler(this.OnScreenshotButtonClick);
             // 
@@ -312,6 +342,8 @@
             this.enable_report_on_crash.Size = new System.Drawing.Size(160, 17);
             this.enable_report_on_crash.TabIndex = 16;
             this.enable_report_on_crash.Text = "Enable email report on crash";
+            this.tooltip.SetToolTip(this.enable_report_on_crash, "Send a crash dump email when executable crashes.\r\nDetails are configurable in Rep" +
+        "ort tab.");
             this.enable_report_on_crash.UseVisualStyleBackColor = true;
             this.enable_report_on_crash.CheckedChanged += new System.EventHandler(this.StoreControlValue);
             // 
@@ -322,6 +354,8 @@
             this.watch_button.Size = new System.Drawing.Size(173, 24);
             this.watch_button.TabIndex = 18;
             this.watch_button.Text = "Start Watching ( ALT+F10 )";
+            this.tooltip.SetToolTip(this.watch_button, "Toggle current status of executable\'s monitor.\r\nALT+F10 can be used alternatively" +
+        " as a shortcut.");
             this.watch_button.UseVisualStyleBackColor = true;
             this.watch_button.Click += new System.EventHandler(this.OnWatchButtonClick);
             // 
@@ -332,6 +366,7 @@
             this.script_to_execute_on_crash.Name = "script_to_execute_on_crash";
             this.script_to_execute_on_crash.Size = new System.Drawing.Size(173, 20);
             this.script_to_execute_on_crash.TabIndex = 5;
+            this.tooltip.SetToolTip(this.script_to_execute_on_crash, "Path to a script to be called when the executable crashes or stops");
             this.script_to_execute_on_crash.TextChanged += new System.EventHandler(this.StoreControlValue);
             this.script_to_execute_on_crash.DragDrop += new System.Windows.Forms.DragEventHandler(this.DragDropAcceptFirstFile);
             this.script_to_execute_on_crash.DragEnter += new System.Windows.Forms.DragEventHandler(this.DragEnterEffectChange);
@@ -354,6 +389,8 @@
             this.start_minimized.Size = new System.Drawing.Size(137, 17);
             this.start_minimized.TabIndex = 14;
             this.start_minimized.Text = "Start Phoenix minimized";
+            this.tooltip.SetToolTip(this.start_minimized, "Start Phoenix in taskbar next time it launches.\r\nYou may toggle UI visibility wit" +
+        "h ALT+F11.");
             this.start_minimized.UseVisualStyleBackColor = true;
             this.start_minimized.CheckedChanged += new System.EventHandler(this.StoreControlValue);
             // 
@@ -365,6 +402,8 @@
             this.force_always_on_top.Size = new System.Drawing.Size(183, 17);
             this.force_always_on_top.TabIndex = 13;
             this.force_always_on_top.Text = "Keep process on top ( ALT+F12 )";
+            this.tooltip.SetToolTip(this.force_always_on_top, "Forcefully keep executable\'s main window on top.\r\nDoes not work for all executabl" +
+        "es.\r\nYou can toggle this with global ALT+F12 hotkey.");
             this.force_always_on_top.UseVisualStyleBackColor = true;
             this.force_always_on_top.CheckedChanged += new System.EventHandler(this.StoreControlValue);
             // 
@@ -383,6 +422,7 @@
             this.command_line_arguments.Name = "command_line_arguments";
             this.command_line_arguments.Size = new System.Drawing.Size(173, 20);
             this.command_line_arguments.TabIndex = 9;
+            this.tooltip.SetToolTip(this.command_line_arguments, "Command line arguments which will be passed to the executable");
             this.command_line_arguments.TextChanged += new System.EventHandler(this.StoreControlValue);
             // 
             // cmd_line_label
@@ -410,6 +450,8 @@
             this.application_to_watch.Name = "application_to_watch";
             this.application_to_watch.Size = new System.Drawing.Size(173, 20);
             this.application_to_watch.TabIndex = 1;
+            this.tooltip.SetToolTip(this.application_to_watch, "The executable to monitor.\r\nDo NOT supply launcher BAT files here!\r\nYou MUST supp" +
+        "ly the executable directly.");
             this.application_to_watch.TextChanged += new System.EventHandler(this.StoreControlValue);
             this.application_to_watch.DragDrop += new System.Windows.Forms.DragEventHandler(this.DragDropAcceptFirstFile);
             this.application_to_watch.DragEnter += new System.Windows.Forms.DragEventHandler(this.DragEnterEffectChange);
@@ -470,6 +512,9 @@
             this.local_directory.Name = "local_directory";
             this.local_directory.Size = new System.Drawing.Size(173, 20);
             this.local_directory.TabIndex = 8;
+            this.tooltip.SetToolTip(this.local_directory, "Local directory where application is located on this computer.\r\nNOTE: gets auto-f" +
+        "illed to current working directory after executable path change\r\nNOTE: gets auto" +
+        "matically converted to a cygwin path!");
             this.local_directory.TextChanged += new System.EventHandler(this.StoreControlValue);
             this.local_directory.DoubleClick += new System.EventHandler(this.SelectFolderDialog);
             // 
@@ -479,6 +524,7 @@
             this.remote_directory.Name = "remote_directory";
             this.remote_directory.Size = new System.Drawing.Size(173, 20);
             this.remote_directory.TabIndex = 7;
+            this.tooltip.SetToolTip(this.remote_directory, resources.GetString("remote_directory.ToolTip"));
             this.remote_directory.TextChanged += new System.EventHandler(this.StoreControlValue);
             // 
             // local_directory_label
@@ -506,6 +552,7 @@
             this.pull_update.Size = new System.Drawing.Size(173, 24);
             this.pull_update.TabIndex = 12;
             this.pull_update.Text = "Pull updates manually";
+            this.tooltip.SetToolTip(this.pull_update, "Execute rsync with above options");
             this.pull_update.UseVisualStyleBackColor = true;
             this.pull_update.Click += new System.EventHandler(this.OnPullUpdateClick);
             // 
@@ -516,6 +563,7 @@
             this.generate_new_keys.Size = new System.Drawing.Size(173, 24);
             this.generate_new_keys.TabIndex = 11;
             this.generate_new_keys.Text = "Generate new key pair";
+            this.tooltip.SetToolTip(this.generate_new_keys, "Generate a new key pair to be used with the SSH server");
             this.generate_new_keys.UseVisualStyleBackColor = true;
             this.generate_new_keys.Click += new System.EventHandler(this.OnGenerateNewKeysClick);
             // 
@@ -583,6 +631,7 @@
             this.rsync_server_port.Name = "rsync_server_port";
             this.rsync_server_port.Size = new System.Drawing.Size(81, 20);
             this.rsync_server_port.TabIndex = 6;
+            this.tooltip.SetToolTip(this.rsync_server_port, "SSH (rsync) port");
             this.rsync_server_port.TextChanged += new System.EventHandler(this.StoreControlValue);
             this.rsync_server_port.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FilterDigitKeys);
             // 
@@ -592,6 +641,7 @@
             this.rsync_server_username.Name = "rsync_server_username";
             this.rsync_server_username.Size = new System.Drawing.Size(81, 20);
             this.rsync_server_username.TabIndex = 5;
+            this.tooltip.SetToolTip(this.rsync_server_username, "SSH (rsync) username");
             this.rsync_server_username.TextChanged += new System.EventHandler(this.StoreControlValue);
             // 
             // rsync_server_address
@@ -600,6 +650,7 @@
             this.rsync_server_address.Name = "rsync_server_address";
             this.rsync_server_address.Size = new System.Drawing.Size(173, 20);
             this.rsync_server_address.TabIndex = 4;
+            this.tooltip.SetToolTip(this.rsync_server_address, "SSH (rsync) server address");
             this.rsync_server_address.TextChanged += new System.EventHandler(this.StoreControlValue);
             // 
             // rsync_server_address_label
@@ -618,6 +669,7 @@
             this.mqtt_server_address.Name = "mqtt_server_address";
             this.mqtt_server_address.Size = new System.Drawing.Size(173, 20);
             this.mqtt_server_address.TabIndex = 1;
+            this.tooltip.SetToolTip(this.mqtt_server_address, "MQTT server address to remotely communicate over");
             this.mqtt_server_address.TextChanged += new System.EventHandler(this.StoreControlValue);
             // 
             // rabbitmq_server_address_label
@@ -875,25 +927,6 @@
             this.exitPhoenixToolStripMenuItem.Text = "Exit Phoenix";
             this.exitPhoenixToolStripMenuItem.Click += new System.EventHandler(this.OnExitPhoenixToolStripMenuItemClick);
             // 
-            // environment
-            // 
-            this.environment.Location = new System.Drawing.Point(8, 180);
-            this.environment.Multiline = true;
-            this.environment.Name = "environment";
-            this.environment.Size = new System.Drawing.Size(173, 55);
-            this.environment.TabIndex = 12;
-            this.environment.TextChanged += new System.EventHandler(this.StoreControlValue);
-            // 
-            // environment_label
-            // 
-            this.environment_label.AutoSize = true;
-            this.environment_label.Location = new System.Drawing.Point(8, 160);
-            this.environment_label.Name = "environment_label";
-            this.environment_label.Size = new System.Drawing.Size(165, 13);
-            this.environment_label.TabIndex = 24;
-            this.environment_label.Text = "Env Vars (separate with ENTER):";
-            this.environment_label.TextChanged += new System.EventHandler(this.StoreControlValue);
-            // 
             // MainDialog
             // 
             this.AccessibleDescription = "Monitors and restarts crashed applications.";
@@ -999,6 +1032,7 @@
         private System.Windows.Forms.CheckBox capture_console;
         private System.Windows.Forms.Label environment_label;
         private System.Windows.Forms.TextBox environment;
+        private System.Windows.Forms.ToolTip tooltip;
     }
 }
 
