@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Core\Configure;
 
 /**
  * Machines Controller
@@ -10,6 +11,102 @@ use App\Controller\AppController;
  */
 class MachinesController extends AppController
 {
+
+	private function add_key($key)
+	{
+		$success = false;
+		
+		if (is_writable(Configure::read('KeyFile')))
+		{
+			$handle = fopen(Configure::read('KeyFile'), "r");
+			$keys = [];
+			if ($handle)
+			{
+				while (($line = fgets($handle)) !== false)
+				{
+					$keys[] = trim($line);
+				}
+				fclose($handle);
+				
+				if (!in_array($key, $keys))
+				{
+					if (!file_put_contents(Configure::read('KeyFile'), (PHP_EOL . trim($key) . PHP_EOL), FILE_APPEND))
+					{
+						$this->Flash->error(__('Appending key failed.'));
+					}
+					else
+					{
+						$this->Flash->success(__('Public Key added.'));
+						$success = true;
+					}
+				}
+				else
+				{
+					$this->Flash->error(__('Nothing to add.'));
+					$success = true;
+				}
+			}
+			else
+			{
+				$this->Flash->error(__('Key File could not be opened for reading.'));
+			} 
+		}
+		else
+		{
+			$this->Flash->error(__('Key File is not writable.'));
+		}
+		
+		return $success;
+	}
+	
+	private function remove_key($key)
+	{
+		$success = false;
+		
+		if (is_writable(Configure::read('KeyFile')))
+		{
+			$handle = fopen(Configure::read('KeyFile'), "r");
+			$keys = [];
+			if ($handle)
+			{
+				while (($line = fgets($handle)) !== false)
+				{
+					$keys[] = trim($line);
+				}
+				fclose($handle);
+				
+				if(($index = array_search($key, $keys)) !== false)
+				{
+					unset($keys[$index]);
+					
+					if (!file_put_contents(Configure::read('KeyFile'), implode(PHP_EOL, $keys)))
+					{
+						$this->Flash->error(__('Updating key file failed.'));
+					}
+					else
+					{
+						$this->Flash->success(__('Public Key removed.'));
+						$success = true;
+					}
+				}
+				else
+				{
+					$this->Flash->error(__('Nothing to remove.'));
+					$success = true;
+				}
+			}
+			else
+			{
+				$this->Flash->error(__('Key File could not be opened for reading.'));
+			} 
+		}
+		else
+		{
+			$this->Flash->error(__('Key File is not writable.'));
+		}
+		
+		return $success;
+	}
 
     /**
      * Index method
@@ -48,32 +145,7 @@ class MachinesController extends AppController
         $machine = $this->Machines->newEntity();
         if ($this->request->is('post')) {
             $machine = $this->Machines->patchEntity($machine, $this->request->data);
-            if ($this->Machines->save($machine)) {
-                $this->Flash->success(__('The machine has been saved.'));
-                return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The machine could not be saved. Please, try again.'));
-            }
-        }
-        $this->set(compact('machine'));
-        $this->set('_serialize', ['machine']);
-    }
-
-    /**
-     * Edit method
-     *
-     * @param string|null $id Machine id.
-     * @return void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
-     */
-    public function edit($id = null)
-    {
-        $machine = $this->Machines->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $machine = $this->Machines->patchEntity($machine, $this->request->data);
-            if ($this->Machines->save($machine)) {
+            if ($this->Machines->save($machine) && $this->add_key($machine['public_key'])) {
                 $this->Flash->success(__('The machine has been saved.'));
                 return $this->redirect(['action' => 'index']);
             } else {
@@ -95,7 +167,7 @@ class MachinesController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $machine = $this->Machines->get($id);
-        if ($this->Machines->delete($machine)) {
+        if ($this->Machines->delete($machine) && $this->remove_key($machine['public_key'])) {
             $this->Flash->success(__('The machine has been deleted.'));
         } else {
             $this->Flash->error(__('The machine could not be deleted. Please, try again.'));

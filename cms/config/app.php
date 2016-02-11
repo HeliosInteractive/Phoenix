@@ -326,4 +326,6 @@ return [
     'Session' => [
         'defaults' => 'php',
     ],
+	
+	'KeyFile' => 'D:\authorized_keys'
 ];
