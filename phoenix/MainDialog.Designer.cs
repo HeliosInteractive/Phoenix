@@ -33,10 +33,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainDialog));
             this.main_tab = new System.Windows.Forms.TabControl();
             this.tab_local = new System.Windows.Forms.TabPage();
@@ -107,6 +107,8 @@
             this.context_menu_strip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toggleUIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitPhoenixToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.environment = new System.Windows.Forms.TextBox();
+            this.environment_label = new System.Windows.Forms.Label();
             this.main_tab.SuspendLayout();
             this.tab_local.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.metrics_chart)).BeginInit();
@@ -135,6 +137,8 @@
             // 
             // tab_local
             // 
+            this.tab_local.Controls.Add(this.environment_label);
+            this.tab_local.Controls.Add(this.environment);
             this.tab_local.Controls.Add(this.script_to_execute_on_start);
             this.tab_local.Controls.Add(this.start_script_label);
             this.tab_local.Controls.Add(this.working_directory);
@@ -206,48 +210,48 @@
             // metrics_chart
             // 
             this.metrics_chart.BorderlineWidth = 0;
-            chartArea1.AxisX.IsMarginVisible = false;
-            chartArea1.AxisX.LabelStyle.Enabled = false;
-            chartArea1.AxisX.LineWidth = 0;
-            chartArea1.AxisX.MajorGrid.Enabled = false;
-            chartArea1.AxisX.MajorTickMark.Enabled = false;
-            chartArea1.AxisY.IsMarginVisible = false;
-            chartArea1.AxisY.LabelStyle.Enabled = false;
-            chartArea1.AxisY.LineWidth = 0;
-            chartArea1.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
-            chartArea1.AxisY.MajorTickMark.Enabled = false;
-            chartArea1.AxisY.Maximum = 1D;
-            chartArea1.AxisY.Minimum = 0D;
-            chartArea1.BackColor = System.Drawing.Color.Snow;
-            chartArea1.BorderWidth = 0;
-            chartArea1.Name = "metrics_chart_area";
-            chartArea1.Position.Auto = false;
-            chartArea1.Position.Height = 100F;
-            chartArea1.Position.Width = 100F;
-            this.metrics_chart.ChartAreas.Add(chartArea1);
-            legend1.Alignment = System.Drawing.StringAlignment.Far;
-            legend1.BackColor = System.Drawing.Color.Transparent;
-            legend1.DockedToChartArea = "metrics_chart_area";
-            legend1.IsTextAutoFit = false;
-            legend1.Name = "metrics_legend";
-            this.metrics_chart.Legends.Add(legend1);
+            chartArea4.AxisX.IsMarginVisible = false;
+            chartArea4.AxisX.LabelStyle.Enabled = false;
+            chartArea4.AxisX.LineWidth = 0;
+            chartArea4.AxisX.MajorGrid.Enabled = false;
+            chartArea4.AxisX.MajorTickMark.Enabled = false;
+            chartArea4.AxisY.IsMarginVisible = false;
+            chartArea4.AxisY.LabelStyle.Enabled = false;
+            chartArea4.AxisY.LineWidth = 0;
+            chartArea4.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
+            chartArea4.AxisY.MajorTickMark.Enabled = false;
+            chartArea4.AxisY.Maximum = 1D;
+            chartArea4.AxisY.Minimum = 0D;
+            chartArea4.BackColor = System.Drawing.Color.Snow;
+            chartArea4.BorderWidth = 0;
+            chartArea4.Name = "metrics_chart_area";
+            chartArea4.Position.Auto = false;
+            chartArea4.Position.Height = 100F;
+            chartArea4.Position.Width = 100F;
+            this.metrics_chart.ChartAreas.Add(chartArea4);
+            legend4.Alignment = System.Drawing.StringAlignment.Far;
+            legend4.BackColor = System.Drawing.Color.Transparent;
+            legend4.DockedToChartArea = "metrics_chart_area";
+            legend4.IsTextAutoFit = false;
+            legend4.Name = "metrics_legend";
+            this.metrics_chart.Legends.Add(legend4);
             this.metrics_chart.Location = new System.Drawing.Point(193, 158);
             this.metrics_chart.Name = "metrics_chart";
             this.metrics_chart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
-            series1.ChartArea = "metrics_chart_area";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series1.IsXValueIndexed = true;
-            series1.Legend = "metrics_legend";
-            series1.LegendText = "% cpu";
-            series1.Name = "cpu_usage_series";
-            series2.ChartArea = "metrics_chart_area";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series2.IsXValueIndexed = true;
-            series2.Legend = "metrics_legend";
-            series2.LegendText = "% mem";
-            series2.Name = "mem_usage_series";
-            this.metrics_chart.Series.Add(series1);
-            this.metrics_chart.Series.Add(series2);
+            series7.ChartArea = "metrics_chart_area";
+            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series7.IsXValueIndexed = true;
+            series7.Legend = "metrics_legend";
+            series7.LegendText = "% cpu";
+            series7.Name = "cpu_usage_series";
+            series8.ChartArea = "metrics_chart_area";
+            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series8.IsXValueIndexed = true;
+            series8.Legend = "metrics_legend";
+            series8.LegendText = "% mem";
+            series8.Name = "mem_usage_series";
+            this.metrics_chart.Series.Add(series7);
+            this.metrics_chart.Series.Add(series8);
             this.metrics_chart.Size = new System.Drawing.Size(173, 76);
             this.metrics_chart.TabIndex = 0;
             this.metrics_chart.TabStop = false;
@@ -285,7 +289,7 @@
             this.assume_crash_if_not_responsive.Location = new System.Drawing.Point(8, 258);
             this.assume_crash_if_not_responsive.Name = "assume_crash_if_not_responsive";
             this.assume_crash_if_not_responsive.Size = new System.Drawing.Size(172, 17);
-            this.assume_crash_if_not_responsive.TabIndex = 14;
+            this.assume_crash_if_not_responsive.TabIndex = 15;
             this.assume_crash_if_not_responsive.Text = "Assume crash if not responsive";
             this.assume_crash_if_not_responsive.UseVisualStyleBackColor = true;
             this.assume_crash_if_not_responsive.CheckedChanged += new System.EventHandler(this.StoreControlValue);
@@ -295,7 +299,7 @@
             this.screenshot_button.Location = new System.Drawing.Point(8, 280);
             this.screenshot_button.Name = "screenshot_button";
             this.screenshot_button.Size = new System.Drawing.Size(173, 24);
-            this.screenshot_button.TabIndex = 16;
+            this.screenshot_button.TabIndex = 17;
             this.screenshot_button.Text = "Take a screenshot ( ALT+F9 )";
             this.screenshot_button.UseVisualStyleBackColor = true;
             this.screenshot_button.Click += new System.EventHandler(this.OnScreenshotButtonClick);
@@ -306,7 +310,7 @@
             this.enable_report_on_crash.Location = new System.Drawing.Point(193, 258);
             this.enable_report_on_crash.Name = "enable_report_on_crash";
             this.enable_report_on_crash.Size = new System.Drawing.Size(160, 17);
-            this.enable_report_on_crash.TabIndex = 15;
+            this.enable_report_on_crash.TabIndex = 16;
             this.enable_report_on_crash.Text = "Enable email report on crash";
             this.enable_report_on_crash.UseVisualStyleBackColor = true;
             this.enable_report_on_crash.CheckedChanged += new System.EventHandler(this.StoreControlValue);
@@ -316,7 +320,7 @@
             this.watch_button.Location = new System.Drawing.Point(192, 280);
             this.watch_button.Name = "watch_button";
             this.watch_button.Size = new System.Drawing.Size(173, 24);
-            this.watch_button.TabIndex = 17;
+            this.watch_button.TabIndex = 18;
             this.watch_button.Text = "Start Watching ( ALT+F10 )";
             this.watch_button.UseVisualStyleBackColor = true;
             this.watch_button.Click += new System.EventHandler(this.OnWatchButtonClick);
@@ -348,7 +352,7 @@
             this.start_minimized.Location = new System.Drawing.Point(193, 238);
             this.start_minimized.Name = "start_minimized";
             this.start_minimized.Size = new System.Drawing.Size(137, 17);
-            this.start_minimized.TabIndex = 13;
+            this.start_minimized.TabIndex = 14;
             this.start_minimized.Text = "Start Phoenix minimized";
             this.start_minimized.UseVisualStyleBackColor = true;
             this.start_minimized.CheckedChanged += new System.EventHandler(this.StoreControlValue);
@@ -359,7 +363,7 @@
             this.force_always_on_top.Location = new System.Drawing.Point(8, 240);
             this.force_always_on_top.Name = "force_always_on_top";
             this.force_always_on_top.Size = new System.Drawing.Size(183, 17);
-            this.force_always_on_top.TabIndex = 12;
+            this.force_always_on_top.TabIndex = 13;
             this.force_always_on_top.Text = "Keep process on top ( ALT+F12 )";
             this.force_always_on_top.UseVisualStyleBackColor = true;
             this.force_always_on_top.CheckedChanged += new System.EventHandler(this.StoreControlValue);
@@ -871,6 +875,25 @@
             this.exitPhoenixToolStripMenuItem.Text = "Exit Phoenix";
             this.exitPhoenixToolStripMenuItem.Click += new System.EventHandler(this.OnExitPhoenixToolStripMenuItemClick);
             // 
+            // environment
+            // 
+            this.environment.Location = new System.Drawing.Point(8, 180);
+            this.environment.Multiline = true;
+            this.environment.Name = "environment";
+            this.environment.Size = new System.Drawing.Size(173, 55);
+            this.environment.TabIndex = 12;
+            this.environment.TextChanged += new System.EventHandler(this.StoreControlValue);
+            // 
+            // environment_label
+            // 
+            this.environment_label.AutoSize = true;
+            this.environment_label.Location = new System.Drawing.Point(8, 160);
+            this.environment_label.Name = "environment_label";
+            this.environment_label.Size = new System.Drawing.Size(165, 13);
+            this.environment_label.TabIndex = 24;
+            this.environment_label.Text = "Env Vars (separate with ENTER):";
+            this.environment_label.TextChanged += new System.EventHandler(this.StoreControlValue);
+            // 
             // MainDialog
             // 
             this.AccessibleDescription = "Monitors and restarts crashed applications.";
@@ -974,6 +997,8 @@
         private System.Windows.Forms.TextBox update_feed_address;
         private System.Windows.Forms.Label update_feed_address_label;
         private System.Windows.Forms.CheckBox capture_console;
+        private System.Windows.Forms.Label environment_label;
+        private System.Windows.Forms.TextBox environment;
     }
 }
 

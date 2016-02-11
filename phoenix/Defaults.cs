@@ -14,6 +14,7 @@
             public static string ScriptToExecuteOnCrash = "";
             public static string ScriptToExecuteOnStart = "";
             public static string WorkingDirectory = "";
+            public static string Environment = "";
             public static int TimeDelayBeforeLaunch = 10;
             public static int MaximumRetries = 10;
             public static bool ForceAlwaysOnTop = false;
