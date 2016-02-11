@@ -1,13 +1,4 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Machine'), ['action' => 'edit', $machine->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Machine'), ['action' => 'delete', $machine->id], ['confirm' => __('Are you sure you want to delete # {0}?', $machine->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Machines'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Machine'), ['action' => 'add']) ?> </li>
-    </ul>
-</nav>
-<div class="machines view large-9 medium-8 columns content">
+<div class="machines view columns content">
     <h3><?= h($machine->name) ?></h3>
     <table class="vertical-table">
         <tr>

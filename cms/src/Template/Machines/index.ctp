@@ -23,7 +23,6 @@
                 <td class="public_key"><?= h($machine->public_key) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $machine->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $machine->id]) ?>
                     <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $machine->id], ['confirm' => __('Are you sure you want to delete # {0}?', $machine->id)]) ?>
 					<br />
 					<a class="stop" onclick="Command('stop', '<?= $machine->name ?>')">Stop</a>
