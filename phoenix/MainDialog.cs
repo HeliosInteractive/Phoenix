@@ -209,6 +209,8 @@
                 {
                     working_directory.Text =
                         Path.GetDirectoryName(application_to_watch.Text);
+                    // chance that we want this to be the same is high
+                    local_directory.Text = working_directory.Text;
                 }
             } else if (control == script_to_execute_on_crash ||
                 control == script_to_execute_on_start ||
