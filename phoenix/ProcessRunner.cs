@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using System.Linq;
     using System.Diagnostics;
     using System.Threading.Tasks;
     using Microsoft.VisualBasic.Devices;
@@ -18,6 +19,7 @@
         string                  m_ProcessPath   = string.Empty;
         string                  m_CommandLine   = string.Empty;
         string                  m_CachedName    = string.Empty;
+        string                  m_Environment   = string.Empty;
         double[]                m_MemoryUsage   = new double[m_NumSamples];
         double[]                m_CpuUsage      = new double[m_NumSamples];
         double[]                m_UsageIndices  = new double[m_NumSamples];
@@ -45,6 +47,7 @@
         public bool     Monitoring      { get { return m_Monitoring; } }
         public double   LastCpuUsage    { get { return Monitoring ? m_LastCpuUsage : 0d; } }
         public double   LastMemUsage    { get { return Monitoring ? m_LastMemUsage : 0d; } }
+        public string   Environment     { get; set; }
         public bool CaptureConsoleOutput
         {
             get { return m_CaptureOutput; }
@@ -249,6 +252,32 @@
                 EnableRaisingEvents = true,
             };
 
+            if (!String.IsNullOrWhiteSpace(Environment))
+            {
+                foreach (string variable_expr in Environment
+                    .Split(new[] { "\r\n" },
+                        StringSplitOptions.RemoveEmptyEntries))
+                {
+                    string key = string.Empty;
+                    string val = string.Empty;
+
+                    string[] split_expr = variable_expr.Split('=');
+                    if (split_expr.Length >= 1)
+                    {
+                        key = split_expr[0].Trim();
+                        if (split_expr.Length > 1)
+                        {
+                            val = String.Join("", split_expr.Skip(1)).Trim();
+                            if (!String.IsNullOrWhiteSpace(val))
+                                val = System.Environment.ExpandEnvironmentVariables(val);
+                        }
+                    }
+
+                    if (!String.IsNullOrWhiteSpace(key))
+                        m_Process.StartInfo.EnvironmentVariables[key] = val;
+                }
+            }
+
             if (CaptureConsoleOutput)
             {
                 m_Process.OutputDataReceived += (s, e) => {
@@ -314,7 +343,7 @@
 
             int sample_index = m_NumSamples - 1;
             m_MemoryUsage[sample_index] = m_Process.WorkingSet64 / m_MaxMemory;
-            try { m_CpuUsage[sample_index] = m_PerfCounter.NextValue() / (Environment.ProcessorCount * 100d); }
+            try { m_CpuUsage[sample_index] = m_PerfCounter.NextValue() / (System.Environment.ProcessorCount * 100d); }
             catch { m_CpuUsage[sample_index] = 0; }
 
             m_LastCpuUsage = m_CpuUsage[sample_index];

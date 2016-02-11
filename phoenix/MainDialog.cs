@@ -262,6 +262,9 @@
             } else if (control == script_to_execute_on_start) {
                 m_ProcessRunner.StartScript = script_to_execute_on_start.Text;
                 if (m_ProcessRunner.Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
+            } else if (control == environment) {
+                m_ProcessRunner.Environment = environment.Text;
+                if (m_ProcessRunner.Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
             } else if (control == update_feed_address) {
                 m_UpdateManager.FeedAddress = update_feed_address.Text;
             } else if (control == capture_console) {
