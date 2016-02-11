@@ -83,6 +83,9 @@
             if (to_be_stored.StartsWith("\"") && to_be_stored.EndsWith("\""))
                 to_be_stored = string.Format("\"{0}\"", to_be_stored);
 
+            if (to_be_stored.Contains("\r\n"))
+                to_be_stored = to_be_stored.Replace("\r\n", "<br>");
+
             if (to_be_stored.Contains("\n"))
                 to_be_stored = to_be_stored.Replace("\n", "<br>");
 
@@ -147,7 +150,7 @@
 
         public string Read(string Section, string Key, string DefaultValue)
         {
-            return Read<string>(Section, Key, DefaultValue).Replace("<br>", "\n");
+            return Read<string>(Section, Key, DefaultValue).Replace("<br>", "\r\n");
         }
 
         /// <summary>
