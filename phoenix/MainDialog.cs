@@ -54,8 +54,8 @@
 
             ApplySettings();
 
-            m_MemoryUsageSeries = memory_chart.Series[0];
-            m_CpuUsageSeries    = cpu_chart.Series[0];
+            m_MemoryUsageSeries = metrics_chart.Series["mem_usage_series"];
+            m_CpuUsageSeries    = metrics_chart.Series["cpu_usage_series"];
 
             notify_icon.Icon = Icon;
             process_monitor_timer.Start();
@@ -318,8 +318,7 @@
             m_MemoryUsageSeries.Points.DataBindXY(m_ProcessRunner.UsageIndices, m_ProcessRunner.MemoryUsage);
             m_CpuUsageSeries.Points.DataBindXY(m_ProcessRunner.UsageIndices, m_ProcessRunner.CpuUsage);
 
-            memory_chart.Invalidate();
-            cpu_chart.Invalidate();
+            metrics_chart.Invalidate();
         }
 
         private void OnScreenshotButtonClick(object sender, EventArgs e) { ScreenCapture.TakeScreenShot(); }
