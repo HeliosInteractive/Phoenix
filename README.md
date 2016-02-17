@@ -4,6 +4,11 @@
 
 Pheonix is a Windows Application Monitoring designed by Helios Interactive to make deployment and maintaining of kiosk applications easier.
 
+### m2mqtt License
+
+Eclipse Public License - v 1.0
+
+### Phoenix Licence
 
 The MIT License (MIT)
 Copyright (c) 2016 <copyright holders>
