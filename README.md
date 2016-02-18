@@ -4,6 +4,10 @@
 
 Pheonix is a Windows Application Monitoring designed by Helios Interactive to make deployment and maintaining of kiosk applications easier.
 
+# CMS
+
+copy `cms/config/app.dist.php` to `cms/config/app.php` and edit it for your environment specific setup.
+
 ### m2mqtt License
 
 Eclipse Public License - v 1.0
