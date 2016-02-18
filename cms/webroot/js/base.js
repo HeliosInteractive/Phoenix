@@ -113,8 +113,11 @@ $(document).ready(function() {
 			header = header.toLowerCase().replace(' ', '_');
 			columns.push(header);
 		});
-	
-	var client 			= mqtt.connect("ws://192.168.56.1:8080/");
+
+	var url = "ws://192.168.56.1:8080/";
+	if( /phoenix\.heliosinteractive\.com/.test(window.location.href) )
+		url = "wss://phoenix.heliosinteractive.com/ws/";
+	var client                      = mqtt.connect(url);
 	var echo_channel 	= SubChannelPath("echo");
 	var ping_channel 	= SubChannelPath("ping");
 	var ping_interval 	= 3 * 1000;
