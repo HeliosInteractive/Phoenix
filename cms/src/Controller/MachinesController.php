@@ -16,9 +16,9 @@ class MachinesController extends AppController
 	{
 		$success = false;
 		
-		if (is_writable(Configure::read('KeyFile')))
+		if (is_writable(Configure::read('Phoenix.KeyFile')))
 		{
-			$handle = fopen(Configure::read('KeyFile'), "r");
+			$handle = fopen(Configure::read('Phoenix.KeyFile'), "r");
 			$keys = [];
 			if ($handle)
 			{
@@ -30,7 +30,7 @@ class MachinesController extends AppController
 				
 				if (!in_array($key, $keys))
 				{
-					if (!file_put_contents(Configure::read('KeyFile'), (PHP_EOL . trim($key) . PHP_EOL), FILE_APPEND))
+					if (!file_put_contents(Configure::read('Phoenix.KeyFile'), (PHP_EOL . trim($key) . PHP_EOL), FILE_APPEND))
 					{
 						$this->Flash->error(__('Appending key failed.'));
 					}
@@ -63,9 +63,9 @@ class MachinesController extends AppController
 	{
 		$success = false;
 		
-		if (is_writable(Configure::read('KeyFile')))
+		if (is_writable(Configure::read('Phoenix.KeyFile')))
 		{
-			$handle = fopen(Configure::read('KeyFile'), "r");
+			$handle = fopen(Configure::read('Phoenix.KeyFile'), "r");
 			$keys = [];
 			if ($handle)
 			{
@@ -79,7 +79,7 @@ class MachinesController extends AppController
 				{
 					unset($keys[$index]);
 					
-					if (!file_put_contents(Configure::read('KeyFile'), implode(PHP_EOL, $keys)))
+					if (!file_put_contents(Configure::read('Phoenix.KeyFile'), implode(PHP_EOL, $keys)))
 					{
 						$this->Flash->error(__('Updating key file failed.'));
 					}
