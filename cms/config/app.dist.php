@@ -328,7 +328,10 @@ return [
     ],
 	
 	/**
-	 * Path to .authorized_keys of your SSHD server
+	 * Phoenix specific configurations
 	 */
-	'KeyFile' => ''
+	'Phoenix' => [
+		'KeyFile' => '', // Path to .authorized_keys of your SSHD server
+		'MqttUrl' => '', // Path to the MQTT server (w/ ws:// or wss://)
+	],
 ];
