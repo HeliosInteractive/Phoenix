@@ -35,7 +35,7 @@ Phoenix consists of a client written in `WinForms C#` and an *optional* CMS writ
 
 ### License
 
-Phoenix' source code is licensed under the MIT license (MIT). Phoenix a number of third-party dependencies:
+Phoenix' source code is licensed under the MIT license (MIT). Phoenix uses a number of third-party dependencies:
 
  1. [m2mqtt](https://github.com/ppatierno/m2mqtt) which is licensed under EPL v1.0
  2. [Costura.Fody](https://github.com/Fody/Costura) which is licensed under MIT
