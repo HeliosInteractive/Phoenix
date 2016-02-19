@@ -1,62 +1,80 @@
-// console.log polyfill
-window.log = function() {
-	log.history = log.history || [];
-	log.history.push(arguments);
-	if(this.console){
+/*!
+ * @fn        log
+ * @namespace window
+ * @brief     A console.log polyfill
+ */
+window.log = function()
+{
+	if(this.console) {
 		console.log( Array.prototype.slice.call(arguments) );
 	}
 };
 
-function BaseChannelPath() {
-	var base_channel = "/helios/phoenix"
-	return base_channel;
-}
-
-function SubChannelPath(path) {
-	return BaseChannelPath() + "/" + path;
-}
-
-function AuthorizeMachine(info){
-	$.post(config.base_url + "machines/add", info, function(data) {
-		window.location.reload();
-	});
-}
-
-function AddMachineEntry(payload, columns) {
-	try { var msg = $.parseJSON(payload); }
-	catch(e) { log("Failed to parse: " + payload); return; }
+/*!
+ * @class MqttChannelManager
+ * @brief Handles sub channel path construction based on a base channel.
+ */
+function MqttChannelManager(base_path)
+{
+	var base = base_path;
 	
-	var row = $('<tr>');
-	columns.forEach(function(col) {
-		if (!MachineAuthorized(msg)) {
-			if (col == "actions") {
-				row.append($('<td>').append(
-					$('<a>')
-					.click(function() { AuthorizeMachine(msg); return false; })
-					.text('Authorize'))
-				);
-			} else if (col == "status") {
-				row.append($('<td>').text("Authorize this machine to see its stat."));
-			} else {
-				row.append($('<td>').text((col in msg) ? msg[col] : ''));
+	this.getBase = function() { return base; }
+	this.getSub = function(p) { return base + "/" + p; }
+	this.getEcho = function() { return this.getSub("echo"); }
+	this.getPing = function() { return this.getSub("ping"); }
+}
+
+/*!
+ * @class Machines
+ * @brief Holds info about client machines, can authorize/deauthorize
+ * them and syncs up their information with CakePHP's printed table.
+ */
+function Machines(cols)
+{
+	var columns = cols;
+	
+	this.authorize = function(info) {
+		$.post(config.base_url + "machines/add", info, function(data) {
+			window.location.reload();
+		});
+	}
+	
+	this.add = function(payload) {
+		try { var msg = $.parseJSON(payload); }
+		catch(e) { log("Failed to parse: " + payload); return; }
+		
+		var row = $('<tr>');
+		columns.forEach(function(col) {
+			if (!this.isAuthorized(msg)) {
+				if (col == "actions") {
+					row.append($('<td>').append(
+						$('<a>')
+						.click(function() { this.authorize(msg); return false; })
+						.text('Authorize'))
+					);
+				} else if (col == "status") {
+					row.append($('<td>').text("Authorize this machine to see its stat."));
+				} else {
+					row.append($('<td>').text((col in msg) ? msg[col] : ''));
+				}
 			}
-		}
-	});
-	$('.content table')
-		.find('tbody')
-		.append(row);
-}
-
-function MachineAuthorized(obj) {
-	if (registered_systems == undefined)
-		return false;
+		});
+		$('.content table')
+			.find('tbody')
+			.append(row);
+	}
 	
-	var found = false;
-	registered_systems.forEach(function(val) {
-		found = (val.name == obj.name && val.public_key == obj.public_key);
-	});
-	
-	return found;
+	this.isAuthorized = function(obj) {
+		if (registered_systems == undefined)
+			return false;
+		
+		var found = false;
+		registered_systems.forEach(function(val) {
+			found = (val.name == obj.name && val.public_key == obj.public_key);
+		});
+		
+		return found;
+	}
 }
 
 function HandlePing(payload) {
@@ -111,21 +129,20 @@ $(document).ready(function() {
 		return;
 	
 	var columns = [];
-	var thead = $('.content table thead tr th')
-		.each(function( index, value ) {
-			var header = $('a', value).length == 1 ? $('a', value).text() : $(value).text();
-			header = header.toLowerCase().replace(' ', '_');
-			columns.push(header);
-		});
-
+	$('.content table thead tr th').each(function( index, value ) {
+		var header = $('a', value).length == 1 ? $('a', value).text() : $(value).text();
+		header = header.toLowerCase().replace(' ', '_');
+		columns.push(header);
+	});
+	
+	var channel_mgr 	= new MqttChannelManager("/helios/phoenix")
+	var machines		= new Machines(columns);
 	var client			= mqtt.connect(config.mqtt_url);
-	var echo_channel 	= SubChannelPath("echo");
-	var ping_channel 	= SubChannelPath("ping");
 	var ping_interval 	= 3 * 1000;
 	var dead_interval 	= 5 * ping_interval;
 	
-	client.subscribe(echo_channel);
-	client.subscribe(ping_channel);
+	client.subscribe(channel_mgr.getEcho());
+	client.subscribe(channel_mgr.getPing());
 	
 	client.on("connect", function() {
 		$(".machines h3").text("Machines (connected)");
@@ -135,9 +152,9 @@ $(document).ready(function() {
 	});
 	
 	client.on("message", function(topic, payload) {
-		if (topic == echo_channel)
-			AddMachineEntry(payload, columns);
-		else if (topic == ping_channel)
+		if (topic == channel_mgr.getEcho())
+			machines.add(payload, columns);
+		else if (topic == channel_mgr.getPing())
 			HandlePing(payload);
 	});
 	
@@ -145,12 +162,12 @@ $(document).ready(function() {
 		client.publish(SubChannelPath(name), action);
 	}
 
-	client.publish(BaseChannelPath(), "echo");
-	client.publish(BaseChannelPath(), "ping");
+	client.publish(channel_mgr.getBase(), "echo");
+	client.publish(channel_mgr.getBase(), "ping");
 	HandleOfflines(dead_interval);
 	
 	setInterval(function() {
-		client.publish(BaseChannelPath(), "ping");
+		client.publish(channel_mgr.getBase(), "ping");
 	}, ping_interval);
 	
 	setInterval(function() {
