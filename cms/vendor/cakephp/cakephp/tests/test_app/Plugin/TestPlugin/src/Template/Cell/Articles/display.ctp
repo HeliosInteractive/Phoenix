@@ -1,1 +1,0 @@
-TestPlugin Articles/display

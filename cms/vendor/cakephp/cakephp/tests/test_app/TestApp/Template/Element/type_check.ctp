@@ -1,1 +1,0 @@
-<?= gettype($form); ?>

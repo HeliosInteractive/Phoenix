@@ -1,1 +1,0 @@
-<div id="<?= $key ?>-message"><?= $message; ?></div>

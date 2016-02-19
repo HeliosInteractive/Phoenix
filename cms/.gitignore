@@ -1,4 +1,7 @@
 /logs/*
 !/logs/empty
 /tmp/*
-cms/config/app.php
+!/tmp/empty
+/vendor/*
+!/vendor/empty
+/config/app.php

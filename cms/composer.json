@@ -1,0 +1,26 @@
+{
+    "name": "Helios/Phoenix",
+    "description": "A Windows application monitoring tool",
+    "homepage": "https://github.com/HeliosInteractive/Phoenix",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.2",
+        "cakephp/cakephp": "@stable",
+        "mobiledetect/mobiledetectlib": "@stable",
+        "cakephp/migrations": "@stable",
+        "cakephp/plugin-installer": "@stable",
+        "friendsofcake/crud": "@stable",
+		"nesbot/carbon" : "@stable"
+    },
+    "require-dev": {
+        "psy/psysh": "@stable",
+        "cakephp/debug_kit": "@stable",
+        "cakephp/bake": "@stable"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src"
+        }
+    }
+}
