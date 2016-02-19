@@ -17,7 +17,7 @@ function SubChannelPath(path) {
 }
 
 function AuthorizeMachine(info){
-	$.post(cake.base_url + "machines/add", info, function(data) {
+	$.post(config.base_url + "machines/add", info, function(data) {
 		window.location.reload();
 	});
 }
@@ -106,6 +106,10 @@ window.Command = function(action, name) {
 }
 
 $(document).ready(function() {
+	
+	if (config.mqtt_url == "")
+		return;
+	
 	var columns = [];
 	var thead = $('.content table thead tr th')
 		.each(function( index, value ) {
@@ -114,10 +118,7 @@ $(document).ready(function() {
 			columns.push(header);
 		});
 
-	var url = "ws://192.168.56.1:8080/";
-	if( /phoenix\.heliosinteractive\.com/.test(window.location.href) )
-		url = "wss://phoenix.heliosinteractive.com/ws/";
-	var client                      = mqtt.connect(url);
+	var client			= mqtt.connect(config.mqtt_url);
 	var echo_channel 	= SubChannelPath("echo");
 	var ping_channel 	= SubChannelPath("ping");
 	var ping_interval 	= 3 * 1000;
