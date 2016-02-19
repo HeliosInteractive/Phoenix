@@ -2,23 +2,21 @@
 
 ## Windows Application Monitoring
 
-Pheonix is a Windows Application Monitoring designed by Helios Interactive to make deployment and maintaining of kiosk applications easier.
+![Phoenix UI](https://raw.githubusercontent.com/HeliosInteractive/Phoenix/master/docs/image/local.png)
 
-# CMS
+Pheonix is a Windows Application Monitoring tool designed by Helios Interactive to make deployment and maintaining of kiosk applications easier.
 
-copy `cms/config/app.dist.php` to `cms/config/app.php` and edit it for your environment specific setup.
+### Structure
 
-### m2mqtt License
+Phoenix consists of a client written in `WinForms C#` and an *optional* CMS written in `CakePHP`. The client itself can be used independently from the CMS by using an MQTT client (for remote controlling a Phoenix instance). If all you ever want is just a standalone monitoring tool, you do not need to worry about MQTT at all.
 
-Eclipse Public License - v 1.0
+### License
 
-### Phoenix Licence
+Phoenix' source code is licensed under the MIT license (MIT). Phoenix a number of third-party dependencies:
 
-The MIT License (MIT)
-Copyright (c) 2016 <copyright holders>
+ 1. [m2mqtt](https://github.com/ppatierno/m2mqtt) which is licensed under EPL v1.0
+ 2. [Costura.Fody](https://github.com/Fody/Costura) which is licensed under MIT
+ 3. [Log4Net](https://logging.apache.org/log4net/) which is licensed under Apache License v2
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+### Documentation
+Take a look at `/docs` for more information.
