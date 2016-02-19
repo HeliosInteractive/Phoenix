@@ -219,7 +219,7 @@ return [
             //'port' => 'non_standard_port_number',
             'username' => 'root',
             'password' => '',
-            'database' => 'phoenix_dev',
+            'database' => 'phoenix',
             'encoding' => 'utf8',
             'timezone' => 'UTC',
             'flags' => [],
@@ -327,5 +327,8 @@ return [
         'defaults' => 'php',
     ],
 	
-	'KeyFile' => 'D:\authorized_keys'
+	/**
+	 * Path to .authorized_keys of your SSHD server
+	 */
+	'KeyFile' => ''
 ];
