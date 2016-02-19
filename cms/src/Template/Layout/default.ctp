@@ -14,6 +14,8 @@
  */
 
 use Cake\Routing\Router;
+use Cake\Core\Configure;
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -27,8 +29,9 @@ use Cake\Routing\Router;
     <?= $this->Html->css('cake.css') ?>
 	
 	<script type="text/javascript">
-	var cake = {
-		"base_url" : "<?php echo Router::url('/', true); ?>"
+	var config = {
+		"base_url" : "<?php echo Router::url('/', true); ?>",
+		"mqtt_url" : "<?php echo Configure::read('Phoenix.MqttUrl'); ?>"
 	};
 	</script>
     <?= $this->Html->script('jquery-2.2.0.min') ?>
