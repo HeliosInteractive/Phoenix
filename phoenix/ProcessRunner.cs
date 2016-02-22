@@ -353,7 +353,7 @@
 
         bool HasMainWindow()
         {
-            try { return m_Process != null && !m_Process.HasExited && m_Process.MainWindowHandle != IntPtr.Zero; }
+            try { return Monitorable() && m_Process.MainWindowHandle != IntPtr.Zero; }
             catch { return false; }
         }
 
