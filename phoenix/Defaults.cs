@@ -9,47 +9,48 @@
     {
         public class Local
         {
-            public static string ApplicationToWatch = "";
-            public static string CommandLineArguments = "";
-            public static string ScriptToExecuteOnCrash = "";
-            public static string ScriptToExecuteOnStart = "";
-            public static string WorkingDirectory = "";
-            public static string Environment = "";
-            public static int TimeDelayBeforeLaunch = 10;
-            public static int MaximumRetries = 10;
-            public static bool ForceAlwaysOnTop = false;
-            public static bool StartMinimized = false;
-            public static bool AssumeCrashIfNotResponsive = true;
-            public static bool EnableReportOnCrash = true;
+            public static readonly string   ApplicationToWatch = "";
+            public static readonly string   CommandLineArguments = "";
+            public static readonly string   ScriptToExecuteOnCrash = "";
+            public static readonly string   ScriptToExecuteOnStart = "";
+            public static readonly string   WorkingDirectory = "";
+            public static readonly string   Environment = "";
+            public static readonly int      TimeDelayBeforeLaunch = 10;
+            public static readonly int      WaitTime = 0;
+            public static readonly bool     ForceAlwaysOnTop = false;
+            public static readonly bool     StartMinimized = false;
+            public static readonly bool     AssumeCrashIfNotResponsive = true;
+            public static readonly bool     EnableReportOnCrash = true;
         }
 
         public class Remote
         {
-            public static string MqttServerAddress = "test.mosquitto.org";
-            public static string RsyncServerAddress = "";
-            public static ushort RsyncServerPort = 22;
-            public static string RsyncServerUsername = "";
-            public static string RemoteDirectory = "";
-            public static string LocalDirectory = "";
+            public static readonly string   MqttServerAddress = "";
+            public static readonly string   RsyncServerAddress = "";
+            public static readonly ushort   RsyncServerPort = 22;
+            public static readonly string   RsyncServerUsername = "";
+            public static readonly string   RemoteDirectory = "";
+            public static readonly string   LocalDirectory = "";
         }
+
         public class Report
         {
-            public static string FromEmailAddress = "phoenix-crash-report@heliosinteractive.com";
-            public static string FromEmailPassword = "";
-            public static string ToEmailAddress = "";
-            public static string EmailSubject = "(#MACHINE_IDENTITY#) Helios Phoenix crash report";
-            public static string EmailBody = "Helios Phoenix crash report,<br><br>Instance of #MACHINE_IDENTITY# has encountered a crash. Attached are a screen shot of this machine at the time of crash and optionally a log file (if specified before).<br>This machine is set to fetch updates from #RSYNC_ADDRESS# and obtain commands from #MQTT_ADDRESS#.<br><br>This is an automated message, please do not respond.";
-            public static string EmailAttachment = "";
+            public static readonly string   FromEmailAddress = "";
+            public static readonly string   FromEmailPassword = "";
+            public static readonly string   ToEmailAddress = "";
+            public static readonly string   EmailSubject = "(#MACHINE_IDENTITY#) Helios Phoenix crash report";
+            public static readonly string   EmailBody = "Helios Phoenix crash report,<br><br>Instance of #MACHINE_IDENTITY# has encountered a crash. Attached are a screen shot of this machine at the time of crash and optionally a log file (if specified before).<br>This machine is set to fetch updates from #RSYNC_ADDRESS# and obtain commands from #MQTT_ADDRESS#.<br><br>This is an automated message, please do not respond.";
+            public static readonly string   EmailAttachment = "";
         }
 
         public class About
         {
-            public static string UpdateFeedAddress = "http://localhost/helios/feed.xml";
+            public static readonly string   UpdateFeedAddress = "http://localhost/helios/feed.xml";
         }
 
         public class Log
         {
-            public static bool CaptureConsole = false;
+            public static readonly bool     CaptureConsole = false;
         }
 
         public static string GetSectionByKey(string key)

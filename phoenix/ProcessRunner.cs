@@ -28,8 +28,6 @@
                                 m_LastMemUsage  = 0d;
         const int               m_NumSamples    = 100;
         int                     m_DelaySeconds  = 0;
-        int                     m_Attempts      = 10;
-        int                     m_CurrAttempt   = 0;
         bool                    m_AlwaysOnTop   = false;
         bool                    m_CrashIfUnresp = false;
         bool                    m_Monitoring    = false;
@@ -78,16 +76,6 @@
             get { return m_WorkingDir; }
             set { m_WorkingDir = value; Validate(); }
         }
-        public int Attempts
-        {
-            get { return m_Attempts; }
-            set { m_Attempts = value; Validate(); }
-        }
-        public int CurrentAttempt
-        {
-            get { return m_CurrAttempt; }
-            set { m_CurrAttempt = value; }
-        }
         public int DelaySeconds
         {
             get { return m_DelaySeconds; }
@@ -133,18 +121,13 @@
 
             if (type == ExecType.CRASHED)
             {
-                if (!(m_Attempts > 0 && m_CurrAttempt >= m_Attempts))
-                {
-                    CallScript(m_CrashScript);
+                CallScript(m_CrashScript);
 
-                    Task.Delay(new TimeSpan(0, 0, DelaySeconds))
-                        .ContinueWith((fn) => {
-                            if (!m_Monitoring)
-                                Start(ExecType.CRASHED);
-                        });
-
-                    m_CurrAttempt++;
-                }
+                Task.Delay(new TimeSpan(0, 0, DelaySeconds))
+                    .ContinueWith((fn) => {
+                        if (!m_Monitoring)
+                            Start(ExecType.CRASHED);
+                    });
             }
 
             if (ProcessStopped != null)
@@ -232,9 +215,6 @@
         {
             if (!Validate() || m_Disposed)
                 return;
-
-            if (type == ExecType.NORMAL)
-                m_CurrAttempt = 0;
 
             Stop(ExecType.NORMAL);
             CallScript(m_StartScript);
@@ -380,8 +360,6 @@
         bool Validate()
         {
             m_DelaySeconds  = Math.Abs(m_DelaySeconds);
-            m_Attempts      = Math.Abs(m_Attempts);
-
             m_ProcessPath   = m_ProcessPath.CleanForPath();
             m_CrashScript   = m_CrashScript.CleanForPath();
             m_StartScript   = m_StartScript.CleanForPath();

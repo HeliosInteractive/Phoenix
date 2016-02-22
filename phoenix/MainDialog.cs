@@ -240,14 +240,6 @@
                 m_ProcessRunner.AssumeCrashIfNotResponsive = assume_crash_if_not_responsive.Checked;
             } else if (control == enable_report_on_crash) {
                 ResetReportTabStatus();
-            } else if (control == maximum_retries) {
-                if (String.IsNullOrEmpty(maximum_retries.Text)) {
-                    m_ProcessRunner.Attempts = 0;
-                } else {
-                    m_ProcessRunner.Attempts = Int32.Parse(maximum_retries.Text);
-                }
-                m_ProcessRunner.CurrentAttempt = 0;
-                if (m_ProcessRunner.Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
             } else if (control == mqtt_server_address) {
                 m_RemoteManager.Connect(mqtt_server_address.Text, Resources.MqttTopic);
             } else if (control == application_to_watch) {
@@ -293,7 +285,6 @@
                 }
 
                 m_ProcessRunner.DelaySeconds                = String.IsNullOrWhiteSpace(time_delay_before_launch.Text) ? 0 : Int32.Parse(time_delay_before_launch.Text);
-                m_ProcessRunner.Attempts                    = String.IsNullOrWhiteSpace(maximum_retries.Text) ? 0 : Int32.Parse(maximum_retries.Text);
                 m_ProcessRunner.ProcessPath                 = application_to_watch.Text.CleanForPath();
                 m_ProcessRunner.CommandLine                 = command_line_arguments.Text.CleanForPath();
                 m_ProcessRunner.StartScript                 = script_to_execute_on_start.Text.CleanForPath();

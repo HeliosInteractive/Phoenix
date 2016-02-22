@@ -33,11 +33,11 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea28 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend28 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series55 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series56 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainDialog));
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.main_tab = new System.Windows.Forms.TabControl();
             this.tab_local = new System.Windows.Forms.TabPage();
             this.environment_label = new System.Windows.Forms.Label();
@@ -48,7 +48,7 @@
             this.working_directory_label = new System.Windows.Forms.Label();
             this.metrics_chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.label2 = new System.Windows.Forms.Label();
-            this.maximum_retries = new System.Windows.Forms.TextBox();
+            this.wait_time = new System.Windows.Forms.TextBox();
             this.time_delay_before_launch = new System.Windows.Forms.TextBox();
             this.assume_crash_if_not_responsive = new System.Windows.Forms.CheckBox();
             this.screenshot_button = new System.Windows.Forms.Button();
@@ -146,7 +146,7 @@
             this.tab_local.Controls.Add(this.working_directory_label);
             this.tab_local.Controls.Add(this.metrics_chart);
             this.tab_local.Controls.Add(this.label2);
-            this.tab_local.Controls.Add(this.maximum_retries);
+            this.tab_local.Controls.Add(this.wait_time);
             this.tab_local.Controls.Add(this.time_delay_before_launch);
             this.tab_local.Controls.Add(this.assume_crash_if_not_responsive);
             this.tab_local.Controls.Add(this.screenshot_button);
@@ -233,48 +233,48 @@
             // metrics_chart
             // 
             this.metrics_chart.BorderlineWidth = 0;
-            chartArea28.AxisX.IsMarginVisible = false;
-            chartArea28.AxisX.LabelStyle.Enabled = false;
-            chartArea28.AxisX.LineWidth = 0;
-            chartArea28.AxisX.MajorGrid.Enabled = false;
-            chartArea28.AxisX.MajorTickMark.Enabled = false;
-            chartArea28.AxisY.IsMarginVisible = false;
-            chartArea28.AxisY.LabelStyle.Enabled = false;
-            chartArea28.AxisY.LineWidth = 0;
-            chartArea28.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
-            chartArea28.AxisY.MajorTickMark.Enabled = false;
-            chartArea28.AxisY.Maximum = 1D;
-            chartArea28.AxisY.Minimum = 0D;
-            chartArea28.BackColor = System.Drawing.Color.Snow;
-            chartArea28.BorderWidth = 0;
-            chartArea28.Name = "metrics_chart_area";
-            chartArea28.Position.Auto = false;
-            chartArea28.Position.Height = 100F;
-            chartArea28.Position.Width = 100F;
-            this.metrics_chart.ChartAreas.Add(chartArea28);
-            legend28.Alignment = System.Drawing.StringAlignment.Far;
-            legend28.BackColor = System.Drawing.Color.Transparent;
-            legend28.DockedToChartArea = "metrics_chart_area";
-            legend28.IsTextAutoFit = false;
-            legend28.Name = "metrics_legend";
-            this.metrics_chart.Legends.Add(legend28);
+            chartArea1.AxisX.IsMarginVisible = false;
+            chartArea1.AxisX.LabelStyle.Enabled = false;
+            chartArea1.AxisX.LineWidth = 0;
+            chartArea1.AxisX.MajorGrid.Enabled = false;
+            chartArea1.AxisX.MajorTickMark.Enabled = false;
+            chartArea1.AxisY.IsMarginVisible = false;
+            chartArea1.AxisY.LabelStyle.Enabled = false;
+            chartArea1.AxisY.LineWidth = 0;
+            chartArea1.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
+            chartArea1.AxisY.MajorTickMark.Enabled = false;
+            chartArea1.AxisY.Maximum = 1D;
+            chartArea1.AxisY.Minimum = 0D;
+            chartArea1.BackColor = System.Drawing.Color.Snow;
+            chartArea1.BorderWidth = 0;
+            chartArea1.Name = "metrics_chart_area";
+            chartArea1.Position.Auto = false;
+            chartArea1.Position.Height = 100F;
+            chartArea1.Position.Width = 100F;
+            this.metrics_chart.ChartAreas.Add(chartArea1);
+            legend1.Alignment = System.Drawing.StringAlignment.Far;
+            legend1.BackColor = System.Drawing.Color.Transparent;
+            legend1.DockedToChartArea = "metrics_chart_area";
+            legend1.IsTextAutoFit = false;
+            legend1.Name = "metrics_legend";
+            this.metrics_chart.Legends.Add(legend1);
             this.metrics_chart.Location = new System.Drawing.Point(193, 158);
             this.metrics_chart.Name = "metrics_chart";
             this.metrics_chart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
-            series55.ChartArea = "metrics_chart_area";
-            series55.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series55.IsXValueIndexed = true;
-            series55.Legend = "metrics_legend";
-            series55.LegendText = "% cpu";
-            series55.Name = "cpu_usage_series";
-            series56.ChartArea = "metrics_chart_area";
-            series56.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series56.IsXValueIndexed = true;
-            series56.Legend = "metrics_legend";
-            series56.LegendText = "% mem";
-            series56.Name = "mem_usage_series";
-            this.metrics_chart.Series.Add(series55);
-            this.metrics_chart.Series.Add(series56);
+            series1.ChartArea = "metrics_chart_area";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.IsXValueIndexed = true;
+            series1.Legend = "metrics_legend";
+            series1.LegendText = "% cpu";
+            series1.Name = "cpu_usage_series";
+            series2.ChartArea = "metrics_chart_area";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series2.IsXValueIndexed = true;
+            series2.Legend = "metrics_legend";
+            series2.LegendText = "% mem";
+            series2.Name = "mem_usage_series";
+            this.metrics_chart.Series.Add(series1);
+            this.metrics_chart.Series.Add(series2);
             this.metrics_chart.Size = new System.Drawing.Size(173, 76);
             this.metrics_chart.TabIndex = 0;
             this.metrics_chart.TabStop = false;
@@ -284,20 +284,20 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(285, 110);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(81, 13);
+            this.label2.Size = new System.Drawing.Size(58, 13);
             this.label2.TabIndex = 14;
-            this.label2.Text = "Retries (0 = inf):";
+            this.label2.Text = "Wait Time:";
             // 
-            // maximum_retries
+            // wait_time
             // 
-            this.maximum_retries.Location = new System.Drawing.Point(285, 130);
-            this.maximum_retries.Name = "maximum_retries";
-            this.maximum_retries.Size = new System.Drawing.Size(81, 20);
-            this.maximum_retries.TabIndex = 11;
-            this.tooltip.SetToolTip(this.maximum_retries, "Number of attempts to restart the crashed executable (leave 0 for infinite attemp" +
-        "ts)");
-            this.maximum_retries.TextChanged += new System.EventHandler(this.StoreControlValue);
-            this.maximum_retries.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FilterDigitKeys);
+            this.wait_time.Location = new System.Drawing.Point(285, 130);
+            this.wait_time.Name = "wait_time";
+            this.wait_time.Size = new System.Drawing.Size(81, 20);
+            this.wait_time.TabIndex = 11;
+            this.tooltip.SetToolTip(this.wait_time, "The number of seconds Phoenix waits before assuming an unresponsive window has cr" +
+        "ashed.");
+            this.wait_time.TextChanged += new System.EventHandler(this.StoreControlValue);
+            this.wait_time.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FilterDigitKeys);
             // 
             // time_delay_before_launch
             // 
@@ -412,9 +412,9 @@
             this.time_delay_label.AutoSize = true;
             this.time_delay_label.Location = new System.Drawing.Point(193, 110);
             this.time_delay_label.Name = "time_delay_label";
-            this.time_delay_label.Size = new System.Drawing.Size(85, 13);
+            this.time_delay_label.Size = new System.Drawing.Size(72, 13);
             this.time_delay_label.TabIndex = 4;
-            this.time_delay_label.Text = "Spawn delay (s):";
+            this.time_delay_label.Text = "Restart delay:";
             // 
             // command_line_arguments
             // 
@@ -911,19 +911,19 @@
             this.exitPhoenixToolStripMenuItem});
             this.context_menu_strip.Name = "context_menu_strip";
             this.context_menu_strip.ShowImageMargin = false;
-            this.context_menu_strip.Size = new System.Drawing.Size(159, 48);
+            this.context_menu_strip.Size = new System.Drawing.Size(157, 48);
             // 
             // toggleUIToolStripMenuItem
             // 
             this.toggleUIToolStripMenuItem.Name = "toggleUIToolStripMenuItem";
-            this.toggleUIToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.toggleUIToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.toggleUIToolStripMenuItem.Text = "Toggle UI (ALT+F11)";
             this.toggleUIToolStripMenuItem.Click += new System.EventHandler(this.OnToggleUIToolStripMenuItemClick);
             // 
             // exitPhoenixToolStripMenuItem
             // 
             this.exitPhoenixToolStripMenuItem.Name = "exitPhoenixToolStripMenuItem";
-            this.exitPhoenixToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.exitPhoenixToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.exitPhoenixToolStripMenuItem.Text = "Exit Phoenix";
             this.exitPhoenixToolStripMenuItem.Click += new System.EventHandler(this.OnExitPhoenixToolStripMenuItemClick);
             // 
@@ -984,7 +984,7 @@
         private System.Windows.Forms.Button screenshot_button;
         private System.Windows.Forms.CheckBox assume_crash_if_not_responsive;
         private System.Windows.Forms.TextBox time_delay_before_launch;
-        private System.Windows.Forms.TextBox maximum_retries;
+        private System.Windows.Forms.TextBox wait_time;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Timer process_monitor_timer;
         private System.Windows.Forms.DataVisualization.Charting.Chart metrics_chart;
