@@ -139,6 +139,7 @@
             }
 
             m_ProcessRunner.CachedTitle = m_AppSettings.Read("Internal", "CachedName", m_ProcessRunner.CachedTitle);
+            wait_time.Enabled = assume_crash_if_not_responsive.Checked;
             UpdateKeyPair();
         }
 
@@ -238,6 +239,7 @@
                 }
             } else if (control == assume_crash_if_not_responsive) {
                 m_ProcessRunner.AssumeCrashIfNotResponsive = assume_crash_if_not_responsive.Checked;
+                wait_time.Enabled = assume_crash_if_not_responsive.Checked;
             } else if (control == enable_report_on_crash) {
                 ResetReportTabStatus();
             } else if (control == mqtt_server_address) {
