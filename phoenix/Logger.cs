@@ -52,8 +52,15 @@
                 if (m_TextBox == null || m_TextBox.Disposing || m_TextBox.IsDisposed)
                     return;
 
-                m_TextBox.BeginInvoke((MethodInvoker)delegate {
+                m_TextBox.BeginInvoke((MethodInvoker)delegate
+                {
                     m_TextBox.AppendText(loggingEvent.RenderedMessage + Environment.NewLine);
+                    
+                    if (!m_TextBox.Visible)
+                    {
+                        m_TextBox.SelectionStart = m_TextBox.TextLength;
+                        m_TextBox.ScrollToCaret();
+                    }
                 });
             }
         }
