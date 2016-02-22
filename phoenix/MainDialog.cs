@@ -287,6 +287,7 @@
                 }
 
                 m_ProcessRunner.DelaySeconds                = String.IsNullOrWhiteSpace(time_delay_before_launch.Text) ? 0 : Int32.Parse(time_delay_before_launch.Text);
+                m_ProcessRunner.WaitTime                    = String.IsNullOrWhiteSpace(wait_time.Text) ? 0 : Int32.Parse(wait_time.Text);
                 m_ProcessRunner.ProcessPath                 = application_to_watch.Text.CleanForPath();
                 m_ProcessRunner.CommandLine                 = command_line_arguments.Text.CleanForPath();
                 m_ProcessRunner.StartScript                 = script_to_execute_on_start.Text.CleanForPath();

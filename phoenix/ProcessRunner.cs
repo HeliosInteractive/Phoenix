@@ -28,6 +28,7 @@
                                 m_LastMemUsage  = 0d;
         const int               m_NumSamples    = 100;
         int                     m_DelaySeconds  = 0;
+        int                     m_WaitTime      = 0;
         bool                    m_AlwaysOnTop   = false;
         bool                    m_CrashIfUnresp = false;
         bool                    m_Monitoring    = false;
@@ -80,6 +81,11 @@
         {
             get { return m_DelaySeconds; }
             set { m_DelaySeconds = value; Validate(); }
+        }
+        public int WaitTime
+        {
+            get { return m_WaitTime; }
+            set { m_WaitTime = value; Validate(); }
         }
         public string ProcessPath
         {
@@ -303,7 +309,11 @@
             m_Process.Refresh();
 
             if (AssumeCrashIfNotResponsive && !m_Process.Responding)
-                Stop(ExecType.CRASHED);
+                Task.Delay(new TimeSpan(0, 0, WaitTime))
+                    .ContinueWith((fn) => {
+                        if (!m_Process.Responding)
+                            Stop(ExecType.CRASHED);
+                    });
 
             if (ForceAlwaysOnTop && HasMainWindow())
                 if (NativeMethods.GetForegroundWindow() != m_Process.MainWindowHandle)
@@ -359,6 +369,7 @@
 
         bool Validate()
         {
+            m_WaitTime      = Math.Abs(m_WaitTime);
             m_DelaySeconds  = Math.Abs(m_DelaySeconds);
             m_ProcessPath   = m_ProcessPath.CleanForPath();
             m_CrashScript   = m_CrashScript.CleanForPath();
