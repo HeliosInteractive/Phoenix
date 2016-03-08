@@ -1,9 +1,35 @@
 ﻿namespace phoenix
 {
+    using System;
     using System.Runtime.InteropServices;
 
     internal static class NativeMethods
     {
+        /// <summary>
+        /// <see cref="http://www.pinvoke.net/default.aspx/user32.setwindowpos"/>
+        /// </summary>
+        /// <param name="hWnd"></param>
+        /// <param name="hWndInsertAfter"></param>
+        /// <param name="X"></param>
+        /// <param name="Y"></param>
+        /// <param name="cx"></param>
+        /// <param name="cy"></param>
+        /// <param name="uFlags"></param>
+        /// <returns></returns>
+        [DllImport("user32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, SetWindowPosFlags uFlags);
+
+        [Flags]
+        public enum SetWindowPosFlags : uint
+        {
+            SWP_NOMOVE      = 0x0002,
+            SWP_NOSIZE      = 0x0001,
+            SWP_SHOWWINDOW  = 0x0040
+        }
+
+        public static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
+
         /// <summary>
         /// <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ms633539(v=vs.85).aspx"/>
         /// </summary>
@@ -55,5 +81,13 @@
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool RegisterHotKey(System.IntPtr hWnd, int id, uint fsModifiers, uint vk);
+
+        /// <summary>
+        /// <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ms633553(v=vs.85).aspx"/>
+        /// </summary>
+        /// <param name="hWnd"></param>
+        /// <param name="fAltTab"></param>
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern void SwitchToThisWindow(IntPtr hWnd, bool fAltTab);
     }
 }

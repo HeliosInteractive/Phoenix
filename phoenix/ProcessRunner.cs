@@ -316,8 +316,21 @@
                     });
 
             if (ForceAlwaysOnTop && HasMainWindow())
-                if (NativeMethods.GetForegroundWindow() != m_Process.MainWindowHandle)
+            {
+                if (NativeMethods.GetForegroundWindow() !=
+                    m_Process.MainWindowHandle)
+                {
+                    NativeMethods.SwitchToThisWindow(m_Process.MainWindowHandle, true);
                     NativeMethods.SetForegroundWindow(m_Process.MainWindowHandle);
+                    NativeMethods.SetWindowPos(
+                        m_Process.MainWindowHandle,
+                        NativeMethods.HWND_TOPMOST,
+                        0, 0, 0, 0,
+                        NativeMethods.SetWindowPosFlags.SWP_NOSIZE |
+                        NativeMethods.SetWindowPosFlags.SWP_NOMOVE |
+                        NativeMethods.SetWindowPosFlags.SWP_SHOWWINDOW);
+                }
+            }
         }
 
         public void UpdateMetrics()
