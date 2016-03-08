@@ -6,6 +6,7 @@
     using System.Xml;
     using System.Reflection;
 
+
     class UpdateManager
     {
         Version m_CurrentVersion;

@@ -38,8 +38,8 @@
             public static readonly string   FromEmailAddress = "";
             public static readonly string   FromEmailPassword = "";
             public static readonly string   ToEmailAddress = "";
-            public static readonly string   EmailSubject = "(#MACHINE_IDENTITY#) Helios Phoenix crash report";
-            public static readonly string   EmailBody = "Helios Phoenix crash report,<br><br>Instance of #MACHINE_IDENTITY# has encountered a crash. Attached are a screen shot of this machine at the time of crash and optionally a log file (if specified before).<br>This machine is set to fetch updates from #RSYNC_ADDRESS# and obtain commands from #MQTT_ADDRESS#.<br><br>This is an automated message, please do not respond.";
+            public static readonly string EmailSubject = Properties.Resources.DefaultEmailTitle;
+            public static readonly string   EmailBody = Properties.Resources.DefaultEmailBody;
             public static readonly string   EmailAttachment = "";
         }
 

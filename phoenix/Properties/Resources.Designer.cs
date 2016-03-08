@@ -76,6 +76,24 @@ namespace phoenix.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Helios Phoenix crash report,&lt;br&gt;&lt;br&gt;Instance of #MACHINE_IDENTITY# has encountered a crash. Attached are a screen shot of this machine at the time of crash and optionally a log file (if specified before).&lt;br&gt;This machine is set to fetch updates from #RSYNC_ADDRESS# and obtain commands from #MQTT_ADDRESS#.&lt;br&gt;&lt;br&gt;This is an automated message, please do not respond..
+        /// </summary>
+        internal static string DefaultEmailBody {
+            get {
+                return ResourceManager.GetString("DefaultEmailBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (#MACHINE_IDENTITY#) Helios Phoenix crash report.
+        /// </summary>
+        internal static string DefaultEmailTitle {
+            get {
+                return ResourceManager.GetString("DefaultEmailTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;log4net&gt;
         ///    &lt;appender name=&quot;PhoenixRollingFile&quot; type=&quot;log4net.Appender.RollingFileAppender&quot;&gt;
         ///        &lt;file value=&quot;phoenix.log&quot; /&gt;
