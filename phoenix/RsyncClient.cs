@@ -92,17 +92,11 @@
         {
             get
             {
-                string machine_name = Environment.MachineName;
-
-                foreach (var c in Path.GetInvalidPathChars())
-                    machine_name = machine_name.Replace(c.ToString(), string.Empty);
-
-                foreach (var c in Path.GetInvalidFileNameChars())
-                    machine_name = machine_name.Replace(c.ToString(), string.Empty);
-
-                machine_name = machine_name.Replace(" ", "_");
-
-                return machine_name.Trim();
+                return Environment
+                    .MachineName
+                    .CleanForPath()
+                    .Replace(" ", "_")
+                    .Replace("-", "_");
             }
         }
         private static bool ExtractClient()

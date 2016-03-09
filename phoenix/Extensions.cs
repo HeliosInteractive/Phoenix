@@ -47,9 +47,10 @@
         public static string CleanForPath(this string input)
         {
             foreach (var c in Path.GetInvalidPathChars())
-            {
                 input = input.Replace(c.ToString(), string.Empty);
-            }
+
+            foreach (var c in Path.GetInvalidFileNameChars())
+                input = input.Replace(c.ToString(), string.Empty);
 
             return input.Trim();
         }
