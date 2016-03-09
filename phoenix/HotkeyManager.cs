@@ -74,9 +74,9 @@
                 (int)System.Windows.Forms.Keys.F9);
         }
 
-        #region IDisposable Support
-
         //! @cond
+
+        #region IDisposable Support
         protected virtual void Dispose(bool disposing)
         {
             if (!m_Disposed)
@@ -108,8 +108,8 @@
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-        //! @endcond
-
         #endregion
+
+        //! @endcond
     }
 }
