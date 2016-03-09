@@ -11,14 +11,20 @@
     /// </summary>
     class IniSettings
     {
+        /// <summary>
+        /// In-memory representation of the read INI file
+        /// </summary>
         private Dictionary<string, Dictionary<string, string>>
                         m_Settings  = new Dictionary<string, Dictionary<string, string>>();
+        /// <summary>
+        /// Path to the target INI settings file
+        /// </summary>
         private string  m_Path      = string.Empty;
 
         /// <summary>
         /// Constructor. Creates an empty file if "path" does not exist.
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Path to the target INI settings file</param>
         public IniSettings(string path)
         {
             m_Path = path;
@@ -35,19 +41,21 @@
             Logger.IniSettings.InfoFormat("Path to settings files is: {0}", m_Path);
         }
 
+        //! @cond
         ~IniSettings()
         {
             Logger.IniSettings.Info("Saving settings entries back to file.");
             // Save read values on destruction
             SaveReadEntries();
         }
+        //! @endcond
 
         /// <summary>
         /// Writes a string entry to INI file, you'd hardly ever need this
         /// </summary>
-        /// <param name="Section"></param>
-        /// <param name="Key"></param>
-        /// <param name="Value"></param>
+        /// <param name="Section">INI section name</param>
+        /// <param name="Key">INI key name</param>
+        /// <param name="Value">INI value parameter</param>
         public void Write(string Section, string Key, string Value)
         {
             if (!NativeMethods.WritePrivateProfileString(Section, Key, Value, m_Path))
@@ -68,10 +76,10 @@
         /// <summary>
         /// Store a value to be saved later via SaveReadEntries()
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="Section"></param>
-        /// <param name="Key"></param>
-        /// <param name="value"></param>
+        /// <typeparam name="T">Type of the value to be stored</typeparam>
+        /// <param name="Section">INI section name</param>
+        /// <param name="Key">INI key name</param>
+        /// <param name="Value">INI value parameter. New lines will be replaced with a br tag</param>
         public void Store<T>(string Section, string Key, T value)
         {
             if (!m_Settings.ContainsKey(Section))
@@ -89,6 +97,9 @@
             if (to_be_stored.Contains("\n"))
                 to_be_stored = to_be_stored.Replace("\n", "<br>");
 
+            if (to_be_stored.Contains("\r"))
+                to_be_stored = to_be_stored.Replace("\r", "<br>");
+
             m_Settings[Section][Key] = to_be_stored;
 
             Logger.IniSettings.InfoFormat("Stored {0} in {1} with value {2}",
@@ -98,11 +109,11 @@
         /// <summary>
         /// Reads an entry in INI file, returns DefaultValue if not found
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="Section"></param>
-        /// <param name="Key"></param>
-        /// <param name="DefaultValue"></param>
-        /// <returns></returns>
+        /// <typeparam name="T">Type of the value to be stored</typeparam>
+        /// <param name="Section">INI section name</param>
+        /// <param name="Key">INI key name</param>
+        /// <param name="Value">INI value parameter</param>
+        /// <returns>read value or default of its type if failed to be read</returns>
         public T Read<T>(string Section, string Key, T DefaultValue)
         {
             StringBuilder strb = new StringBuilder(2048);
@@ -111,7 +122,7 @@
             bool success = false;
 
             if (NativeMethods.GetPrivateProfileString(Section, Key, "", strb, strb.Capacity, m_Path) > 0
-                && CanChangeType(strb.ToString(), typeof(T)))
+                && typeof(T).CanBeCastedFrom(strb.ToString()))
             {
                 try
                 {
@@ -148,6 +159,10 @@
             return temporary_holder;
         }
 
+        /// <summary>
+        /// string overload of Read<T>. Takes special care of returned values,
+        /// replacing br tags with Windows new lines (\r\n)
+        /// </summary>
         public string Read(string Section, string Key, string DefaultValue)
         {
             return Read<string>(Section, Key, DefaultValue).Replace("<br>", "\r\n");
@@ -168,14 +183,6 @@
                     Write(section, entries.Key, entries.Value);
                 }
             }
-        }
-
-        private static bool CanChangeType(object value, Type conversionType)
-        {
-            if (conversionType == null || value == null || (value as IConvertible) == null)
-                return false;
-
-            return true;
         }
     }
 }

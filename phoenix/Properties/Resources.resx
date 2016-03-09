@@ -141,4 +141,12 @@
     <value>(#MACHINE_IDENTITY#) Helios Phoenix crash report</value>
     <comment>default email title</comment>
   </data>
+  <data name="UpdateFeedAddress" xml:space="preserve">
+    <value>http://localhost/helios/feed.xml</value>
+    <comment>update feed address</comment>
+  </data>
+  <data name="LoggerHeader" xml:space="preserve">
+    <value>==============================</value>
+    <comment>string which is logged at the top of every logging session</comment>
+  </data>
 </root>

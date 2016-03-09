@@ -5,15 +5,29 @@
     using uPLibrary.Networking.M2Mqtt;
     using uPLibrary.Networking.M2Mqtt.Messages;
 
+    /// <summary>
+    /// Remote manager handles logic necessary to receive commands over
+    /// MQTT and execute tasks locally.
+    /// </summary>
     class RemoteManager : IDisposable
     {
-        MqttClient  m_client;
-        string      m_channel;
+        /// <summary>MQTT client instance</summary>
+        MqttClient m_client;
+        /// <summary>MQTT channel to listen on</summary>
+        string m_channel;
 
-        public Action                   OnConnectionClosed;
-        public Action                   OnConnectionOpened;
-        public Action<string, string>   OnMessage;
+        /// <summary>Event broadcaster on MQTT connection closed.</summary>
+        public Action OnConnectionClosed;
+        /// <summary>Event broadcaster on MQTT connection opened.</summary>
+        public Action OnConnectionOpened;
+        /// <summary>Event broadcaster on MQTT message. Message on Topic are passed in order.</summary>
+        public Action<string, string> OnMessage;
 
+        /// <summary>
+        /// Attempts to connect to an MQTT server
+        /// </summary>
+        /// <param name="address">MQTT network accessible address</param>
+        /// <param name="channel">MQTT channel path</param>
         public void Connect(string address, string channel)
         {
             if (address == string.Empty || channel == string.Empty)
@@ -22,22 +36,29 @@
             if (Connected)
                 m_client.Disconnect();
 
-            try {
+            try
+            {
                 m_client = new MqttClient(address);
-            } catch {
+            }
+            catch
+            {
                 return;
             }
 
             m_client.MqttMsgPublishReceived += MqttMessageReceived;
-            m_client.ConnectionClosed += (s, e) => {
+            m_client.ConnectionClosed += (s, e) =>
+            {
                 Logger.RemoteManager.Warn("MQTT connection closed.");
                 if (OnConnectionClosed != null)
                     OnConnectionClosed();
             };
 
-            try {
+            try
+            {
                 m_client.Connect(RsyncClient.MachineIdentity);
-            } catch {
+            }
+            catch
+            {
                 Logger.RemoteManager.Error("Unable to connect to MQTT server.");
                 return;
             }
@@ -57,6 +78,10 @@
             }
         }
 
+        /// <summary>
+        /// Subscribe to an MQTT channel. No-op if no connection
+        /// </summary>
+        /// <param name="channel">MQTT channel</param>
         public void Subscribe(string channel)
         {
             if (m_client.IsConnected)
@@ -73,6 +98,11 @@
             }
         }
 
+        /// <summary>
+        /// Publish to an MQTT channel. No-op if no connection
+        /// </summary>
+        /// <param name="message">message to be published</param>
+        /// <param name="channel">channel to be published to</param>
         public void Publish(string message, string channel = "")
         {
             if (m_client == null || !m_client.IsConnected || message == string.Empty)
@@ -89,6 +119,16 @@
                     false); // retain flag
         }
 
+        /// <summary>
+        /// Boolean flag, answers true if MQTT connection is established
+        /// </summary>
+        public bool Connected
+        {
+            get { return m_client != null && m_client.IsConnected; }
+        }
+
+        //! @cond
+
         void MqttMessageReceived(object sender, MqttMsgPublishEventArgs e)
         {
             string msg = Encoding.UTF8.GetString(e.Message);
@@ -98,11 +138,6 @@
 
             if (OnMessage != null)
                 OnMessage(msg, e.Topic);
-        }
-
-        public bool Connected
-        {
-            get { return m_client != null && m_client.IsConnected; }
         }
 
         #region IDisposable Support
@@ -127,5 +162,7 @@
             Dispose(true);
         }
         #endregion
+
+        //! @endcond
     }
 }

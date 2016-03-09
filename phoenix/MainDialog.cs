@@ -11,6 +11,7 @@
 
     public partial class MainDialog : Form
     {
+        private HotkeyManager       m_HotkeyManager;
         private IniSettings         m_AppSettings;
         private ProcessRunner       m_ProcessRunner;
         private OpenFileDialog      m_FileDialog;
@@ -39,6 +40,7 @@
                 GetExecutingAssembly().
                 GetManifestResourceStream("phoenix.Resources.about.html");
 
+            m_HotkeyManager = new HotkeyManager(Handle);
             m_AppSettings   = new IniSettings("phoenix.ini");
             m_ProcessRunner = new ProcessRunner();
             m_FileDialog    = new OpenFileDialog();
@@ -63,8 +65,6 @@
             // These are executed in a separate thread
             m_ProcessRunner.ProcessStarted += (type) => { ExecuteOnUiThread(() => { OnProcessStart(type); }); };
             m_ProcessRunner.ProcessStopped += (type) => { ExecuteOnUiThread(() => { OnProcessStop(type); }); };
-
-            HotkeyManager.Register(Handle);
 
             ToggleMonitoring();
             ResetMqttConnectionLabel();
@@ -341,14 +341,14 @@
             {
                 int hotkey_id = m.WParam.ToInt32();
 
-                if (hotkey_id == HotkeyManager.TOGGLE_FORCE_ALWAYS_ON_TOP_ID)
+                if (hotkey_id == (int)HotkeyManager.ID.ForceAlwaysOnTop)
                     force_always_on_top.Checked = !force_always_on_top.Checked;
-                else if (hotkey_id == HotkeyManager.TOGGLE_CONTROL_PANEL_UI_ID)
+                else if (hotkey_id == (int)HotkeyManager.ID.ControlPanelUi)
                     Visible = !Visible;
-                else if (hotkey_id == HotkeyManager.TOGGLE_MONITORING_ID)
+                else if (hotkey_id == (int)HotkeyManager.ID.Monitoring)
                     if (m_ProcessRunner.Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
                     else m_ProcessRunner.Start(ProcessRunner.ExecType.NORMAL);
-                else if (hotkey_id == HotkeyManager.TAKE_SCREENSHOT_ID)
+                else if (hotkey_id == (int)HotkeyManager.ID.Screenshot)
                     ScreenCapture.TakeScreenShot();
             }
 

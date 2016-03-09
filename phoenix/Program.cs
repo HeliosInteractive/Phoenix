@@ -5,9 +5,7 @@
 
     static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
+        //! @cond
         [STAThread]
         static void Main()
         {
@@ -16,7 +14,12 @@
             Application.Run(new MainDialog());
             System.Diagnostics.Trace.Flush();
         }
+        //! @endcond
 
+        /// <summary>
+        /// returns the current directory where Phoenix's executable is
+        /// physically located. (absolute directory path)
+        /// </summary>
         public static string Directory
         {
             get

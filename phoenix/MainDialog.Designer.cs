@@ -15,6 +15,7 @@
         {
             if (disposing && (components != null))
             {
+                m_HotkeyManager.Dispose();
                 m_ProcessRunner.Dispose();
                 m_RemoteManager.Dispose();
                 m_ReportManager.Dispose();

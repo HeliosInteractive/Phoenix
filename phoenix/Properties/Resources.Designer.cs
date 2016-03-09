@@ -116,6 +116,15 @@ namespace phoenix.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ==============================.
+        /// </summary>
+        internal static string LoggerHeader {
+            get {
+                return ResourceManager.GetString("LoggerHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /helios/phoenix.
         /// </summary>
         internal static string MqttTopic {
@@ -131,6 +140,15 @@ namespace phoenix.Properties {
             get {
                 object obj = ResourceManager.GetObject("rsync", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to http://localhost/helios/feed.xml.
+        /// </summary>
+        internal static string UpdateFeedAddress {
+            get {
+                return ResourceManager.GetString("UpdateFeedAddress", resourceCulture);
             }
         }
     }
