@@ -1,5 +1,6 @@
 ﻿namespace phoenix
 {
+    using System;
     using System.IO;
     using System.Linq;
     using System.Globalization;
@@ -51,6 +52,21 @@
             }
 
             return input.Trim();
+        }
+
+        /// <summary>
+        /// A basic type cast checking. Checks to see if value is safely
+        /// cast-able to conversionType
+        /// </summary>
+        /// <param name="conversionType">Target type</param>
+        /// <param name="value">source object</param>
+        /// <returns></returns>
+        public static bool CanBeCastedFrom(this Type conversionType, object value)
+        {
+            if (conversionType == null || value == null || (value as IConvertible) == null)
+                return false;
+
+            return true;
         }
     }
 }
