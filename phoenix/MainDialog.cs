@@ -202,7 +202,7 @@
         private void OnControlValidate(Control control)
         {
             if (control == application_to_watch) {
-                application_to_watch.Text = application_to_watch.Text.CleanForPath();
+                application_to_watch.Text = application_to_watch.Text.AsPath();
 
                 if (application_to_watch.Text != string.Empty &&
                     File.Exists(application_to_watch.Text) &&
@@ -217,11 +217,9 @@
                 control == script_to_execute_on_start ||
                 control == remote_directory ||
                 control == working_directory) {
-                (control as TextBoxBase).Text = ((control as TextBoxBase).Text).CleanForPath();
+                (control as TextBoxBase).Text = ((control as TextBoxBase).Text).AsPath();
             } else if (control == local_directory) {
-                local_directory.Text = local_directory.Text.CleanForPath();
-                local_directory.Text =
-                    RsyncClient.PathToCygwinPath(local_directory.Text);
+                local_directory.Text = local_directory.Text.AsCygwinPath();
             }
         }
 
@@ -288,11 +286,11 @@
 
                 m_ProcessRunner.DelaySeconds                = String.IsNullOrWhiteSpace(time_delay_before_launch.Text) ? 0 : Int32.Parse(time_delay_before_launch.Text);
                 m_ProcessRunner.WaitTime                    = String.IsNullOrWhiteSpace(wait_time.Text) ? 0 : Int32.Parse(wait_time.Text);
-                m_ProcessRunner.ProcessPath                 = application_to_watch.Text.CleanForPath();
-                m_ProcessRunner.CommandLine                 = command_line_arguments.Text.CleanForPath();
-                m_ProcessRunner.StartScript                 = script_to_execute_on_start.Text.CleanForPath();
-                m_ProcessRunner.CrashScript                 = script_to_execute_on_crash.Text.CleanForPath();
-                m_ProcessRunner.WorkingDirectory            = working_directory.Text.CleanForPath();
+                m_ProcessRunner.ProcessPath                 = application_to_watch.Text.AsPath();
+                m_ProcessRunner.CommandLine                 = command_line_arguments.Text.AsPath();
+                m_ProcessRunner.StartScript                 = script_to_execute_on_start.Text.AsPath();
+                m_ProcessRunner.CrashScript                 = script_to_execute_on_crash.Text.AsPath();
+                m_ProcessRunner.WorkingDirectory            = working_directory.Text.AsPath();
                 m_ProcessRunner.ForceAlwaysOnTop            = force_always_on_top.Checked;
                 m_ProcessRunner.AssumeCrashIfNotResponsive  = assume_crash_if_not_responsive.Checked;
 
@@ -381,7 +379,7 @@
 
         private void OnGenerateNewKeysClick(object sender, EventArgs e)
         {
-            RsyncClient.RegenerateKeys();
+            RsyncClient.GenerateKeys();
             UpdateKeyPair();
         }
 

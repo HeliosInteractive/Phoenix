@@ -80,12 +80,12 @@
         /// <param name="Section">INI section name</param>
         /// <param name="Key">INI key name</param>
         /// <param name="Value">INI value parameter. New lines will be replaced with a br tag</param>
-        public void Store<T>(string Section, string Key, T value)
+        public void Store<T>(string Section, string Key, T Value)
         {
             if (!m_Settings.ContainsKey(Section))
                 m_Settings[Section] = new Dictionary<string, string>();
 
-            string to_be_stored = value.ToString();
+            string to_be_stored = Value.ToString();
 
             // http://www.askingbox.com/question/windows-api-getprofilestring-and-getprivateprofilestring-clears-quotes
             if (to_be_stored.StartsWith("\"") && to_be_stored.EndsWith("\""))
@@ -112,7 +112,7 @@
         /// <typeparam name="T">Type of the value to be stored</typeparam>
         /// <param name="Section">INI section name</param>
         /// <param name="Key">INI key name</param>
-        /// <param name="Value">INI value parameter</param>
+        /// <param name="DefaultValue">default value (on failure to lookup)</param>
         /// <returns>read value or default of its type if failed to be read</returns>
         public T Read<T>(string Section, string Key, T DefaultValue)
         {
@@ -161,7 +161,7 @@
 
         /// <summary>
         /// string overload of Read<T>. Takes special care of returned values,
-        /// replacing br tags with Windows new lines (\r\n)
+        /// replacing br tags with Windows new lines (\\r\\n)
         /// </summary>
         public string Read(string Section, string Key, string DefaultValue)
         {

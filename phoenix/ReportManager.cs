@@ -7,11 +7,14 @@
     using System.Globalization;
     using System.Text.RegularExpressions;
 
+    /// <summary>
+    /// Class responsible for sending email reports on crash
+    /// </summary>
     class ReportManager : IDisposable
     {
+        /// <summary>Instance of the SMTP client</summary>
         private SmtpClient      m_Smtp;
-        private EmailValidator  m_Validator;
-        private static string   s_DumpDir = "dumps";
+        private static string   s_DumpDir = Path.Combine(Program.Directory, "dumps");
 
         public ReportManager()
         {
@@ -30,9 +33,24 @@
             };
         }
 
-        public void SendEmail(string from, string from_password, string to, string subject, string body, string attachment = "")
+        /// <summary>
+        /// Sends a crash email (GMAIL hosted emails only)
+        /// </summary>
+        /// <param name="from">email's "from"</param>
+        /// <param name="from_password">"from" email's password</param>
+        /// <param name="to">email's "to"</param>
+        /// <param name="subject">email's subject</param>
+        /// <param name="body">email's body</param>
+        /// <param name="attachment">email's attachment (optional)</param>
+        public void SendEmail(
+            string from,
+            string from_password,
+            string to,
+            string subject,
+            string body,
+            string attachment = "")
         {
-            attachment  = attachment.CleanForPath();
+            attachment  = attachment.AsPath();
             from        = from.Trim();
             to          = to.Trim();
 
@@ -104,6 +122,8 @@
             }
         }
 
+        //! @cond
+        private EmailValidator m_Validator;
         // From: https://msdn.microsoft.com/en-us/library/01escwtf(v=vs.110).aspx
         internal class EmailValidator
         {
@@ -182,5 +202,6 @@
             Dispose(true);
         }
         #endregion
+        //! @endcond
     }
 }

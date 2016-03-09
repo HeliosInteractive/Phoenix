@@ -149,4 +149,8 @@
     <value>==============================</value>
     <comment>string which is logged at the top of every logging session</comment>
   </data>
+  <data name="UpdateChannel" xml:space="preserve">
+    <value>alpha</value>
+    <comment>update channel</comment>
+  </data>
 </root>

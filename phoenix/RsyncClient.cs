@@ -2,33 +2,41 @@
 {
     using System;
     using System.IO;
-    using System.Reflection;
     using System.Diagnostics;
     using System.IO.Compression;
 
+    /// <summary>
+    /// Class responsible for executing RSync and handling remote
+    /// updates and pulling down new versions of the application
+    /// </summary>
     class RsyncClient : IDisposable
     {
+        /// <summary>
+        /// Directory where RSync binaries are located
+        /// </summary>
         private static readonly string s_ClientDirectory = Path.Combine(Path.GetTempPath(), "phoenix");
+        /// <summary>
+        /// Physical location of the RSA private key
+        /// </summary>
         private static readonly string s_PrivateKeyPath  = Path.Combine(s_ClientDirectory, MachineIdentity);
+        /// <summary>
+        /// Physical location of the RSA public key
+        /// </summary>
         private static readonly string s_PublicKeyPath   = Path.Combine(s_ClientDirectory, string.Format("{0}.pub",MachineIdentity));
-        private static readonly string s_ResourceUri     = "phoenix.Resources.rsync.zip";
+        /// <summary>
+        /// Currently executing RSync process
+        /// </summary>
         private Process                m_RsyncProcess    = null;
 
-        public static string PathToCygwinPath(string path)
+        public RsyncClient()
         {
-            if (String.IsNullOrWhiteSpace(path) || path.StartsWith("/cygdrive/"))
-                return path;
-
-            if (Path.IsPathRooted(path))
-            {
-                path = path.Replace("\\", "/");
-                path = path.Replace(":", string.Empty);
-                path = string.Format("/cygdrive/{0}", path);
-            }
-
-            return path.Trim();
+            Logger.RsyncClient.InfoFormat("RSync client directory: {0}",
+                s_ClientDirectory);
         }
 
+        /// <summary>
+        /// RSA Private key string, reflects the actual physical file
+        /// </summary>
         public static string PrivateKey
         {
             get
@@ -46,6 +54,10 @@
                 catch { Logger.RsyncClient.Error("Unable to write private key."); }
             }
         }
+
+        /// <summary>
+        /// RSA Public key string, reflects the actual physical file
+        /// </summary>
         public static string PublicKey
         {
             get
@@ -63,6 +75,11 @@
                 catch { Logger.RsyncClient.Error("Unable to write public key."); }
             }
         }
+
+        /// <summary>
+        /// Returns true if ALL necessary files for the RSync client
+        /// are extracted from its Zip archive
+        /// </summary>
         private static bool ClientExtracted
         {
             get
@@ -79,6 +96,10 @@
                     File.Exists(Path.Combine(s_ClientDirectory, "cygcrypto-1.0.0.dll"));
             }
         }
+
+        /// <summary>
+        /// Answers true if both RSA key files exist (does not validate them)
+        /// </summary>
         private static bool KeysExist
         {
             get
@@ -88,23 +109,27 @@
                     File.Exists(s_PrivateKeyPath);
             }
         }
+
+        /// <summary>
+        /// Returns a string semi-unique per machine, constructed from
+        /// Machine name (computer name / host name)
+        /// </summary>
         public static string MachineIdentity
         {
             get
             {
-                string machine_name = Environment.MachineName;
-
-                foreach (var c in Path.GetInvalidPathChars())
-                    machine_name = machine_name.Replace(c.ToString(), string.Empty);
-
-                foreach (var c in Path.GetInvalidFileNameChars())
-                    machine_name = machine_name.Replace(c.ToString(), string.Empty);
-
-                machine_name = machine_name.Replace(" ", "_");
-
-                return machine_name.Trim();
+                return Environment
+                    .MachineName
+                    .AsPath()
+                    .Replace(" ", "_")
+                    .Replace("-", "_");
             }
         }
+
+        /// <summary>
+        /// Extracts the RSync client from its embedded resource
+        /// </summary>
+        /// <returns>true on successful extraction</returns>
         private static bool ExtractClient()
         {
             try
@@ -116,9 +141,7 @@
                     return true;
 
                 using (ZipArchive archive = new ZipArchive(
-                    Assembly.
-                    GetExecutingAssembly().
-                    GetManifestResourceStream(s_ResourceUri)))
+                    new MemoryStream(Properties.Resources.rsync)))
                 {
                     foreach (ZipArchiveEntry entry in archive.Entries)
                     {
@@ -126,7 +149,16 @@
 
                         if (!File.Exists(extract_path))
                         {
-                            entry.ExtractToFile(extract_path, true);
+                            try
+                            {
+                                entry.ExtractToFile(extract_path, true);
+                            }
+                            catch(Exception ex)
+                            {
+                                Logger.RsyncClient.ErrorFormat("unable to extract {0}: {1}"
+                                    , extract_path, ex.Message);
+                                return false;
+                            }
                         }
                     }
                 }
@@ -141,7 +173,11 @@
             }
         }
 
-        private static bool GenerateKeys()
+        /// <summary>
+        /// Generates a new set of RSA key pairs
+        /// </summary>
+        /// <returns>true on successful extraction</returns>
+        public static bool GenerateKeys()
         {
             if (!ClientExtracted && !ExtractClient())
             {
@@ -149,20 +185,36 @@
                 return false;
             }
 
+            if (KeysExist)
+            {
+                try
+                {
+                    File.Delete(s_PublicKeyPath);
+                    File.Delete(s_PrivateKeyPath);
+                }
+                catch (Exception ex)
+                {
+                    Logger.RsyncClient.ErrorFormat("Unable to remove old key pairs: {0}", ex.Message);
+                    return false;
+                }
+            }
+
             try
             {
-                ProcessStartInfo process_info = new ProcessStartInfo();
-                process_info.Arguments = string.Format("-q -t rsa -f '{0}' -N ''", MachineIdentity);
-                process_info.FileName = Path.Combine(s_ClientDirectory, "ssh-keygen.exe");
-                process_info.WorkingDirectory = s_ClientDirectory;
-                process_info.UseShellExecute = false;
-                process_info.CreateNoWindow = true;
-
-                using (Process process = new Process())
+                using (Process process = new Process
                 {
-                    process.StartInfo = process_info;
+                    StartInfo = new ProcessStartInfo
+                    {
+                        Arguments           = string.Format("-q -t rsa -f '{0}' -N ''", MachineIdentity),
+                        FileName            = Path.Combine(s_ClientDirectory, "ssh-keygen.exe"),
+                        WorkingDirectory    = s_ClientDirectory,
+                        UseShellExecute     = false,
+                        CreateNoWindow      = true,
+                    }
+                })
+                {
                     process.Start();
-                    process.WaitForExit();
+                    process.WaitForExit(5000);
                 }
 
                 // double checks both keys exist
@@ -175,28 +227,16 @@
             }
         }
 
-        public static void RegenerateKeys()
-        {
-            try
-            {
-                if (KeysExist)
-                {
-                    File.Delete(s_PublicKeyPath);
-                    File.Delete(s_PrivateKeyPath);
-                }
-            }
-            catch
-            {
-                Logger.RsyncClient.Error("Unable to remove old key pairs.");
-                return;
-            }
-
-            if (!GenerateKeys())
-            {
-                Logger.RsyncClient.Error("Unable to re-generate key pairs.");
-            }
-        }
-
+        /// <summary>
+        /// Execute and spawn an RSync session. Stops/Stalls previous calls.
+        /// </summary>
+        /// <param name="remote">remote directory</param>
+        /// <param name="local">Local directory</param>
+        /// <param name="username">SSH username</param>
+        /// <param name="address">SSH address</param>
+        /// <param name="port">SSH port</param>
+        /// <param name="pre_update">action to be called before update begines</param>
+        /// <param name="post_update">action to be called after update finishes</param>
         public void Execute(
             string remote,
             string local,
@@ -210,7 +250,10 @@
                 String.IsNullOrWhiteSpace(local) ||
                 String.IsNullOrWhiteSpace(username) ||
                 String.IsNullOrWhiteSpace(address))
+            {
+                Logger.RsyncClient.Error("Invalid parameters supplied.");
                 return;
+            }
 
             if (!ClientExtracted && !ExtractClient())
             {
@@ -228,7 +271,17 @@
             string home_directory = Path.Combine(s_ClientDirectory, "home");
 
             if (!Directory.Exists(home_directory))
-                Directory.CreateDirectory(home_directory);
+            {
+                try
+                {
+                    Directory.CreateDirectory(home_directory);
+                }
+                catch(Exception ex)
+                {
+                    Logger.RsyncClient.Error("Unable to create the home directory.");
+                    return;
+                }
+            }
 
             ProcessStartInfo start_info = new ProcessStartInfo();
             start_info.FileName = Path.Combine(s_ClientDirectory, "rsync.exe");
@@ -315,6 +368,7 @@
             }
         }
 
+        //! @cond
         #region IDisposable Support
         private bool m_Disposed = false; // To detect redundant calls
 
@@ -336,5 +390,6 @@
             Dispose(true);
         }
         #endregion
+        //! @endcond
     }
 }

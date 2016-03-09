@@ -384,10 +384,10 @@
         {
             m_WaitTime      = Math.Abs(m_WaitTime);
             m_DelaySeconds  = Math.Abs(m_DelaySeconds);
-            m_ProcessPath   = m_ProcessPath.CleanForPath();
-            m_CrashScript   = m_CrashScript.CleanForPath();
-            m_StartScript   = m_StartScript.CleanForPath();
-            m_WorkingDir    = m_WorkingDir.CleanForPath();
+            m_ProcessPath   = m_ProcessPath.AsPath();
+            m_CrashScript   = m_CrashScript.AsPath();
+            m_StartScript   = m_StartScript.AsPath();
+            m_WorkingDir    = m_WorkingDir.AsPath();
 
             if (m_ProcessPath != string.Empty && !Path.IsPathRooted(m_ProcessPath))
                 m_ProcessPath = Path.GetFullPath(m_ProcessPath);

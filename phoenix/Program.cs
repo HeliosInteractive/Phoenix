@@ -3,6 +3,9 @@
     using System;
     using System.Windows.Forms;
 
+    /// <summary>
+    /// Main Program entry point
+    /// </summary>
     static class Program
     {
         //! @cond

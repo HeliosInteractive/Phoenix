@@ -6,31 +6,44 @@
     using System.Xml;
     using System.Reflection;
 
-
+    /// <summary>
+    /// Class responsible for updating Phoenix itself
+    /// </summary>
     class UpdateManager
     {
+        /// <summary>Compiled version</summary>
         Version m_CurrentVersion;
+        /// <summary>Remote version</summary>
         Version m_UpdateVersion;
+        /// <summary>Up to date Phoenix URL</summary>
         Uri     m_UpdateAddress;
+        /// <summary>Update feed address</summary>
         Uri     m_FeedAddress;
+        /// <summary>Update channel</summary>
         string  m_FeedChannel;
 
         public UpdateManager()
         {
             m_CurrentVersion = Assembly.GetExecutingAssembly().GetName().Version;
             m_UpdateVersion  = Version.Parse("0.0.0.0");
-            m_FeedChannel    = "alpha"; // change this if you are working on a different branch.
+            m_FeedChannel    = Properties.Resources.UpdateChannel;
 
             Logger.UpdateManager.InfoFormat("Update Manager reports current version is: {0}",
                 m_CurrentVersion);
         }
 
+        /// <summary>
+        /// Returns the feed address URL
+        /// </summary>
         public string FeedAddress
         {
             get { if (m_FeedAddress != null) return m_FeedAddress.OriginalString; else return string.Empty; }
             set { if (!String.IsNullOrEmpty(value)) m_FeedAddress = new Uri(value); }
         }
 
+        /// <summary>
+        /// Check for updates of Phoenix
+        /// </summary>
         public void Check()
         {
             if (String.IsNullOrEmpty(FeedAddress))

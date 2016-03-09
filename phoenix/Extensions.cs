@@ -44,14 +44,38 @@
         /// </summary>
         /// <param name="input">dirty path string</param>
         /// <returns>clean path string</returns>
-        public static string CleanForPath(this string input)
+        public static string AsPath(this string input)
         {
             foreach (var c in Path.GetInvalidPathChars())
-            {
                 input = input.Replace(c.ToString(), string.Empty);
-            }
+
+            foreach (var c in Path.GetInvalidFileNameChars())
+                input = input.Replace(c.ToString(), string.Empty);
 
             return input.Trim();
+        }
+
+        /// <summary>
+        /// Turns a Windows absolute path to Cygwin path.
+        /// No-op if path is already a Cygwin path
+        /// </summary>
+        /// <param name="path">Windows Path</param>
+        /// <returns>Converted Cygwin path</returns>
+        public static string AsCygwinPath(this string path)
+        {
+            path = path.AsPath();
+
+            if (String.IsNullOrWhiteSpace(path) || path.StartsWith("/cygdrive/"))
+                return path;
+
+            if (Path.IsPathRooted(path))
+            {
+                path = path.Replace("\\", "/");
+                path = path.Replace(":", string.Empty);
+                path = string.Format("/cygdrive/{0}", path);
+            }
+
+            return path.Trim();
         }
 
         /// <summary>
