@@ -32,7 +32,7 @@
 
         public void SendEmail(string from, string from_password, string to, string subject, string body, string attachment = "")
         {
-            attachment  = attachment.CleanForPath();
+            attachment  = attachment.AsPath();
             from        = from.Trim();
             to          = to.Trim();
 
