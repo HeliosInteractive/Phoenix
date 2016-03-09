@@ -11,7 +11,6 @@
         private static readonly string s_ClientDirectory = Path.Combine(Path.GetTempPath(), "phoenix");
         private static readonly string s_PrivateKeyPath  = Path.Combine(s_ClientDirectory, MachineIdentity);
         private static readonly string s_PublicKeyPath   = Path.Combine(s_ClientDirectory, string.Format("{0}.pub",MachineIdentity));
-        private static readonly string s_ResourceUri     = "phoenix.Resources.rsync.zip";
         private Process                m_RsyncProcess    = null;
 
         public static string PathToCygwinPath(string path)
@@ -110,9 +109,7 @@
                     return true;
 
                 using (ZipArchive archive = new ZipArchive(
-                    Assembly.
-                    GetExecutingAssembly().
-                    GetManifestResourceStream(s_ResourceUri)))
+                    new MemoryStream(Properties.Resources.rsync)))
                 {
                     foreach (ZipArchiveEntry entry in archive.Entries)
                     {
