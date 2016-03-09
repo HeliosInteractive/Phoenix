@@ -78,6 +78,6 @@
                 });
             }
         }
-        //! endcond
+        //! @endcond
     }
 }
