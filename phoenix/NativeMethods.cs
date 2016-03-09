@@ -70,6 +70,13 @@
         [DllImport("kernel32", CharSet = CharSet.Unicode)]
         public static extern int GetPrivateProfileString(string section, string key, string def, System.Text.StringBuilder retVal, int size, string filePath);
 
+        [Flags]
+        public enum RegisterHotKeyModifiers : uint
+        {
+            MOD_NOREPEAT    = 0x4000,
+            MOD_ALT         = 0x0001
+        }
+
         /// <summary>
         /// <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ms646309(v=vs.85).aspx"/>
         /// </summary>
@@ -80,7 +87,17 @@
         /// <returns></returns>
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool RegisterHotKey(System.IntPtr hWnd, int id, uint fsModifiers, uint vk);
+        public static extern bool RegisterHotKey(System.IntPtr hWnd, int id, RegisterHotKeyModifiers fsModifiers, uint vk);
+
+        /// <summary>
+        /// <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ms646309(v=vs.85).aspx"/>
+        /// </summary>
+        /// <param name="hWnd"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
         /// <summary>
         /// <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ms633553(v=vs.85).aspx"/>
