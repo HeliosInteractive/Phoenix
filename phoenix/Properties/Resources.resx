@@ -145,4 +145,8 @@
     <value>http://localhost/helios/feed.xml</value>
     <comment>update feed address</comment>
   </data>
+  <data name="LoggerHeader" xml:space="preserve">
+    <value>==============================</value>
+    <comment>string which is logged at the top of every logging session</comment>
+  </data>
 </root>
