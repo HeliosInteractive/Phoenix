@@ -144,6 +144,15 @@ namespace phoenix.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to alpha.
+        /// </summary>
+        internal static string UpdateChannel {
+            get {
+                return ResourceManager.GetString("UpdateChannel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to http://localhost/helios/feed.xml.
         /// </summary>
         internal static string UpdateFeedAddress {
