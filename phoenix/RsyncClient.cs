@@ -120,7 +120,7 @@
             {
                 return Environment
                     .MachineName
-                    .AsPath()
+                    .AsPath(Extensions.PathType.FileName)
                     .Replace(" ", "_")
                     .Replace("-", "_");
             }
@@ -278,7 +278,7 @@
                 }
                 catch(Exception ex)
                 {
-                    Logger.RsyncClient.Error("Unable to create the home directory.");
+                    Logger.RsyncClient.ErrorFormat("Unable to create the home directory: {0}", ex.Message);
                     return;
                 }
             }

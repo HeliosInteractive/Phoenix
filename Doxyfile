@@ -822,8 +822,7 @@ RECURSIVE              = NO
 # Note that relative paths are relative to the directory from which doxygen is
 # run.
 
-EXCLUDE                = phoenix/ProcessRunner.cs \
-                         phoenix/MainDialog.cs \
+EXCLUDE                = phoenix/MainDialog.cs \
                          phoenix/MainDialogCallbacks.cs \
                          phoenix/MainDialog.Designer.cs
 

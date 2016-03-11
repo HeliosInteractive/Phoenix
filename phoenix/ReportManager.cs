@@ -50,7 +50,7 @@
             string body,
             string attachment = "")
         {
-            attachment  = attachment.AsPath();
+            attachment  = attachment.AsPath(Extensions.PathType.FilePath);
             from        = from.Trim();
             to          = to.Trim();
 

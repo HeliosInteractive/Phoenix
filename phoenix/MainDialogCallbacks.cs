@@ -12,7 +12,7 @@
                 RsyncClient.MachineIdentity);
         private void OnProcessStop(ProcessRunner.ExecType type)
         {
-            if (m_PhoenixReady && type == ProcessRunner.ExecType.CRASHED)
+            if (m_PhoenixReady && type == ProcessRunner.ExecType.Crashed)
                 SendCrashEmail();
 
             ResetWatchButtonLabel();
@@ -61,10 +61,19 @@
                 }
                 else if (message == "ping")
                 {
+                    double last_mem_usage = 0d;
+                    double last_cpu_usage = 0d;
+
+                    if (m_ProcessRunner.NumSamples > 0 && m_ProcessRunner.MemoryUsage != null)
+                        last_mem_usage = m_ProcessRunner.MemoryUsage[m_ProcessRunner.MemoryUsage.Length - 1];
+
+                    if (m_ProcessRunner.NumSamples > 0 && m_ProcessRunner.CpuUsage != null)
+                        last_cpu_usage = m_ProcessRunner.CpuUsage[m_ProcessRunner.CpuUsage.Length - 1];
+
                     string ping = string.Format("{{ \"name\":\"{0}\", \"cpu\":{1}, \"mem\":{2}, \"monitoring\":{3} }}",
                         RsyncClient.MachineIdentity,
-                        m_ProcessRunner.LastCpuUsage,
-                        m_ProcessRunner.LastMemUsage,
+                        last_cpu_usage,
+                        last_mem_usage,
                         m_ProcessRunner.Monitoring.ToString().ToLower());
 
                     m_RemoteManager.Publish(ping, string.Format("{0}/{1}",
@@ -75,9 +84,9 @@
             else if (topic == m_MachineChannel)
             {
                 if (message == "stop") {
-                    m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
+                    m_ProcessRunner.Stop(ProcessRunner.ExecType.Normal);
                 } else if (message == "start") {
-                    m_ProcessRunner.Start(ProcessRunner.ExecType.NORMAL);
+                    m_ProcessRunner.Start(ProcessRunner.ExecType.Normal);
                 } else if (message == "update") {
                     OnPullUpdateClick(null, null);
                 } else if (message == "upgrade") {

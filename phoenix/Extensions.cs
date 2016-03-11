@@ -40,17 +40,29 @@
         }
 
         /// <summary>
+        /// Enum to be used with AsPath, in order to distinguish between
+        /// a directory string or a file name string
+        /// </summary>
+        public enum PathType
+        {
+            FilePath, /// <summary>Directory + file name</summary>
+            FileName, /// <summary>only file name</summary>
+        }
+
+        /// <summary>
         /// Cleans a string as if it was a path
         /// </summary>
         /// <param name="input">dirty path string</param>
         /// <returns>clean path string</returns>
-        public static string AsPath(this string input)
+        public static string AsPath(this string input, PathType type)
         {
-            foreach (var c in Path.GetInvalidPathChars())
-                input = input.Replace(c.ToString(), string.Empty);
+            if (type == PathType.FilePath)
+                foreach (var c in Path.GetInvalidPathChars())
+                    input = input.Replace(c.ToString(), string.Empty);
 
-            foreach (var c in Path.GetInvalidFileNameChars())
-                input = input.Replace(c.ToString(), string.Empty);
+            if (type == PathType.FileName)
+                foreach (var c in Path.GetInvalidFileNameChars())
+                    input = input.Replace(c.ToString(), string.Empty);
 
             return input.Trim();
         }
@@ -63,7 +75,7 @@
         /// <returns>Converted Cygwin path</returns>
         public static string AsCygwinPath(this string path)
         {
-            path = path.AsPath();
+            path = path.AsPath(PathType.FilePath);
 
             if (String.IsNullOrWhiteSpace(path) || path.StartsWith("/cygdrive/"))
                 return path;
