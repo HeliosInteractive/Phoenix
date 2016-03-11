@@ -3,9 +3,11 @@
     using System;
     using System.IO;
     using Properties;
+    using System.Linq;
     using System.Threading;
     using System.Reflection;
     using System.Windows.Forms;
+    using System.Collections.Generic;
     using System.Security.Cryptography;
     using System.Windows.Forms.DataVisualization.Charting;
 
@@ -23,6 +25,7 @@
         private RemoteManager       m_RemoteManager;
         private ReportManager       m_ReportManager;
         private RsyncClient         m_RsyncClient;
+        private IEnumerable<int>    m_MetricIndices;
         private bool                m_PhoenixReady = false;
 
 
@@ -58,6 +61,7 @@
 
             m_MemoryUsageSeries = metrics_chart.Series["mem_usage_series"];
             m_CpuUsageSeries    = metrics_chart.Series["cpu_usage_series"];
+            m_MetricIndices     = Enumerable.Range(0, m_ProcessRunner.NumSamples);
 
             notify_icon.Icon = Icon;
             process_monitor_timer.Start();
@@ -202,7 +206,7 @@
         private void OnControlValidate(Control control)
         {
             if (control == application_to_watch) {
-                application_to_watch.Text = application_to_watch.Text.AsPath();
+                application_to_watch.Text = application_to_watch.Text.AsPath(Extensions.PathType.FilePath);
 
                 if (application_to_watch.Text != string.Empty &&
                     File.Exists(application_to_watch.Text) &&
@@ -217,7 +221,7 @@
                 control == script_to_execute_on_start ||
                 control == remote_directory ||
                 control == working_directory) {
-                (control as TextBoxBase).Text = ((control as TextBoxBase).Text).AsPath();
+                (control as TextBoxBase).Text = ((control as TextBoxBase).Text).AsPath(Extensions.PathType.FilePath);
             } else if (control == local_directory) {
                 local_directory.Text = local_directory.Text.AsCygwinPath();
             }
@@ -244,19 +248,19 @@
                 m_RemoteManager.Connect(mqtt_server_address.Text, Resources.MqttTopic);
             } else if (control == application_to_watch) {
                 m_ProcessRunner.ProcessPath = application_to_watch.Text;
-                if (m_ProcessRunner.Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
+                if (m_ProcessRunner.Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.Normal);
             } else if (control == script_to_execute_on_crash) {
                 m_ProcessRunner.CrashScript = script_to_execute_on_crash.Text;
-                if (m_ProcessRunner.Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
+                if (m_ProcessRunner.Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.Normal);
             } else if (control == working_directory) {
                 m_ProcessRunner.WorkingDirectory = working_directory.Text;
-                if (m_ProcessRunner.Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
+                if (m_ProcessRunner.Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.Normal);
             } else if (control == script_to_execute_on_start) {
                 m_ProcessRunner.StartScript = script_to_execute_on_start.Text;
-                if (m_ProcessRunner.Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
+                if (m_ProcessRunner.Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.Normal);
             } else if (control == environment) {
                 m_ProcessRunner.Environment = environment.Text;
-                if (m_ProcessRunner.Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
+                if (m_ProcessRunner.Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.Normal);
             } else if (control == update_feed_address) {
                 m_UpdateManager.FeedAddress = update_feed_address.Text;
             } else if (control == capture_console) {
@@ -264,7 +268,7 @@
                 if (m_PhoenixReady &&
                     m_ProcessRunner.Monitoring)
                 {
-                    m_ProcessRunner.Start(ProcessRunner.ExecType.NORMAL);
+                    m_ProcessRunner.Start(ProcessRunner.ExecType.Normal);
                 }
             }
         }
@@ -286,19 +290,19 @@
 
                 m_ProcessRunner.DelaySeconds                = String.IsNullOrWhiteSpace(time_delay_before_launch.Text) ? 0 : Int32.Parse(time_delay_before_launch.Text);
                 m_ProcessRunner.WaitTime                    = String.IsNullOrWhiteSpace(wait_time.Text) ? 0 : Int32.Parse(wait_time.Text);
-                m_ProcessRunner.ProcessPath                 = application_to_watch.Text.AsPath();
-                m_ProcessRunner.CommandLine                 = command_line_arguments.Text.AsPath();
-                m_ProcessRunner.StartScript                 = script_to_execute_on_start.Text.AsPath();
-                m_ProcessRunner.CrashScript                 = script_to_execute_on_crash.Text.AsPath();
-                m_ProcessRunner.WorkingDirectory            = working_directory.Text.AsPath();
+                m_ProcessRunner.ProcessPath                 = application_to_watch.Text.AsPath(Extensions.PathType.FilePath);
+                m_ProcessRunner.CommandLine                 = command_line_arguments.Text;
+                m_ProcessRunner.StartScript                 = script_to_execute_on_start.Text.AsPath(Extensions.PathType.FilePath);
+                m_ProcessRunner.CrashScript                 = script_to_execute_on_crash.Text.AsPath(Extensions.PathType.FilePath);
+                m_ProcessRunner.WorkingDirectory            = working_directory.Text.AsPath(Extensions.PathType.FilePath);
                 m_ProcessRunner.ForceAlwaysOnTop            = force_always_on_top.Checked;
                 m_ProcessRunner.AssumeCrashIfNotResponsive  = assume_crash_if_not_responsive.Checked;
 
-                m_ProcessRunner.Start(ProcessRunner.ExecType.NORMAL);
+                m_ProcessRunner.Start(ProcessRunner.ExecType.Normal);
             }
             else
             {
-                m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
+                m_ProcessRunner.Stop(ProcessRunner.ExecType.Normal);
             }
         }
 
@@ -307,13 +311,8 @@
             m_ProcessRunner.Monitor();
             m_ProcessRunner.UpdateMetrics();
 
-            m_MemoryUsageSeries.Points.Clear();
-            m_CpuUsageSeries.Points.Clear();
-
-            m_MemoryUsageSeries.Points.DataBindXY(m_ProcessRunner.UsageIndices, m_ProcessRunner.MemoryUsage);
-            m_CpuUsageSeries.Points.DataBindXY(m_ProcessRunner.UsageIndices, m_ProcessRunner.CpuUsage);
-
-            metrics_chart.Invalidate();
+            m_MemoryUsageSeries.Points.DataBindY(m_ProcessRunner.MemoryUsage);
+            m_CpuUsageSeries.Points.DataBindY(m_ProcessRunner.CpuUsage);
         }
 
         private void OnScreenshotButtonClick(object sender, EventArgs e) { ScreenCapture.TakeScreenShot(); }
@@ -344,8 +343,8 @@
                 else if (hotkey_id == (int)HotkeyManager.ID.ControlPanelUi)
                     Visible = !Visible;
                 else if (hotkey_id == (int)HotkeyManager.ID.Monitoring)
-                    if (m_ProcessRunner.Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL);
-                    else m_ProcessRunner.Start(ProcessRunner.ExecType.NORMAL);
+                    if (m_ProcessRunner.Monitoring) m_ProcessRunner.Stop(ProcessRunner.ExecType.Normal);
+                    else m_ProcessRunner.Start(ProcessRunner.ExecType.Normal);
                 else if (hotkey_id == (int)HotkeyManager.ID.Screenshot)
                     ScreenCapture.TakeScreenShot();
             }
@@ -449,7 +448,7 @@
 
         private void StopProcessRunner()
         {
-            ExecuteOnUiThread(()=> { m_ProcessRunner.Stop(ProcessRunner.ExecType.NORMAL); });
+            ExecuteOnUiThread(()=> { m_ProcessRunner.Stop(ProcessRunner.ExecType.Normal); });
         }
 
         private void StartProcessRunner()
