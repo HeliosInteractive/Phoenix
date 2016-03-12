@@ -5,7 +5,8 @@
     using System.Linq;
     using System.Diagnostics;
     using System.Threading.Tasks;
-    using Microsoft.VisualBasic.Devices;
+    using System.Collections.Generic;
+    using OpenHardwareMonitor.Hardware;
 
     /// <summary>
     /// The central nerve system of Phoenix! Handles restarting,
@@ -15,8 +16,6 @@
     {
         #region Private Members
 
-        /// <summary>Performance counter used to collect CPU usage</summary>
-        PerformanceCounter      m_CpuCounter    = null;
         /// <summary>Process instance currently being monitored</summary>
         Process                 m_Process       = null;
         /// <summary>Working directory of m_Process</summary>
@@ -37,8 +36,8 @@
         double[]                m_MemoryUsage   = new double[m_NumSamples];
         /// <summary>CPU usage samples</summary>
         double[]                m_CpuUsage      = new double[m_NumSamples];
-        /// <summary>Maximum memory available on this machine (bytes)</summary>
-        double                  m_MaxMemory     = -1d;
+        /// <summary>GPU usage samples</summary>
+        double[]                m_GpuUsage      = new double[m_NumSamples];
         /// <summary>Number of Metrics samples collected in m_MemoryUsage and m_CpuUsage</summary>
         const int               m_NumSamples    = 100;
         /// <summary>The time delay (s) to wait between successive (re)starts</summary>
@@ -54,6 +53,14 @@
         /// <summary>If true, stdout and stderr of m_Process is captured into Phoenix' logger</summary>
         bool                    m_CaptureOutput = false;
 
+        Computer                m_Computer;
+        List<ISensor>           m_RamSensors;
+        List<ISensor>           m_CpuSensors;
+        List<ISensor>           m_GpuSensors;
+        IHardware               m_RamHardware;
+        IHardware               m_CpuHardware;
+        IHardware               m_GpuHardware;
+
         #endregion
 
         //! @cond
@@ -61,6 +68,7 @@
 
         public double[] MemoryUsage     { get { return m_MemoryUsage; } }
         public double[] CpuUsage        { get { return m_CpuUsage; } }
+        public double[] GpuUsage        { get { return m_GpuUsage; } }
         public int      NumSamples      { get { return m_NumSamples; } }
         public bool     Monitoring      { get { return m_Monitoring; } }
         public string   Environment     { get; set; }
@@ -138,8 +146,6 @@
         //! @cond
         void OnProcessStarted(ExecType type)
         {
-            ResetPerformanceCounter();
-
             m_Monitoring = true;
             m_CachedName = m_Process.ProcessName;
 
@@ -189,18 +195,65 @@
         /// </summary>
         public ProcessRunner()
         {
+            m_Computer = new Computer();
+
+            m_Computer.GPUEnabled = true;
+            m_Computer.CPUEnabled = true;
+            m_Computer.RAMEnabled = true;
+
+            m_Computer.Open();
+
+            foreach (IHardware hardwareItem in m_Computer.Hardware)
+            {
+                if (hardwareItem.HardwareType == HardwareType.GpuAti ||
+                    hardwareItem.HardwareType == HardwareType.GpuNvidia)
+                {
+                    m_GpuHardware = hardwareItem;
+                    m_GpuSensors = new List<ISensor>();
+
+                    foreach (ISensor sensor in hardwareItem.Sensors)
+                    {
+                        if (sensor.SensorType == SensorType.Load)
+                        {
+                            m_GpuSensors.Add(sensor);
+                        }
+                    }
+                }
+
+                else if (hardwareItem.HardwareType == HardwareType.CPU)
+                {
+                    m_CpuHardware = hardwareItem;
+
+                    m_CpuSensors = new List<ISensor>();
+
+                    foreach (ISensor sensor in hardwareItem.Sensors)
+                    {
+                        if (sensor.SensorType == SensorType.Load)
+                        {
+                            m_CpuSensors.Add(sensor);
+                        }
+                    }
+                }
+
+                else if (hardwareItem.HardwareType == HardwareType.RAM)
+                {
+                    m_RamHardware = hardwareItem;
+
+                    m_RamSensors = new List<ISensor>();
+
+                    foreach (ISensor sensor in hardwareItem.Sensors)
+                    {
+                        if (sensor.SensorType == SensorType.Load)
+                        {
+                            m_RamSensors.Add(sensor);
+                        }
+                    }
+                }
+            }
+
             m_MemoryUsage = Enumerable.Repeat(0d, NumSamples).ToArray();
             m_CpuUsage = Enumerable.Repeat(0d, NumSamples).ToArray();
-
-            try
-            {
-                m_MaxMemory = new ComputerInfo().AvailablePhysicalMemory;
-            }
-            catch (Exception ex)
-            {
-                Logger.ProcessRunner.ErrorFormat("Unable to obtain available memory: {0}", ex.Message);
-                m_MaxMemory = -1d;
-            }
+            m_GpuUsage = Enumerable.Repeat(0d, NumSamples).ToArray();
         }
 
         /// <summary>
@@ -401,28 +454,27 @@
                 m_CpuUsage[index - 1] = m_CpuUsage[index];
             }
 
-            int sample_index = m_NumSamples - 1;
-            m_MemoryUsage[sample_index] = m_Process.WorkingSet64 / m_MaxMemory;
-            try { m_CpuUsage[sample_index] = m_CpuCounter.NextValue() / (System.Environment.ProcessorCount * 100d); }
-            catch { m_CpuUsage[sample_index] = 0; }
-        }
+            if (m_CpuSensors != null)
+            {
+                m_CpuHardware.Update();
 
-        /// <summary>
-        /// Resets performance counters used
-        /// </summary>
-        void ResetPerformanceCounter()
-        {
-            if (!Monitorable())
-                return;
+                double sum = 0d;
+                foreach (var sensor in m_CpuSensors)
+                    sum += (!sensor.Value.HasValue) ? 0d : (sensor.Value.Value / (sensor.Max.Value - sensor.Min.Value));
 
-            if (m_CpuCounter != null)
-                m_CpuCounter.Close();
+                m_CpuUsage[m_NumSamples - 1] = (sum / m_CpuSensors.Count);
+            }
 
-            m_CpuCounter = new PerformanceCounter(
-                "Process",
-                "% Processor Time",
-                m_Process.ProcessName,
-                m_Process.MachineName);
+            if (m_RamSensors != null)
+            {
+                m_RamHardware.Update();
+
+                double sum = 0d;
+                foreach (var sensor in m_RamSensors)
+                    sum += (!sensor.Value.HasValue) ? 0d : (sensor.Value.Value / (sensor.Max.Value - sensor.Min.Value));
+
+                m_MemoryUsage[m_NumSamples - 1] = (sum / m_RamSensors.Count);
+            }
         }
 
         /// <summary>
@@ -523,8 +575,8 @@
             {
                 if (disposing)
                 {
-                    if (m_CpuCounter != null)
-                        m_CpuCounter.Close();
+                    if (m_Computer != null)
+                        m_Computer.Close();
 
                     if (m_Process != null)
                         m_Process.Close();
