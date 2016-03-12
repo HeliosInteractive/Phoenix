@@ -18,6 +18,7 @@ Pheonix is a Windows Application Monitoring tool designed by Helios Interactive 
    * Checking if executable's window is responsive or not and if not, restarting it
    * Hotkeys for toggling UI, stopping/starting the monitor process and etc.
    * Taking a screenshot upon executable's crash
+   * Graphing computer-wide CPU, GPU, and RAM load
  2. Remote
    * Receiving commands via MQTT in order for a technician to remotely invoke actions without being physically present on-site
    * Receiving updates securely via SSH
