@@ -36,11 +36,11 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainDialog));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series13 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series14 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series15 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.main_tab = new System.Windows.Forms.TabControl();
             this.tab_local = new System.Windows.Forms.TabPage();
             this.enable_gpu_graph = new System.Windows.Forms.CheckBox();
@@ -116,6 +116,7 @@
             this.toggleUIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitPhoenixToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tooltip = new System.Windows.Forms.ToolTip(this.components);
+            this.graph_update_timer = new System.Windows.Forms.Timer(this.components);
             this.main_tab.SuspendLayout();
             this.tab_local.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.metrics_chart)).BeginInit();
@@ -281,55 +282,55 @@
             // metrics_chart
             // 
             this.metrics_chart.BorderlineWidth = 0;
-            chartArea1.AxisX.IsMarginVisible = false;
-            chartArea1.AxisX.LabelStyle.Enabled = false;
-            chartArea1.AxisX.LineWidth = 0;
-            chartArea1.AxisX.MajorGrid.Enabled = false;
-            chartArea1.AxisX.MajorTickMark.Enabled = false;
-            chartArea1.AxisY.IsMarginVisible = false;
-            chartArea1.AxisY.LabelStyle.Enabled = false;
-            chartArea1.AxisY.LineWidth = 0;
-            chartArea1.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
-            chartArea1.AxisY.MajorTickMark.Enabled = false;
-            chartArea1.AxisY.Maximum = 1D;
-            chartArea1.AxisY.Minimum = 0D;
-            chartArea1.BackColor = System.Drawing.Color.Snow;
-            chartArea1.BorderWidth = 0;
-            chartArea1.Name = "metrics_chart_area";
-            chartArea1.Position.Auto = false;
-            chartArea1.Position.Height = 100F;
-            chartArea1.Position.Width = 100F;
-            this.metrics_chart.ChartAreas.Add(chartArea1);
-            legend1.Alignment = System.Drawing.StringAlignment.Far;
-            legend1.BackColor = System.Drawing.Color.Transparent;
-            legend1.DockedToChartArea = "metrics_chart_area";
-            legend1.IsTextAutoFit = false;
-            legend1.Name = "metrics_legend";
-            this.metrics_chart.Legends.Add(legend1);
+            chartArea5.AxisX.IsMarginVisible = false;
+            chartArea5.AxisX.LabelStyle.Enabled = false;
+            chartArea5.AxisX.LineWidth = 0;
+            chartArea5.AxisX.MajorGrid.Enabled = false;
+            chartArea5.AxisX.MajorTickMark.Enabled = false;
+            chartArea5.AxisY.IsMarginVisible = false;
+            chartArea5.AxisY.LabelStyle.Enabled = false;
+            chartArea5.AxisY.LineWidth = 0;
+            chartArea5.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
+            chartArea5.AxisY.MajorTickMark.Enabled = false;
+            chartArea5.AxisY.Maximum = 1D;
+            chartArea5.AxisY.Minimum = 0D;
+            chartArea5.BackColor = System.Drawing.Color.Snow;
+            chartArea5.BorderWidth = 0;
+            chartArea5.Name = "metrics_chart_area";
+            chartArea5.Position.Auto = false;
+            chartArea5.Position.Height = 100F;
+            chartArea5.Position.Width = 100F;
+            this.metrics_chart.ChartAreas.Add(chartArea5);
+            legend5.Alignment = System.Drawing.StringAlignment.Far;
+            legend5.BackColor = System.Drawing.Color.Transparent;
+            legend5.DockedToChartArea = "metrics_chart_area";
+            legend5.IsTextAutoFit = false;
+            legend5.Name = "metrics_legend";
+            this.metrics_chart.Legends.Add(legend5);
             this.metrics_chart.Location = new System.Drawing.Point(193, 158);
             this.metrics_chart.Name = "metrics_chart";
             this.metrics_chart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Pastel;
-            series1.ChartArea = "metrics_chart_area";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series1.IsXValueIndexed = true;
-            series1.Legend = "metrics_legend";
-            series1.LegendText = "% cpu";
-            series1.Name = "cpu_usage_series";
-            series2.ChartArea = "metrics_chart_area";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series2.IsXValueIndexed = true;
-            series2.Legend = "metrics_legend";
-            series2.LegendText = "% ram";
-            series2.Name = "ram_usage_series";
-            series3.ChartArea = "metrics_chart_area";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series3.IsXValueIndexed = true;
-            series3.Legend = "metrics_legend";
-            series3.LegendText = "% gpu";
-            series3.Name = "gpu_usage_series";
-            this.metrics_chart.Series.Add(series1);
-            this.metrics_chart.Series.Add(series2);
-            this.metrics_chart.Series.Add(series3);
+            series13.ChartArea = "metrics_chart_area";
+            series13.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series13.IsXValueIndexed = true;
+            series13.Legend = "metrics_legend";
+            series13.LegendText = "% cpu";
+            series13.Name = "cpu_usage_series";
+            series14.ChartArea = "metrics_chart_area";
+            series14.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series14.IsXValueIndexed = true;
+            series14.Legend = "metrics_legend";
+            series14.LegendText = "% ram";
+            series14.Name = "ram_usage_series";
+            series15.ChartArea = "metrics_chart_area";
+            series15.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series15.IsXValueIndexed = true;
+            series15.Legend = "metrics_legend";
+            series15.LegendText = "% gpu";
+            series15.Name = "gpu_usage_series";
+            this.metrics_chart.Series.Add(series13);
+            this.metrics_chart.Series.Add(series14);
+            this.metrics_chart.Series.Add(series15);
             this.metrics_chart.Size = new System.Drawing.Size(173, 76);
             this.metrics_chart.TabIndex = 0;
             this.metrics_chart.TabStop = false;
@@ -952,7 +953,7 @@
             // process_monitor_timer
             // 
             this.process_monitor_timer.Interval = 60;
-            this.process_monitor_timer.Tick += new System.EventHandler(this.OnApplicationTick);
+            this.process_monitor_timer.Tick += new System.EventHandler(this.OnMonitorTimerTick);
             // 
             // notify_icon
             // 
@@ -981,6 +982,12 @@
             this.exitPhoenixToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.exitPhoenixToolStripMenuItem.Text = "Exit Phoenix";
             this.exitPhoenixToolStripMenuItem.Click += new System.EventHandler(this.OnExitPhoenixToolStripMenuItemClick);
+            // 
+            // graph_update_timer
+            // 
+            this.graph_update_timer.Enabled = true;
+            this.graph_update_timer.Interval = 30;
+            this.graph_update_timer.Tick += new System.EventHandler(this.OnGraphTimerTick);
             // 
             // MainDialog
             // 
@@ -1091,6 +1098,7 @@
         private System.Windows.Forms.CheckBox enable_cpu_graph;
         private System.Windows.Forms.CheckBox enable_gpu_graph;
         private System.Windows.Forms.CheckBox enable_ram_graph;
+        private System.Windows.Forms.Timer graph_update_timer;
     }
 }
 

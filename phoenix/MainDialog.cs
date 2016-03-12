@@ -306,9 +306,13 @@
             }
         }
 
-        private void OnApplicationTick(object sender, EventArgs e)
+        private void OnMonitorTimerTick(object sender, EventArgs e)
         {
             m_ProcessRunner.Monitor();
+        }
+
+        private void OnGraphTimerTick(object sender, EventArgs e)
+        {
             m_MetricsManager.Update();
 
             if (enable_ram_graph.Checked)
