@@ -311,9 +311,14 @@
             m_ProcessRunner.Monitor();
             m_MetricsManager.Update();
 
-            m_RamUsageSeries.Points.DataBindY(m_MetricsManager.RamSamples);
-            m_CpuUsageSeries.Points.DataBindY(m_MetricsManager.CpuSamples);
-            m_GpuUsageSeries.Points.DataBindY(m_MetricsManager.GpuSamples);
+            if (enable_ram_graph.Checked)
+                m_RamUsageSeries.Points.DataBindY(m_MetricsManager.RamSamples);
+
+            if (enable_cpu_graph.Checked)
+                m_CpuUsageSeries.Points.DataBindY(m_MetricsManager.CpuSamples);
+
+            if (enable_gpu_graph.Checked)
+                m_GpuUsageSeries.Points.DataBindY(m_MetricsManager.GpuSamples);
         }
 
         private void OnScreenshotButtonClick(object sender, EventArgs e) { ScreenCapture.TakeScreenShot(); }
@@ -500,6 +505,18 @@
                     .Replace("#RSYNC_ADDRESS#", rsync_server_address.Text)
                     .Replace("#MQTT_ADDRESS#", mqtt_server_address.Text),
                 email_attachment.Text);
+        }
+
+        private void OnGraphCheckedChanged(object sender, EventArgs e)
+        {
+            if (!enable_cpu_graph.Checked)
+                m_CpuUsageSeries.Points.Clear();
+
+            if (!enable_gpu_graph.Checked)
+                m_GpuUsageSeries.Points.Clear();
+
+            if (!enable_ram_graph.Checked)
+                m_RamUsageSeries.Points.Clear();
         }
     }
 }

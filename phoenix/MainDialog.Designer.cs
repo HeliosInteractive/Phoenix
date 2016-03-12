@@ -43,6 +43,9 @@
             System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.main_tab = new System.Windows.Forms.TabControl();
             this.tab_local = new System.Windows.Forms.TabPage();
+            this.enable_gpu_graph = new System.Windows.Forms.CheckBox();
+            this.enable_ram_graph = new System.Windows.Forms.CheckBox();
+            this.enable_cpu_graph = new System.Windows.Forms.CheckBox();
             this.environment_label = new System.Windows.Forms.Label();
             this.environment = new System.Windows.Forms.TextBox();
             this.script_to_execute_on_start = new System.Windows.Forms.TextBox();
@@ -141,6 +144,9 @@
             // 
             // tab_local
             // 
+            this.tab_local.Controls.Add(this.enable_gpu_graph);
+            this.tab_local.Controls.Add(this.enable_ram_graph);
+            this.tab_local.Controls.Add(this.enable_cpu_graph);
             this.tab_local.Controls.Add(this.environment_label);
             this.tab_local.Controls.Add(this.environment);
             this.tab_local.Controls.Add(this.script_to_execute_on_start);
@@ -171,6 +177,45 @@
             this.tab_local.TabIndex = 0;
             this.tab_local.Text = "Local";
             this.tab_local.UseVisualStyleBackColor = true;
+            // 
+            // enable_gpu_graph
+            // 
+            this.enable_gpu_graph.Checked = true;
+            this.enable_gpu_graph.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.enable_gpu_graph.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.enable_gpu_graph.Location = new System.Drawing.Point(349, 214);
+            this.enable_gpu_graph.Name = "enable_gpu_graph";
+            this.enable_gpu_graph.Size = new System.Drawing.Size(11, 11);
+            this.enable_gpu_graph.TabIndex = 0;
+            this.enable_gpu_graph.TabStop = false;
+            this.enable_gpu_graph.UseVisualStyleBackColor = true;
+            this.enable_gpu_graph.CheckedChanged += new System.EventHandler(this.OnGraphCheckedChanged);
+            // 
+            // enable_ram_graph
+            // 
+            this.enable_ram_graph.Checked = true;
+            this.enable_ram_graph.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.enable_ram_graph.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.enable_ram_graph.Location = new System.Drawing.Point(349, 199);
+            this.enable_ram_graph.Name = "enable_ram_graph";
+            this.enable_ram_graph.Size = new System.Drawing.Size(11, 11);
+            this.enable_ram_graph.TabIndex = 0;
+            this.enable_ram_graph.TabStop = false;
+            this.enable_ram_graph.UseVisualStyleBackColor = true;
+            this.enable_ram_graph.CheckedChanged += new System.EventHandler(this.OnGraphCheckedChanged);
+            // 
+            // enable_cpu_graph
+            // 
+            this.enable_cpu_graph.Checked = true;
+            this.enable_cpu_graph.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.enable_cpu_graph.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.enable_cpu_graph.Location = new System.Drawing.Point(349, 184);
+            this.enable_cpu_graph.Name = "enable_cpu_graph";
+            this.enable_cpu_graph.Size = new System.Drawing.Size(11, 11);
+            this.enable_cpu_graph.TabIndex = 0;
+            this.enable_cpu_graph.TabStop = false;
+            this.enable_cpu_graph.UseVisualStyleBackColor = true;
+            this.enable_cpu_graph.CheckedChanged += new System.EventHandler(this.OnGraphCheckedChanged);
             // 
             // environment_label
             // 
@@ -1043,6 +1088,9 @@
         private System.Windows.Forms.Label environment_label;
         private System.Windows.Forms.TextBox environment;
         private System.Windows.Forms.ToolTip tooltip;
+        private System.Windows.Forms.CheckBox enable_cpu_graph;
+        private System.Windows.Forms.CheckBox enable_gpu_graph;
+        private System.Windows.Forms.CheckBox enable_ram_graph;
     }
 }
 
