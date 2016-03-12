@@ -912,19 +912,19 @@
             this.exitPhoenixToolStripMenuItem});
             this.context_menu_strip.Name = "context_menu_strip";
             this.context_menu_strip.ShowImageMargin = false;
-            this.context_menu_strip.Size = new System.Drawing.Size(157, 48);
+            this.context_menu_strip.Size = new System.Drawing.Size(159, 48);
             // 
             // toggleUIToolStripMenuItem
             // 
             this.toggleUIToolStripMenuItem.Name = "toggleUIToolStripMenuItem";
-            this.toggleUIToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.toggleUIToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
             this.toggleUIToolStripMenuItem.Text = "Toggle UI (ALT+F11)";
             this.toggleUIToolStripMenuItem.Click += new System.EventHandler(this.OnToggleUIToolStripMenuItemClick);
             // 
             // exitPhoenixToolStripMenuItem
             // 
             this.exitPhoenixToolStripMenuItem.Name = "exitPhoenixToolStripMenuItem";
-            this.exitPhoenixToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.exitPhoenixToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
             this.exitPhoenixToolStripMenuItem.Text = "Exit Phoenix";
             this.exitPhoenixToolStripMenuItem.Click += new System.EventHandler(this.OnExitPhoenixToolStripMenuItemClick);
             // 

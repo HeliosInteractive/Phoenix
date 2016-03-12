@@ -51,7 +51,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>helios.ico</ApplicationIcon>
+    <ApplicationIcon>phoenix.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>phoenix.Program</StartupObject>
@@ -158,6 +158,7 @@
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />
     <Content Include="helios.ico" />
+    <Content Include="phoenix.ico" />
     <None Include="Resources\logger.xml" />
     <EmbeddedResource Include="Resources\about.html" />
   </ItemGroup>
