@@ -15,19 +15,38 @@
         private double[]    m_RamSamples    = new double[m_NumSamples];
         private const int   m_NumSamples    = 100;
 
+        /// <summary>
+        /// Number of samples which is being collected for each Collector
+        /// </summary>
         public int      NumSamples { get { return m_NumSamples; } }
+
+        /// <summary>
+        /// Samples Collected for CPU load
+        /// </summary>
         public double[] CpuSamples { get { return m_CpuSamples; } }
+
+        /// <summary>
+        /// Samples Collected for GPU load
+        /// </summary>
         public double[] GpuSamples { get { return m_GpuSamples; } }
+
+        /// <summary>
+        /// Samples Collected for RAM load
+        /// </summary>
         public double[] RamSamples { get { return m_RamSamples; } }
 
+        /// <summary>
+        /// Initializes all Collectors with an opened instance of Computer
+        /// </summary>
         public Manager()
         {
-            m_Computer = new Computer();
+            m_Computer = new Computer
+            {
+                CPUEnabled = true,
+                GPUEnabled = true,
+                RAMEnabled = true,
+            };
 
-            m_Computer.CPUEnabled = true;
-            m_Computer.GPUEnabled = true;
-            m_Computer.RAMEnabled = true;
-            m_Computer.HDDEnabled = true;
             m_Computer.Open();
 
             m_CpuCollector.Setup(m_Computer);
@@ -39,6 +58,9 @@
             m_RamSamples = Enumerable.Repeat(0d, NumSamples).ToArray();
         }
 
+        /// <summary>
+        /// Updates all collectors and collects their new samples
+        /// </summary>
         public void Update()
         {
             for (int index = 1; index < NumSamples; ++index)
