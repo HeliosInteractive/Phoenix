@@ -83,24 +83,15 @@
 
             m_Hardware.Update();
 
-            double sum      = 0d;
-            double counted  = 0d;
+            foreach (IHardware subhardware in m_Hardware.SubHardware)
+                subhardware.Update();
 
+            double sum = 0d;
             foreach (var sensor in m_Sensors)
-            {
-                if (sensor.Value.HasValue && sensor.Max.HasValue && sensor.Min.HasValue)
-                {
-                    sum += sensor.Value.Value.Remap01(sensor.Max.Value, sensor.Min.Value);
-                    counted += 1d;
-                }
-            }
+                if (sensor.Value.HasValue)
+                    sum += sensor.Value.Value;
 
-            if (counted == m_Sensors.Count)
-            {
-                double average = sum / counted;
-                if (average > 0d && average < 1d)
-                    m_CurrentSample = average;
-            }
+            m_CurrentSample = (sum / m_Sensors.Count) / 100d;
         }
 
         /// <summary>
