@@ -157,7 +157,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />
-    <Content Include="helios.ico" />
     <Content Include="phoenix.ico" />
     <None Include="Resources\logger.xml" />
     <EmbeddedResource Include="Resources\about.html" />

@@ -25,7 +25,6 @@
         private RemoteManager       m_RemoteManager;
         private ReportManager       m_ReportManager;
         private RsyncClient         m_RsyncClient;
-        private IEnumerable<int>    m_MetricIndices;
         private bool                m_PhoenixReady = false;
 
 
@@ -61,7 +60,6 @@
 
             m_MemoryUsageSeries = metrics_chart.Series["mem_usage_series"];
             m_CpuUsageSeries    = metrics_chart.Series["cpu_usage_series"];
-            m_MetricIndices     = Enumerable.Range(0, m_ProcessRunner.NumSamples);
 
             notify_icon.Icon = Icon;
             process_monitor_timer.Start();
