@@ -2,7 +2,7 @@
 
 ## Windows Application Monitoring
 
-![Phoenix UI](https://raw.githubusercontent.com/HeliosInteractive/Phoenix/master/docs/image/local.png)
+![Phoenix UI](docs/image/local.png?raw=true)
 
 Pheonix is a Windows Application Monitoring tool designed by Helios Interactive to make deployment and maintaining of kiosk applications easier.
 
