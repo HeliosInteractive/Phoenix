@@ -431,7 +431,7 @@
                     FileName = script,
                     Arguments = cmd,
                     CreateNoWindow = headless,
-                    UseShellExecute = headless,
+                    UseShellExecute = true,
                 }
             })
             {
