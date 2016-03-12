@@ -32,6 +32,8 @@
         public static readonly ILog ScreenCapture   = LogManager.GetLogger(typeof(phoenix.ScreenCapture));
         /// <summary>Logger for UpdateManager class</summary>
         public static readonly ILog UpdateManager   = LogManager.GetLogger(typeof(phoenix.UpdateManager));
+        /// <summary>Logger for Metric Collectors class</summary>
+        public static readonly ILog Collector       = LogManager.GetLogger(typeof(phoenix.Metrics.ICollector));
 
         //! @cond
         public static void Configure(Form owner, RichTextBox log_box)

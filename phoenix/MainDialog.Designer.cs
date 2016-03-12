@@ -15,6 +15,7 @@
         {
             if (disposing && (components != null))
             {
+                m_MetricsManager.Dispose();
                 m_HotkeyManager.Dispose();
                 m_ProcessRunner.Dispose();
                 m_RemoteManager.Dispose();
@@ -39,6 +40,7 @@
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.main_tab = new System.Windows.Forms.TabControl();
             this.tab_local = new System.Windows.Forms.TabPage();
             this.environment_label = new System.Windows.Forms.Label();
@@ -261,21 +263,28 @@
             this.metrics_chart.Legends.Add(legend1);
             this.metrics_chart.Location = new System.Drawing.Point(193, 158);
             this.metrics_chart.Name = "metrics_chart";
-            this.metrics_chart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
+            this.metrics_chart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Pastel;
             series1.ChartArea = "metrics_chart_area";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
             series1.IsXValueIndexed = true;
             series1.Legend = "metrics_legend";
             series1.LegendText = "% cpu";
             series1.Name = "cpu_usage_series";
             series2.ChartArea = "metrics_chart_area";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
             series2.IsXValueIndexed = true;
             series2.Legend = "metrics_legend";
-            series2.LegendText = "% mem";
-            series2.Name = "mem_usage_series";
+            series2.LegendText = "% ram";
+            series2.Name = "ram_usage_series";
+            series3.ChartArea = "metrics_chart_area";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series3.IsXValueIndexed = true;
+            series3.Legend = "metrics_legend";
+            series3.LegendText = "% gpu";
+            series3.Name = "gpu_usage_series";
             this.metrics_chart.Series.Add(series1);
             this.metrics_chart.Series.Add(series2);
+            this.metrics_chart.Series.Add(series3);
             this.metrics_chart.Size = new System.Drawing.Size(173, 76);
             this.metrics_chart.TabIndex = 0;
             this.metrics_chart.TabStop = false;
@@ -912,19 +921,19 @@
             this.exitPhoenixToolStripMenuItem});
             this.context_menu_strip.Name = "context_menu_strip";
             this.context_menu_strip.ShowImageMargin = false;
-            this.context_menu_strip.Size = new System.Drawing.Size(159, 48);
+            this.context_menu_strip.Size = new System.Drawing.Size(157, 48);
             // 
             // toggleUIToolStripMenuItem
             // 
             this.toggleUIToolStripMenuItem.Name = "toggleUIToolStripMenuItem";
-            this.toggleUIToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.toggleUIToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.toggleUIToolStripMenuItem.Text = "Toggle UI (ALT+F11)";
             this.toggleUIToolStripMenuItem.Click += new System.EventHandler(this.OnToggleUIToolStripMenuItemClick);
             // 
             // exitPhoenixToolStripMenuItem
             // 
             this.exitPhoenixToolStripMenuItem.Name = "exitPhoenixToolStripMenuItem";
-            this.exitPhoenixToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.exitPhoenixToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.exitPhoenixToolStripMenuItem.Text = "Exit Phoenix";
             this.exitPhoenixToolStripMenuItem.Click += new System.EventHandler(this.OnExitPhoenixToolStripMenuItemClick);
             // 

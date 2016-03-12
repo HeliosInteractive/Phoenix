@@ -104,5 +104,31 @@
 
             return true;
         }
+
+        /// <summary>
+        /// Remaps value between outputMin and outputMax
+        /// </summary>
+        /// <param name="value">input to be remapped</param>
+        /// <param name="inputMin">minimum of input</param>
+        /// <param name="inputMax">maximum of input</param>
+        /// <param name="outputMin">minimum of output</param>
+        /// <param name="outputMax">maximum of output</param>
+        /// <returns>mapped value</returns>
+        public static float Remap(this float value, float inputMin, float inputMax, float outputMin, float outputMax)
+        {
+            return ((value - inputMin) / (inputMax - inputMin) * (outputMax - outputMin) + outputMin);
+        }
+
+        /// <summary>
+        /// Remaps value between 0 and 1
+        /// </summary>
+        /// <param name="value">input to be remapped</param>
+        /// <param name="inputMin">minimum of input</param>
+        /// <param name="inputMax">maximum of input</param>
+        /// <returns>mapped value</returns>
+        public static float Remap01(this float value, float inputMin, float inputMax)
+        {
+            return value.Remap(inputMin, inputMax, 0.0f, 1.0f);
+        }
     }
 }

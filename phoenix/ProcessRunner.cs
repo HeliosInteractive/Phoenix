@@ -5,8 +5,6 @@
     using System.Linq;
     using System.Diagnostics;
     using System.Threading.Tasks;
-    using System.Collections.Generic;
-    using OpenHardwareMonitor.Hardware;
 
     /// <summary>
     /// The central nerve system of Phoenix! Handles restarting,
@@ -32,14 +30,6 @@
         string                  m_CachedName    = string.Empty;
         /// <summary>Environment variables to be merged with system's variables for m_Process</summary>
         string                  m_Environment   = string.Empty;
-        /// <summary>Memory usage samples</summary>
-        double[]                m_MemoryUsage   = new double[m_NumSamples];
-        /// <summary>CPU usage samples</summary>
-        double[]                m_CpuUsage      = new double[m_NumSamples];
-        /// <summary>GPU usage samples</summary>
-        double[]                m_GpuUsage      = new double[m_NumSamples];
-        /// <summary>Number of Metrics samples collected in m_MemoryUsage and m_CpuUsage</summary>
-        const int               m_NumSamples    = 100;
         /// <summary>The time delay (s) to wait between successive (re)starts</summary>
         int                     m_DelaySeconds  = 0;
         /// <summary>The time delay (s) to wait before assuming unresponsive m_Process is crashed</summary>
@@ -53,23 +43,11 @@
         /// <summary>If true, stdout and stderr of m_Process is captured into Phoenix' logger</summary>
         bool                    m_CaptureOutput = false;
 
-        Computer                m_Computer;
-        List<ISensor>           m_RamSensors;
-        List<ISensor>           m_CpuSensors;
-        List<ISensor>           m_GpuSensors;
-        IHardware               m_RamHardware;
-        IHardware               m_CpuHardware;
-        IHardware               m_GpuHardware;
-
         #endregion
 
         //! @cond
         #region Property Indexers
 
-        public double[] MemoryUsage     { get { return m_MemoryUsage; } }
-        public double[] CpuUsage        { get { return m_CpuUsage; } }
-        public double[] GpuUsage        { get { return m_GpuUsage; } }
-        public int      NumSamples      { get { return m_NumSamples; } }
         public bool     Monitoring      { get { return m_Monitoring; } }
         public string   Environment     { get; set; }
         public bool CaptureConsoleOutput
@@ -189,72 +167,6 @@
         /// are performed silently.
         /// </summary>
         public enum ExecType { Crashed, Normal }
-
-        /// <summary>
-        /// Initializes metric sample arrays and tries to obtain available system memory
-        /// </summary>
-        public ProcessRunner()
-        {
-            m_Computer = new Computer();
-
-            m_Computer.GPUEnabled = true;
-            m_Computer.CPUEnabled = true;
-            m_Computer.RAMEnabled = true;
-
-            m_Computer.Open();
-
-            foreach (IHardware hardwareItem in m_Computer.Hardware)
-            {
-                if (hardwareItem.HardwareType == HardwareType.GpuAti ||
-                    hardwareItem.HardwareType == HardwareType.GpuNvidia)
-                {
-                    m_GpuHardware = hardwareItem;
-                    m_GpuSensors = new List<ISensor>();
-
-                    foreach (ISensor sensor in hardwareItem.Sensors)
-                    {
-                        if (sensor.SensorType == SensorType.Load)
-                        {
-                            m_GpuSensors.Add(sensor);
-                        }
-                    }
-                }
-
-                else if (hardwareItem.HardwareType == HardwareType.CPU)
-                {
-                    m_CpuHardware = hardwareItem;
-
-                    m_CpuSensors = new List<ISensor>();
-
-                    foreach (ISensor sensor in hardwareItem.Sensors)
-                    {
-                        if (sensor.SensorType == SensorType.Load)
-                        {
-                            m_CpuSensors.Add(sensor);
-                        }
-                    }
-                }
-
-                else if (hardwareItem.HardwareType == HardwareType.RAM)
-                {
-                    m_RamHardware = hardwareItem;
-
-                    m_RamSensors = new List<ISensor>();
-
-                    foreach (ISensor sensor in hardwareItem.Sensors)
-                    {
-                        if (sensor.SensorType == SensorType.Load)
-                        {
-                            m_RamSensors.Add(sensor);
-                        }
-                    }
-                }
-            }
-
-            m_MemoryUsage = Enumerable.Repeat(0d, NumSamples).ToArray();
-            m_CpuUsage = Enumerable.Repeat(0d, NumSamples).ToArray();
-            m_GpuUsage = Enumerable.Repeat(0d, NumSamples).ToArray();
-        }
 
         /// <summary>
         /// Stops m_Process from running. No-op if already stopped.
@@ -441,43 +353,6 @@
         }
 
         /// <summary>
-        /// Collects new metric samples of m_Process
-        /// </summary>
-        public void UpdateMetrics()
-        {
-            if (!Monitorable())
-                return;
-
-            for (int index = 1; index < m_NumSamples; ++index)
-            {
-                m_MemoryUsage[index - 1] = m_MemoryUsage[index];
-                m_CpuUsage[index - 1] = m_CpuUsage[index];
-            }
-
-            if (m_CpuSensors != null)
-            {
-                m_CpuHardware.Update();
-
-                double sum = 0d;
-                foreach (var sensor in m_CpuSensors)
-                    sum += (!sensor.Value.HasValue) ? 0d : (sensor.Value.Value / (sensor.Max.Value - sensor.Min.Value));
-
-                m_CpuUsage[m_NumSamples - 1] = (sum / m_CpuSensors.Count);
-            }
-
-            if (m_RamSensors != null)
-            {
-                m_RamHardware.Update();
-
-                double sum = 0d;
-                foreach (var sensor in m_RamSensors)
-                    sum += (!sensor.Value.HasValue) ? 0d : (sensor.Value.Value / (sensor.Max.Value - sensor.Min.Value));
-
-                m_MemoryUsage[m_NumSamples - 1] = (sum / m_RamSensors.Count);
-            }
-        }
-
-        /// <summary>
         /// Returns true if m_Process is monitor able
         /// </summary>
         bool Monitorable()
@@ -575,9 +450,6 @@
             {
                 if (disposing)
                 {
-                    if (m_Computer != null)
-                        m_Computer.Close();
-
                     if (m_Process != null)
                         m_Process.Close();
                 }

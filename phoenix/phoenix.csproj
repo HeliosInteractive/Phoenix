@@ -103,6 +103,11 @@
     <Compile Include="MainDialogCallbacks.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Metrics\CpuCollector.cs" />
+    <Compile Include="Metrics\GpuCollector.cs" />
+    <Compile Include="Metrics\Collector.cs" />
+    <Compile Include="Metrics\Manager.cs" />
+    <Compile Include="Metrics\RamCollector.cs" />
     <Compile Include="RemoteManager.cs" />
     <Compile Include="ReportManager.cs" />
     <Compile Include="MainDialog.cs">
