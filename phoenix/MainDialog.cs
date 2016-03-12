@@ -3,11 +3,9 @@
     using System;
     using System.IO;
     using Properties;
-    using System.Linq;
     using System.Threading;
     using System.Reflection;
     using System.Windows.Forms;
-    using System.Collections.Generic;
     using System.Security.Cryptography;
     using System.Windows.Forms.DataVisualization.Charting;
 
@@ -19,13 +17,14 @@
         private OpenFileDialog      m_FileDialog;
         private FolderBrowserDialog m_FolderDialog;
         private Series              m_CpuUsageSeries;
-        private Series              m_MemoryUsageSeries;
-        static Mutex                m_SingleInstanceMutex;
+        private Series              m_GpuUsageSeries;
+        private Series              m_RamUsageSeries;
         private UpdateManager       m_UpdateManager;
         private RemoteManager       m_RemoteManager;
         private ReportManager       m_ReportManager;
         private RsyncClient         m_RsyncClient;
-        private IEnumerable<int>    m_MetricIndices;
+        private Metrics.Manager     m_MetricsManager;
+        private static Mutex        m_SingleInstanceMutex;
         private bool                m_PhoenixReady = false;
 
 
@@ -43,6 +42,7 @@
                 GetExecutingAssembly().
                 GetManifestResourceStream("phoenix.Resources.about.html");
 
+            m_MetricsManager= new Metrics.Manager();
             m_HotkeyManager = new HotkeyManager(Handle);
             m_AppSettings   = new IniSettings("phoenix.ini");
             m_ProcessRunner = new ProcessRunner();
@@ -59,9 +59,9 @@
 
             ApplySettings();
 
-            m_MemoryUsageSeries = metrics_chart.Series["mem_usage_series"];
-            m_CpuUsageSeries    = metrics_chart.Series["cpu_usage_series"];
-            m_MetricIndices     = Enumerable.Range(0, m_ProcessRunner.NumSamples);
+            m_RamUsageSeries = metrics_chart.Series["ram_usage_series"];
+            m_CpuUsageSeries = metrics_chart.Series["cpu_usage_series"];
+            m_GpuUsageSeries = metrics_chart.Series["gpu_usage_series"];
 
             notify_icon.Icon = Icon;
             process_monitor_timer.Start();
@@ -306,13 +306,23 @@
             }
         }
 
-        private void OnApplicationTick(object sender, EventArgs e)
+        private void OnMonitorTimerTick(object sender, EventArgs e)
         {
             m_ProcessRunner.Monitor();
-            m_ProcessRunner.UpdateMetrics();
+        }
 
-            m_MemoryUsageSeries.Points.DataBindY(m_ProcessRunner.MemoryUsage);
-            m_CpuUsageSeries.Points.DataBindY(m_ProcessRunner.CpuUsage);
+        private void OnGraphTimerTick(object sender, EventArgs e)
+        {
+            m_MetricsManager.Update();
+
+            if (enable_ram_graph.Checked)
+                m_RamUsageSeries.Points.DataBindY(m_MetricsManager.RamSamples);
+
+            if (enable_cpu_graph.Checked)
+                m_CpuUsageSeries.Points.DataBindY(m_MetricsManager.CpuSamples);
+
+            if (enable_gpu_graph.Checked)
+                m_GpuUsageSeries.Points.DataBindY(m_MetricsManager.GpuSamples);
         }
 
         private void OnScreenshotButtonClick(object sender, EventArgs e) { ScreenCapture.TakeScreenShot(); }
@@ -499,6 +509,18 @@
                     .Replace("#RSYNC_ADDRESS#", rsync_server_address.Text)
                     .Replace("#MQTT_ADDRESS#", mqtt_server_address.Text),
                 email_attachment.Text);
+        }
+
+        private void OnGraphCheckedChanged(object sender, EventArgs e)
+        {
+            if (!enable_cpu_graph.Checked)
+                m_CpuUsageSeries.Points.Clear();
+
+            if (!enable_gpu_graph.Checked)
+                m_GpuUsageSeries.Points.Clear();
+
+            if (!enable_ram_graph.Checked)
+                m_RamUsageSeries.Points.Clear();
         }
     }
 }

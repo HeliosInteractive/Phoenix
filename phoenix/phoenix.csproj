@@ -51,7 +51,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>helios.ico</ApplicationIcon>
+    <ApplicationIcon>phoenix.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>phoenix.Program</StartupObject>
@@ -75,6 +75,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="OpenHardwareMonitorLib, Version=0.7.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\OpenHardwareMonitor.0.7.1\lib\net40\OpenHardwareMonitorLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
@@ -99,6 +103,11 @@
     <Compile Include="MainDialogCallbacks.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Metrics\CpuCollector.cs" />
+    <Compile Include="Metrics\GpuCollector.cs" />
+    <Compile Include="Metrics\Collector.cs" />
+    <Compile Include="Metrics\Manager.cs" />
+    <Compile Include="Metrics\RamCollector.cs" />
     <Compile Include="RemoteManager.cs" />
     <Compile Include="ReportManager.cs" />
     <Compile Include="MainDialog.cs">
@@ -157,7 +166,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />
-    <Content Include="helios.ico" />
+    <Content Include="phoenix.ico" />
     <None Include="Resources\logger.xml" />
     <EmbeddedResource Include="Resources\about.html" />
   </ItemGroup>

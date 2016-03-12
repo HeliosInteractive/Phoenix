@@ -5,7 +5,6 @@
     using System.Linq;
     using System.Diagnostics;
     using System.Threading.Tasks;
-    using Microsoft.VisualBasic.Devices;
 
     /// <summary>
     /// The central nerve system of Phoenix! Handles restarting,
@@ -15,8 +14,6 @@
     {
         #region Private Members
 
-        /// <summary>Performance counter used to collect CPU usage</summary>
-        PerformanceCounter      m_CpuCounter    = null;
         /// <summary>Process instance currently being monitored</summary>
         Process                 m_Process       = null;
         /// <summary>Working directory of m_Process</summary>
@@ -33,14 +30,6 @@
         string                  m_CachedName    = string.Empty;
         /// <summary>Environment variables to be merged with system's variables for m_Process</summary>
         string                  m_Environment   = string.Empty;
-        /// <summary>Memory usage samples</summary>
-        double[]                m_MemoryUsage   = new double[m_NumSamples];
-        /// <summary>CPU usage samples</summary>
-        double[]                m_CpuUsage      = new double[m_NumSamples];
-        /// <summary>Maximum memory available on this machine (bytes)</summary>
-        double                  m_MaxMemory     = -1d;
-        /// <summary>Number of Metrics samples collected in m_MemoryUsage and m_CpuUsage</summary>
-        const int               m_NumSamples    = 100;
         /// <summary>The time delay (s) to wait between successive (re)starts</summary>
         int                     m_DelaySeconds  = 0;
         /// <summary>The time delay (s) to wait before assuming unresponsive m_Process is crashed</summary>
@@ -59,9 +48,6 @@
         //! @cond
         #region Property Indexers
 
-        public double[] MemoryUsage     { get { return m_MemoryUsage; } }
-        public double[] CpuUsage        { get { return m_CpuUsage; } }
-        public int      NumSamples      { get { return m_NumSamples; } }
         public bool     Monitoring      { get { return m_Monitoring; } }
         public string   Environment     { get; set; }
         public bool CaptureConsoleOutput
@@ -138,8 +124,6 @@
         //! @cond
         void OnProcessStarted(ExecType type)
         {
-            ResetPerformanceCounter();
-
             m_Monitoring = true;
             m_CachedName = m_Process.ProcessName;
 
@@ -183,25 +167,6 @@
         /// are performed silently.
         /// </summary>
         public enum ExecType { Crashed, Normal }
-
-        /// <summary>
-        /// Initializes metric sample arrays and tries to obtain available system memory
-        /// </summary>
-        public ProcessRunner()
-        {
-            m_MemoryUsage = Enumerable.Repeat(0d, NumSamples).ToArray();
-            m_CpuUsage = Enumerable.Repeat(0d, NumSamples).ToArray();
-
-            try
-            {
-                m_MaxMemory = new ComputerInfo().AvailablePhysicalMemory;
-            }
-            catch (Exception ex)
-            {
-                Logger.ProcessRunner.ErrorFormat("Unable to obtain available memory: {0}", ex.Message);
-                m_MaxMemory = -1d;
-            }
-        }
 
         /// <summary>
         /// Stops m_Process from running. No-op if already stopped.
@@ -388,44 +353,6 @@
         }
 
         /// <summary>
-        /// Collects new metric samples of m_Process
-        /// </summary>
-        public void UpdateMetrics()
-        {
-            if (!Monitorable())
-                return;
-
-            for (int index = 1; index < m_NumSamples; ++index)
-            {
-                m_MemoryUsage[index - 1] = m_MemoryUsage[index];
-                m_CpuUsage[index - 1] = m_CpuUsage[index];
-            }
-
-            int sample_index = m_NumSamples - 1;
-            m_MemoryUsage[sample_index] = m_Process.WorkingSet64 / m_MaxMemory;
-            try { m_CpuUsage[sample_index] = m_CpuCounter.NextValue() / (System.Environment.ProcessorCount * 100d); }
-            catch { m_CpuUsage[sample_index] = 0; }
-        }
-
-        /// <summary>
-        /// Resets performance counters used
-        /// </summary>
-        void ResetPerformanceCounter()
-        {
-            if (!Monitorable())
-                return;
-
-            if (m_CpuCounter != null)
-                m_CpuCounter.Close();
-
-            m_CpuCounter = new PerformanceCounter(
-                "Process",
-                "% Processor Time",
-                m_Process.ProcessName,
-                m_Process.MachineName);
-        }
-
-        /// <summary>
         /// Returns true if m_Process is monitor able
         /// </summary>
         bool Monitorable()
@@ -504,7 +431,7 @@
                     FileName = script,
                     Arguments = cmd,
                     CreateNoWindow = headless,
-                    UseShellExecute = headless,
+                    UseShellExecute = true,
                 }
             })
             {
@@ -523,9 +450,6 @@
             {
                 if (disposing)
                 {
-                    if (m_CpuCounter != null)
-                        m_CpuCounter.Close();
-
                     if (m_Process != null)
                         m_Process.Close();
                 }
