@@ -153,4 +153,8 @@
     <value>alpha</value>
     <comment>update channel</comment>
   </data>
+  <data name="SettingsFileName" xml:space="preserve">
+    <value>phoenix.xml</value>
+    <comment>settings file name</comment>
+  </data>
 </root>

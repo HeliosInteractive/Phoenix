@@ -22,7 +22,7 @@
         private void OnProcessStart(ProcessRunner.ExecType type)
         {
             ResetWatchButtonLabel();
-            m_AppSettings.Store("Internal", "CachedName", m_ProcessRunner.CachedTitle);
+            m_AppSettings.Write("Internal", "CachedName", m_ProcessRunner.CachedTitle);
             Logger.MainDialog.InfoFormat("Process started ({0}).", m_ProcessRunner.ProcessPath);
         }
 

@@ -19,7 +19,7 @@
         /// <summary>Logger for MainDialog class</summary>
         public static readonly ILog MainDialog      = LogManager.GetLogger(typeof(phoenix.MainDialog));
         /// <summary>Logger for IniSettings class</summary>
-        public static readonly ILog IniSettings     = LogManager.GetLogger(typeof(phoenix.IniSettings));
+        public static readonly ILog Settings        = LogManager.GetLogger(typeof(phoenix.PersistentSettings));
         /// <summary>Logger for RsyncClient class</summary>
         public static readonly ILog RsyncClient     = LogManager.GetLogger(typeof(phoenix.RsyncClient));
         /// <summary>Logger for ProcessRunner class</summary>
@@ -38,16 +38,13 @@
         //! @cond
         public static void Configure(Form owner, RichTextBox log_box)
         {
-            FileInfo logger_cfg = new FileInfo(
-                Path.Combine(Program.Directory, "logger.xml"));
+            FileInfo config_file = new FileInfo(
+                Path.Combine(Program.Directory, Properties.Resources.SettingsFileName));
 
-            if (!logger_cfg.Exists)
-            {
-                // configure from the configuration
-                File.WriteAllText(logger_cfg.FullName, Properties.Resources.logger);
-            }
+            if (!config_file.Exists)
+                File.WriteAllText(config_file.FullName, Properties.Resources.logger);
 
-            XmlConfigurator.Configure(logger_cfg);
+            XmlConfigurator.Configure(config_file);
             BasicConfigurator.Configure(new TextBoxAppender(log_box, owner));
             LogManager.GetLogger(typeof(Logger)).Info(Properties.Resources.LoggerHeader);
         }

@@ -12,7 +12,7 @@
     public partial class MainDialog : Form
     {
         private HotkeyManager       m_HotkeyManager;
-        private IniSettings         m_AppSettings;
+        private PersistentSettings         m_AppSettings;
         private ProcessRunner       m_ProcessRunner;
         private OpenFileDialog      m_FileDialog;
         private FolderBrowserDialog m_FolderDialog;
@@ -44,7 +44,7 @@
 
             m_MetricsManager= new Metrics.Manager();
             m_HotkeyManager = new HotkeyManager(Handle);
-            m_AppSettings   = new IniSettings("phoenix.ini");
+            m_AppSettings   = new PersistentSettings();
             m_ProcessRunner = new ProcessRunner();
             m_FileDialog    = new OpenFileDialog();
             m_FolderDialog  = new FolderBrowserDialog();
@@ -194,9 +194,9 @@
             OnControlValidate(control);
 
             if (control as TextBoxBase != null)
-                m_AppSettings.Store(Defaults.GetSectionByKey(control_name_cc), control_name_cc, (sender as TextBox).Text);
+                m_AppSettings.Write(Defaults.GetSectionByKey(control_name_cc), control_name_cc, (sender as TextBoxBase).Text);
             else if (control as CheckBox != null)
-                m_AppSettings.Store(Defaults.GetSectionByKey(control_name_cc), control_name_cc, (sender as CheckBox).Checked);
+                m_AppSettings.Write(Defaults.GetSectionByKey(control_name_cc), control_name_cc, (sender as CheckBox).Checked);
             else
                 Logger.MainDialog.Error("Control type is not supported.");
 
