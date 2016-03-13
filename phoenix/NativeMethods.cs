@@ -43,15 +43,6 @@
         [DllImport("user32.dll")]
         public static extern System.IntPtr GetForegroundWindow();
 
-        /// <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ms725501(v=vs.85).aspx"/>
-        [DllImport("kernel32", CharSet = CharSet.Unicode)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool WritePrivateProfileString(string section, string key, string val, string filePath);
-
-        /// <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ms724353(v=vs.85).aspx"/>
-        [DllImport("kernel32", CharSet = CharSet.Unicode)]
-        public static extern int GetPrivateProfileString(string section, string key, string def, System.Text.StringBuilder retVal, int size, string filePath);
-
         /// <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ms646309(v=vs.85).aspx"/>
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]

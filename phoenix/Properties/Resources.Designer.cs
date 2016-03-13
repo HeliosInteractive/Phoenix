@@ -144,6 +144,15 @@ namespace phoenix.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to phoenix.xml.
+        /// </summary>
+        internal static string SettingsFileName {
+            get {
+                return ResourceManager.GetString("SettingsFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to alpha.
         /// </summary>
         internal static string UpdateChannel {
