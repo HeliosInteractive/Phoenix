@@ -14,6 +14,7 @@
         private double[]    m_GpuSamples    = new double[m_NumSamples];
         private double[]    m_RamSamples    = new double[m_NumSamples];
         private const int   m_NumSamples    = 100;
+        private bool        m_SetupFinished = false;
 
         /// <summary>
         /// Number of samples which is being collected for each Collector
@@ -40,22 +41,29 @@
         /// </summary>
         public Manager()
         {
-            m_Computer = new Computer
+            Action setup = new Action(() =>
             {
-                CPUEnabled = true,
-                GPUEnabled = true,
-                RAMEnabled = true,
-            };
+                m_Computer = new Computer
+                {
+                    CPUEnabled = true,
+                    GPUEnabled = true,
+                    RAMEnabled = true,
+                };
 
-            m_Computer.Open();
+                m_Computer.Open();
 
-            m_CpuCollector.Setup(m_Computer);
-            m_GpuCollector.Setup(m_Computer);
-            m_RamCollector.Setup(m_Computer);
+                m_CpuCollector.Setup(m_Computer);
+                m_GpuCollector.Setup(m_Computer);
+                m_RamCollector.Setup(m_Computer);
 
-            m_CpuSamples = Enumerable.Repeat(0d, NumSamples).ToArray();
-            m_GpuSamples = Enumerable.Repeat(0d, NumSamples).ToArray();
-            m_RamSamples = Enumerable.Repeat(0d, NumSamples).ToArray();
+                m_CpuSamples = Enumerable.Repeat(0d, NumSamples).ToArray();
+                m_GpuSamples = Enumerable.Repeat(0d, NumSamples).ToArray();
+                m_RamSamples = Enumerable.Repeat(0d, NumSamples).ToArray();
+
+                m_SetupFinished = true;
+            });
+
+            setup.BeginInvoke(null, this);
         }
 
         /// <summary>
@@ -63,6 +71,9 @@
         /// </summary>
         public void Update()
         {
+            if (!m_SetupFinished)
+                return;
+
             for (int index = 1; index < NumSamples; ++index)
             {
                 CpuSamples[index - 1] = CpuSamples[index];
