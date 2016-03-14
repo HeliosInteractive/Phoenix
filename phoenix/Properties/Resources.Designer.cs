@@ -94,28 +94,6 @@ namespace phoenix.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;log4net&gt;
-        ///    &lt;appender name=&quot;PhoenixRollingFile&quot; type=&quot;log4net.Appender.RollingFileAppender&quot;&gt;
-        ///        &lt;file value=&quot;phoenix.log&quot; /&gt;
-        ///        &lt;appendToFile value=&quot;true&quot; /&gt;
-        ///        &lt;maximumFileSize value=&quot;1MB&quot; /&gt;
-        ///        &lt;maxSizeRollBackups value=&quot;20&quot; /&gt;
-        ///
-        ///        &lt;layout type=&quot;log4net.Layout.PatternLayout&quot;&gt;
-        ///            &lt;conversionPattern value=&quot;%5level [%2thread] [%21logger@%3line] - %message%newline&quot; /&gt;
-        ///        &lt;/layout&gt;
-        ///    &lt;/appender&gt;
-        ///    &lt;root&gt;
-        ///        &lt;level value=&quot;ALL&quot; /&gt;
-        ///        &lt;appender-r [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string logger {
-            get {
-                return ResourceManager.GetString("logger", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to ==============================.
         /// </summary>
         internal static string LoggerHeader {
@@ -130,6 +108,26 @@ namespace phoenix.Properties {
         internal static string MqttTopic {
             get {
                 return ResourceManager.GetString("MqttTopic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+        ///&lt;phoenix&gt;
+        ///    &lt;log4net&gt;
+        ///        &lt;appender name=&quot;PhoenixRollingFile&quot; type=&quot;log4net.Appender.RollingFileAppender&quot;&gt;
+        ///            &lt;file value=&quot;phoenix.log&quot; /&gt;
+        ///            &lt;appendToFile value=&quot;true&quot; /&gt;
+        ///            &lt;maximumFileSize value=&quot;1MB&quot; /&gt;
+        ///            &lt;maxSizeRollBackups value=&quot;20&quot; /&gt;
+        ///
+        ///            &lt;layout type=&quot;log4net.Layout.PatternLayout&quot;&gt;
+        ///                &lt;conversionPattern value=&quot;%5level [%2thread] [%21logger@%3line] - %message%newline&quot; /&gt;
+        ///            &lt;/l [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string phoenix_base_settings {
+            get {
+                return ResourceManager.GetString("phoenix_base_settings", resourceCulture);
             }
         }
         

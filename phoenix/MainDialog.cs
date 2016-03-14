@@ -12,7 +12,7 @@
     public partial class MainDialog : Form
     {
         private HotkeyManager       m_HotkeyManager;
-        private PersistentSettings         m_AppSettings;
+        private Settings            m_AppSettings;
         private ProcessRunner       m_ProcessRunner;
         private OpenFileDialog      m_FileDialog;
         private FolderBrowserDialog m_FolderDialog;
@@ -44,7 +44,7 @@
 
             m_MetricsManager= new Metrics.Manager();
             m_HotkeyManager = new HotkeyManager(Handle);
-            m_AppSettings   = new PersistentSettings();
+            m_AppSettings   = new Settings();
             m_ProcessRunner = new ProcessRunner();
             m_FileDialog    = new OpenFileDialog();
             m_FolderDialog  = new FolderBrowserDialog();
@@ -289,7 +289,7 @@
                 }
 
                 m_ProcessRunner.DelaySeconds                = String.IsNullOrWhiteSpace(time_delay_before_launch.Text) ? 0 : Int32.Parse(time_delay_before_launch.Text);
-                m_ProcessRunner.WaitTime                    = String.IsNullOrWhiteSpace(wait_time.Text) ? 0 : Int32.Parse(wait_time.Text);
+                m_ProcessRunner.ResponseTime                = String.IsNullOrWhiteSpace(wait_time.Text) ? 0 : Int32.Parse(wait_time.Text);
                 m_ProcessRunner.ProcessPath                 = application_to_watch.Text.AsPath(Extensions.PathType.FilePath);
                 m_ProcessRunner.CommandLine                 = command_line_arguments.Text;
                 m_ProcessRunner.StartScript                 = script_to_execute_on_start.Text.AsPath(Extensions.PathType.FilePath);

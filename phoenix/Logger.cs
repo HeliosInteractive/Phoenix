@@ -5,6 +5,7 @@
     using System.IO;
     using log4net.Core;
     using log4net.Config;
+    using System.Xml.Linq;
     using log4net.Appender;
     using System.Windows.Forms;
 
@@ -19,7 +20,7 @@
         /// <summary>Logger for MainDialog class</summary>
         public static readonly ILog MainDialog      = LogManager.GetLogger(typeof(phoenix.MainDialog));
         /// <summary>Logger for IniSettings class</summary>
-        public static readonly ILog Settings        = LogManager.GetLogger(typeof(phoenix.PersistentSettings));
+        public static readonly ILog Settings        = LogManager.GetLogger(typeof(phoenix.Settings));
         /// <summary>Logger for RsyncClient class</summary>
         public static readonly ILog RsyncClient     = LogManager.GetLogger(typeof(phoenix.RsyncClient));
         /// <summary>Logger for ProcessRunner class</summary>
@@ -42,9 +43,38 @@
                 Path.Combine(Program.Directory, Properties.Resources.SettingsFileName));
 
             if (!config_file.Exists)
-                File.WriteAllText(config_file.FullName, Properties.Resources.logger);
+                File.WriteAllText(config_file.FullName, Properties.Resources.phoenix_base_settings);
 
-            XmlConfigurator.Configure(config_file);
+            string phoenix_root_name = "phoenix";
+            string log4net_node_name = "log4net";
+
+            XElement phoenix_root = null;
+
+            try { phoenix_root = XElement.Load(config_file.FullName); }
+            catch (Exception ex)
+            {
+                LogManager.GetLogger(typeof(Logger))
+                .ErrorFormat("Root element cannot be loaded: {0}", ex.Message);
+
+                phoenix_root = XElement.Parse(Properties.Resources.phoenix_base_settings);
+            }
+
+            if (phoenix_root == null || phoenix_root.Name != phoenix_root_name)
+            {
+                Logger.Settings.Warn("Phoenix node not found. It will be created.");
+                phoenix_root = new XElement(phoenix_root_name);
+            }
+
+            XElement log4net_root = phoenix_root.Element(log4net_node_name);
+
+            if (log4net_root == null)
+            {
+                Logger.Settings.Error("Options node not found. It will be created.");
+                log4net_root = new XElement(log4net_node_name);
+                phoenix_root.Add(log4net_root);
+            }
+
+            XmlConfigurator.Configure(log4net_root.AsXmlElement());
             BasicConfigurator.Configure(new TextBoxAppender(log_box, owner));
             LogManager.GetLogger(typeof(Logger)).Info(Properties.Resources.LoggerHeader);
         }

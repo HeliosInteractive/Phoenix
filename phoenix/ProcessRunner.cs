@@ -85,7 +85,7 @@
             get { return m_DelaySeconds; }
             set { m_DelaySeconds = value; Validate(); }
         }
-        public int WaitTime
+        public int ResponseTime
         {
             get { return m_WaitTime; }
             set { m_WaitTime = value; Validate(); }
@@ -122,7 +122,7 @@
         public Action<ExecType> ProcessStopped;
 
         //! @cond
-        void OnProcessStarted(ExecType type)
+        private void OnProcessStarted(ExecType type)
         {
             m_Monitoring = true;
             m_CachedName = m_Process.ProcessName;
@@ -131,7 +131,7 @@
                 ProcessStarted(type);
         }
 
-        void OnProcessStopped(ExecType type)
+        private void OnProcessStopped(ExecType type)
         {
             m_Monitoring = false;
 
@@ -152,7 +152,7 @@
 
         // This is here solely because I need to remove this
         // subscriber in case of a NORMAL Stop() request.
-        void OnProcessCrashed(object sender, EventArgs e)
+        private void OnProcessCrashed(object sender, EventArgs e)
         {
             OnProcessStopped(ExecType.Crashed);
         }
@@ -183,7 +183,7 @@
                 try
                 {
                     // Step 1. Ask window to close by sending WM_CLOSE
-                    if (HasMainWindow())
+                    if (HasWindow)
                     {
                         m_Process.CloseMainWindow();
                         m_Process.WaitForExit(1000);
@@ -297,7 +297,7 @@
                 m_Process.Exited += OnProcessCrashed;
                 m_Process.Start();
 
-                if (HasMainWindow())
+                if (HasWindow)
                     m_Process.WaitForInputIdle(5000);
 
                 if (CaptureConsoleOutput)
@@ -311,8 +311,8 @@
             }
             catch(Exception ex)
             {
-                Logger.ProcessRunner.ErrorFormat("Unable to start the process: {0}"
-                    , ex.Message);
+                Logger.ProcessRunner.ErrorFormat(
+                    "Unable to start the process: {0}" , ex.Message);
                 Stop(ExecType.Normal);
             }
         }
@@ -322,19 +322,21 @@
         /// </summary>
         public void Monitor()
         {
-            if (!Monitorable())
+            if (!Monitorable)
                 return;
 
             m_Process.Refresh();
 
             if (AssumeCrashIfNotResponsive && !m_Process.Responding)
-                Task.Delay(new TimeSpan(0, 0, WaitTime))
-                    .ContinueWith((fn) => {
+                Task.Delay(new TimeSpan(0, 0, ResponseTime))
+                    .ContinueWith((task) => {
                         if (!m_Process.Responding)
                             Stop(ExecType.Crashed);
                     });
 
-            if (ForceAlwaysOnTop && HasMainWindow())
+            if (ForceAlwaysOnTop &&
+                Monitorable &&
+                HasWindow)
             {
                 if (NativeMethods.GetForegroundWindow() !=
                     m_Process.MainWindowHandle)
@@ -353,21 +355,28 @@
         }
 
         /// <summary>
-        /// Returns true if m_Process is monitor able
+        /// Returns true if m_Process is monitor able. Being monitor able here means that
+        /// the process is still running and can be checked if it is responding or not.
         /// </summary>
-        bool Monitorable()
+        private bool Monitorable
         {
-            try { return m_Process != null && !m_Process.HasExited; }
-            catch { return false; }
+            get
+            {
+                try { return m_Process != null && !m_Process.HasExited; }
+                catch { return false; }
+            }
         }
 
         /// <summary>
-        /// Returns true if process has main window (false for Console processes)
+        /// Returns true if process has a main window (false for Console processes).
         /// </summary>
-        bool HasMainWindow()
+        private bool HasWindow
         {
-            try { return Monitorable() && m_Process.MainWindowHandle != IntPtr.Zero; }
-            catch { return false; }
+            get
+            {
+                try { return m_Process != null && m_Process.MainWindowHandle != IntPtr.Zero; }
+                catch { return false; }
+            }
         }
 
         /// <summary>
@@ -440,8 +449,9 @@
             }
         }
 
-        //! @cond
         #region IDisposable Support
+        //! @cond
+
         private bool m_Disposed = false;
 
         protected virtual void Dispose(bool disposing)
@@ -453,7 +463,7 @@
                     if (m_Process != null)
                         m_Process.Close();
                 }
-                // free native resources
+                
                 m_Disposed = true;
             }
         }
@@ -463,7 +473,8 @@
             Stop(ExecType.Normal);
             Dispose(true);
         }
-        #endregion
+
         //! @endcond
+        #endregion
     }
 }
