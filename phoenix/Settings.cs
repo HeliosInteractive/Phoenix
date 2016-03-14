@@ -23,7 +23,14 @@
             string phoenix_root_name = "phoenix";
             string options_node_name = "options";
 
-            m_PhoenixRoot = XElement.Load(config_file.FullName);
+            try { m_PhoenixRoot = XElement.Load(config_file.FullName); }
+            catch (Exception ex)
+            {
+                Logger.Settings.ErrorFormat(
+                    "Root element cannot be loaded: {0}", ex.Message);
+
+                m_PhoenixRoot = XElement.Parse(Properties.Resources.phoenix_base_settings);
+            }
 
             if (m_PhoenixRoot == null || m_PhoenixRoot.Name != phoenix_root_name)
             {

@@ -48,7 +48,16 @@
             string phoenix_root_name = "phoenix";
             string log4net_node_name = "log4net";
 
-            XElement phoenix_root = XElement.Load(config_file.FullName);
+            XElement phoenix_root = null;
+
+            try { phoenix_root = XElement.Load(config_file.FullName); }
+            catch (Exception ex)
+            {
+                LogManager.GetLogger(typeof(Logger))
+                .ErrorFormat("Root element cannot be loaded: {0}", ex.Message);
+
+                phoenix_root = XElement.Parse(Properties.Resources.phoenix_base_settings);
+            }
 
             if (phoenix_root == null || phoenix_root.Name != phoenix_root_name)
             {
