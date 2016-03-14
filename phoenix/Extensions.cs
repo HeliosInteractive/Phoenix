@@ -2,7 +2,9 @@
 {
     using System;
     using System.IO;
+    using System.Xml;
     using System.Linq;
+    using System.Xml.Linq;
     using System.Globalization;
 
     /// <summary>
@@ -103,6 +105,19 @@
                 return false;
 
             return true;
+        }
+
+        /// <summary>
+        /// Returns an XElement as XmlElement
+        /// </summary>
+        /// <see cref="https://gist.github.com/rarous/3150395"/>
+        /// <param name="el">XElement input</param>
+        /// <returns>XmlElement output</returns>
+        public static XmlElement AsXmlElement(this XElement el)
+        {
+            var doc = new XmlDocument();
+            doc.Load(el.CreateReader());
+            return doc.DocumentElement;
         }
     }
 }

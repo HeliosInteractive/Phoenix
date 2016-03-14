@@ -12,7 +12,7 @@
     public partial class MainDialog : Form
     {
         private HotkeyManager       m_HotkeyManager;
-        private PersistentSettings         m_AppSettings;
+        private Settings            m_AppSettings;
         private ProcessRunner       m_ProcessRunner;
         private OpenFileDialog      m_FileDialog;
         private FolderBrowserDialog m_FolderDialog;
@@ -44,7 +44,7 @@
 
             m_MetricsManager= new Metrics.Manager();
             m_HotkeyManager = new HotkeyManager(Handle);
-            m_AppSettings   = new PersistentSettings();
+            m_AppSettings   = new Settings();
             m_ProcessRunner = new ProcessRunner();
             m_FileDialog    = new OpenFileDialog();
             m_FolderDialog  = new FolderBrowserDialog();

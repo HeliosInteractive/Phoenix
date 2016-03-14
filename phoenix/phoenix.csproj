@@ -98,7 +98,12 @@
     <Compile Include="Defaults.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="HotkeyManager.cs" />
-    <Compile Include="PersistentSettings.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="MainDialogCallbacks.cs">
       <SubType>Form</SubType>
@@ -128,14 +133,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -167,7 +167,7 @@
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />
     <Content Include="phoenix.ico" />
-    <None Include="Resources\logger.xml" />
+    <EmbeddedResource Include="Resources\phoenix.xml" />
     <EmbeddedResource Include="Resources\about.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

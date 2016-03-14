@@ -129,10 +129,6 @@
     <value>..\Resources\rsync.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     <comment>cwRsync zip archive</comment>
   </data>
-  <data name="logger" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\logger.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-    <comment>default log4net config file</comment>
-  </data>
   <data name="DefaultEmailBody" xml:space="preserve">
     <value>Helios Phoenix crash report,&lt;br&gt;&lt;br&gt;Instance of #MACHINE_IDENTITY# has encountered a crash. Attached are a screen shot of this machine at the time of crash and optionally a log file (if specified before).&lt;br&gt;This machine is set to fetch updates from #RSYNC_ADDRESS# and obtain commands from #MQTT_ADDRESS#.&lt;br&gt;&lt;br&gt;This is an automated message, please do not respond.</value>
     <comment>default email body</comment>
@@ -156,5 +152,8 @@
   <data name="SettingsFileName" xml:space="preserve">
     <value>phoenix.xml</value>
     <comment>settings file name</comment>
+  </data>
+  <data name="phoenix_base_settings" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\phoenix.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
 </root>
