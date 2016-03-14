@@ -33,10 +33,22 @@ function Machines(cols)
 {
 	var columns = cols;
 	
-	this.authorize = function(info) {
+	var authorize = function(info) {
 		$.post(config.base_url + "machines/add", info, function(data) {
 			window.location.reload();
 		});
+	}
+	
+	var isAuthorized = function(obj) {
+		if (registered_systems == undefined)
+			return false;
+		
+		var found = false;
+		registered_systems.forEach(function(val) {
+			found = (val.name == obj.name && val.public_key == obj.public_key);
+		});
+		
+		return found;
 	}
 	
 	this.add = function(payload) {
@@ -45,11 +57,11 @@ function Machines(cols)
 		
 		var row = $('<tr>');
 		columns.forEach(function(col) {
-			if (!this.isAuthorized(msg)) {
+			if (!isAuthorized(msg)) {
 				if (col == "actions") {
 					row.append($('<td>').append(
 						$('<a>')
-						.click(function() { this.authorize(msg); return false; })
+						.click(function() { authorize(msg); return false; })
 						.text('Authorize'))
 					);
 				} else if (col == "status") {
@@ -62,18 +74,6 @@ function Machines(cols)
 		$('.content table')
 			.find('tbody')
 			.append(row);
-	}
-	
-	this.isAuthorized = function(obj) {
-		if (registered_systems == undefined)
-			return false;
-		
-		var found = false;
-		registered_systems.forEach(function(val) {
-			found = (val.name == obj.name && val.public_key == obj.public_key);
-		});
-		
-		return found;
 	}
 }
 
@@ -90,14 +90,15 @@ function HandlePing(payload) {
 			if ($(".name", elem).text() == msg.name) {
 				var monitoring = msg.monitoring ? "monitoring" : "dead";
 				var status = "online <b>(" + monitoring + ")</b>";
-				status += "<br />cpu: " + (msg.cpu * 100).toFixed(2) + "%";
-				status += "<br />mem: " + (msg.mem * 100).toFixed(2) + "%";
+				status += "<pre>";
+				status += "\ncpu: " + (msg.cpu * 100).toFixed(2) + "%";
+				status += "\ngpu: " + (msg.gpu * 100).toFixed(2) + "%";
+				status += "\nram: " + (msg.ram * 100).toFixed(2) + "%";
+				status += "</pre>";
 				$(".status", elem).html(status);
 				$(elem).attr("ping", Date.now());
 			}
 		});
-	
-	console.log(msg);
 }
 
 function HandleOfflines(dead_interval) {
