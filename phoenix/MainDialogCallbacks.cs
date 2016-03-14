@@ -62,17 +62,27 @@
                 else if (message == "ping")
                 {
                     double last_mem_usage = 0d;
+                    double last_gpu_usage = 0d;
                     double last_cpu_usage = 0d;
 
-                    if (m_MetricsManager.NumSamples > 0 && m_MetricsManager.RamSamples != null)
-                        last_mem_usage = m_MetricsManager.RamSamples[m_MetricsManager.RamSamples.Length - 1];
+                    if (m_MetricsManager.NumSamples > 0)
+                    {
+                        int last_index = m_MetricsManager.NumSamples - 1;
 
-                    if (m_MetricsManager.NumSamples > 0 && m_MetricsManager.CpuSamples != null)
-                        last_cpu_usage = m_MetricsManager.CpuSamples[m_MetricsManager.CpuSamples.Length - 1];
+                        if (m_MetricsManager.RamSamples != null)
+                            last_mem_usage = m_MetricsManager.RamSamples[last_index];
 
-                    string ping = string.Format("{{ \"name\":\"{0}\", \"cpu\":{1}, \"mem\":{2}, \"monitoring\":{3} }}",
+                        if (m_MetricsManager.GpuSamples != null)
+                            last_gpu_usage = m_MetricsManager.GpuSamples[last_index];
+
+                        if (m_MetricsManager.CpuSamples != null)
+                            last_cpu_usage = m_MetricsManager.CpuSamples[last_index];
+                    }
+
+                    string ping = string.Format("{{ \"name\":\"{0}\", \"cpu\":{1}, \"gpu\":{2}, \"ram\":{3}, \"monitoring\":{4} }}",
                         RsyncClient.MachineIdentity,
                         last_cpu_usage,
+                        last_gpu_usage,
                         last_mem_usage,
                         m_ProcessRunner.Monitoring.ToString().ToLower());
 
