@@ -39,7 +39,14 @@
             Logger.MainDialog.WarnFormat("MQTT connection closed, retrying in {0} minutes."
                 , m_MqttRetryMinutes);
 
-            Task.Delay(new System.TimeSpan(0, m_MqttRetryMinutes, 0)).ContinueWith(fn => {
+            Task.Delay(new System.TimeSpan(0, m_MqttRetryMinutes, 0)).ContinueWith(fn =>
+            {
+                if (string.IsNullOrWhiteSpace(mqtt_server_address.Text))
+                {
+                    Logger.MainDialog.Info("MQTT connection failed permanently.");
+                    return;
+                }
+
                 Logger.MainDialog.Info("MQTT attempting to reconnect.");
                 m_RemoteManager.Connect(mqtt_server_address.Text, Resources.MqttTopic);
             });
@@ -79,7 +86,8 @@
                             last_cpu_usage = m_MetricsManager.CpuSamples[last_index];
                     }
 
-                    string ping = string.Format("{{ \"name\":\"{0}\", \"cpu\":{1}, \"gpu\":{2}, \"ram\":{3}, \"monitoring\":{4} }}",
+                    string ping = string.Format(
+                        "{{ \"name\":\"{0}\", \"cpu\":{1}, \"gpu\":{2}, \"ram\":{3}, \"monitoring\":{4} }}",
                         RsyncClient.MachineIdentity,
                         last_cpu_usage,
                         last_gpu_usage,
