@@ -130,7 +130,12 @@
     <comment>cwRsync zip archive</comment>
   </data>
   <data name="DefaultEmailBody" xml:space="preserve">
-    <value>Helios Phoenix crash report,&lt;br&gt;&lt;br&gt;Instance of #MACHINE_IDENTITY# has encountered a crash. Attached are a screen shot of this machine at the time of crash and optionally a log file (if specified before).&lt;br&gt;This machine is set to fetch updates from #RSYNC_ADDRESS# and obtain commands from #MQTT_ADDRESS#.&lt;br&gt;&lt;br&gt;This is an automated message, please do not respond.</value>
+    <value>Helios Phoenix crash report,
+
+Instance of #MACHINE_IDENTITY# has encountered a crash. Attached are a screen shot of this machine at the time of crash and optionally a log file (if specified before).
+This machine is set to fetch updates from #RSYNC_ADDRESS# and obtain commands from #MQTT_ADDRESS#.
+
+This is an automated message, please do not respond.</value>
     <comment>default email body</comment>
   </data>
   <data name="DefaultEmailTitle" xml:space="preserve">

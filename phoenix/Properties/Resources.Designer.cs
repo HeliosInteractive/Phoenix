@@ -76,7 +76,12 @@ namespace phoenix.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Helios Phoenix crash report,&lt;br&gt;&lt;br&gt;Instance of #MACHINE_IDENTITY# has encountered a crash. Attached are a screen shot of this machine at the time of crash and optionally a log file (if specified before).&lt;br&gt;This machine is set to fetch updates from #RSYNC_ADDRESS# and obtain commands from #MQTT_ADDRESS#.&lt;br&gt;&lt;br&gt;This is an automated message, please do not respond..
+        ///   Looks up a localized string similar to Helios Phoenix crash report,
+        ///
+        ///Instance of #MACHINE_IDENTITY# has encountered a crash. Attached are a screen shot of this machine at the time of crash and optionally a log file (if specified before).
+        ///This machine is set to fetch updates from #RSYNC_ADDRESS# and obtain commands from #MQTT_ADDRESS#.
+        ///
+        ///This is an automated message, please do not respond..
         /// </summary>
         internal static string DefaultEmailBody {
             get {
@@ -122,8 +127,8 @@ namespace phoenix.Properties {
         ///            &lt;maxSizeRollBackups value=&quot;20&quot; /&gt;
         ///
         ///            &lt;layout type=&quot;log4net.Layout.PatternLayout&quot;&gt;
-        ///                &lt;conversionPattern value=&quot;%5level [%2thread] [%21logger@%3line] - %message%newline&quot; /&gt;
-        ///            &lt;/l [rest of string was truncated]&quot;;.
+        ///                &lt;conversionPattern value=&quot;%5level [%2thread] [%21logger] - %message%newline&quot; /&gt;
+        ///            &lt;/layout&gt;        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string phoenix_base_settings {
             get {
