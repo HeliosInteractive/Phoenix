@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9da680af2912a5cb81f17aa4fcaf1294",
-    "content-hash": "1b01206297d3be8e6165d0e8ff63ce24",
+    "hash": "28dc1521b052056736177dba4674d9da",
+    "content-hash": "0466b1bcfea3fc9798fff73ac3d7f192",
     "packages": [
         {
             "name": "aura/installer-default",
@@ -623,7 +623,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/8c83ff9a2ffbed1e606bc816db11ddc2385a16ee",
+                "url": "https://api.github.com/repos/symfony/config/zipball/38711092665edc06ef55e842942fb813932ff4ac",
                 "reference": "8c83ff9a2ffbed1e606bc816db11ddc2385a16ee",
                 "shasum": ""
             },
@@ -1411,7 +1411,6 @@
         "cakephp/cakephp": 0,
         "mobiledetect/mobiledetectlib": 0,
         "cakephp/migrations": 0,
-        "cakephp/plugin-installer": 0,
         "friendsofcake/crud": 0,
         "nesbot/carbon": 0,
         "psy/psysh": 0,
