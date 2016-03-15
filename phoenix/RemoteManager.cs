@@ -15,6 +15,8 @@
         MqttClient m_client;
         /// <summary>MQTT channel to listen on</summary>
         string m_channel;
+        /// <summary>MQTT server to connect to</summary>
+        string m_address;
 
         /// <summary>Event broadcaster on MQTT connection closed.</summary>
         public Action OnConnectionClosed;
@@ -30,18 +32,32 @@
         /// <param name="channel">MQTT channel path</param>
         public void Connect(string address, string channel)
         {
-            if (address == string.Empty || channel == string.Empty)
+            if (String.IsNullOrWhiteSpace(address) ||
+                String.IsNullOrWhiteSpace(channel))
+            {
+                Logger.RemoteManager.ErrorFormat("Connect failed, invalid arguments.");
+                ConnectionClosed();
                 return;
+            }
 
-            if (Connected)
-                m_client.Disconnect();
+            if (m_client != null &&
+                m_client.IsConnected &&
+                m_address == address &&
+                m_channel == channel)
+            {
+                Logger.RemoteManager.WarnFormat("Connection is already established.");
+                return;
+            }
 
             try
             {
+                if (Connected) m_client.Disconnect();
                 m_client = new MqttClient(address);
             }
-            catch
+            catch (Exception ex)
             {
+                Logger.RemoteManager.ErrorFormat("Connect failed: {0}", ex.Message);
+                ConnectionClosed();
                 return;
             }
 
@@ -49,32 +65,38 @@
             m_client.ConnectionClosed += (s, e) =>
             {
                 Logger.RemoteManager.Warn("MQTT connection closed.");
-                if (OnConnectionClosed != null)
-                    OnConnectionClosed();
+                ConnectionClosed();
             };
 
             try
             {
                 m_client.Connect(RsyncClient.MachineIdentity);
+
+                if (m_client.IsConnected)
+                {
+                    m_client.Subscribe(
+                        new string[] { channel },
+                        new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
+                    m_channel = channel;
+
+                    Logger.RemoteManager.InfoFormat(
+                        "Established an MQTT connection to {0} and subscribed to {1}.",
+                        address, channel);
+
+                    m_address = address;
+                    ConnectionOpened();
+                }
+                else
+                {
+                    Logger.RemoteManager.Error("MQTT connection is not established after Connect!");
+                    ConnectionClosed();
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                Logger.RemoteManager.Error("Unable to connect to MQTT server.");
+                Logger.RemoteManager.ErrorFormat("Connect failed: {0}", ex.Message);
+                ConnectionClosed();
                 return;
-            }
-
-            if (m_client.IsConnected)
-            {
-                m_client.Subscribe(
-                    new string[] { channel },
-                    new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
-                m_channel = channel;
-
-                Logger.RemoteManager.InfoFormat("Established an MQTT connection to {0} and subscribed to {1}.",
-                    address, channel);
-
-                if (OnConnectionOpened != null)
-                    OnConnectionOpened();
             }
         }
 
@@ -128,6 +150,18 @@
         }
 
         //! @cond
+
+        void ConnectionOpened()
+        {
+            if (OnConnectionOpened != null)
+                OnConnectionOpened();
+        }
+
+        void ConnectionClosed()
+        {
+            if (OnConnectionClosed != null)
+                OnConnectionClosed();
+        }
 
         void MqttMessageReceived(object sender, MqttMsgPublishEventArgs e)
         {
