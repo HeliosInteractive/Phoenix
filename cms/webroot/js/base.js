@@ -160,7 +160,7 @@ $(document).ready(function() {
 	});
 	
 	window.Command = function(action, name) {
-		client.publish(SubChannelPath(name), action);
+		client.publish(channel_mgr.getSub(name), action);
 	}
 
 	client.publish(channel_mgr.getBase(), "echo");
