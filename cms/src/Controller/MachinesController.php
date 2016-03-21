@@ -71,7 +71,9 @@ class MachinesController extends AppController
 			{
 				while (($line = fgets($handle)) !== false)
 				{
-					$keys[] = trim($line);
+					$line = trim($line);
+					if (!empty($line))
+						$keys[] = trim($line);
 				}
 				fclose($handle);
 				
@@ -79,7 +81,7 @@ class MachinesController extends AppController
 				{
 					unset($keys[$index]);
 					
-					if (!file_put_contents(Configure::read('Phoenix.KeyFile'), implode(PHP_EOL, $keys)))
+					if (file_put_contents(Configure::read('Phoenix.KeyFile'), implode(PHP_EOL, $keys)) === FALSE)
 					{
 						$this->Flash->error(__('Updating key file failed.'));
 					}
@@ -145,12 +147,23 @@ class MachinesController extends AppController
         $machine = $this->Machines->newEntity();
         if ($this->request->is('post')) {
             $machine = $this->Machines->patchEntity($machine, $this->request->data);
-            if ($this->Machines->save($machine) && $this->add_key($machine['public_key'])) {
-                $this->Flash->success(__('The machine has been saved.'));
-                return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The machine could not be saved. Please, try again.'));
-            }
+			if ($this->add_key($machine['public_key']))
+			{
+				if ($this->Machines->save($machine))
+				{
+					$this->Flash->success(__('The machine has been saved.'));
+				}
+				else
+				{
+					$this->Flash->error(__('The machine could not be saved. Please, try again.'));
+					$this->remove_key($machine['public_key']);
+				}
+			}
+			else
+			{
+				$this->Flash->error(__('The machine could not be saved. Please, try again.'));
+			}
+			return $this->redirect(['action' => 'index']);
         }
         $this->set(compact('machine'));
         $this->set('_serialize', ['machine']);
@@ -167,11 +180,22 @@ class MachinesController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $machine = $this->Machines->get($id);
-        if ($this->Machines->delete($machine) && $this->remove_key($machine['public_key'])) {
-            $this->Flash->success(__('The machine has been deleted.'));
-        } else {
-            $this->Flash->error(__('The machine could not be deleted. Please, try again.'));
-        }
+		if ($this->remove_key($machine['public_key']))
+		{
+			if ($this->Machines->delete($machine))
+			{
+				$this->Flash->success(__('The machine has been deleted.'));
+			}
+			else
+			{
+				$this->Flash->error(__('The machine could not be deleted. Please, try again 1.'));
+				$this->add_key($machine['public_key']);
+			}
+		}
+		else
+		{
+			$this->Flash->error(__('The machine could not be deleted. Please, try again 2.'));
+		}
         return $this->redirect(['action' => 'index']);
     }
 }
