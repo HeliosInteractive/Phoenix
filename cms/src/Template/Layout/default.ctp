@@ -49,6 +49,18 @@ use Cake\Core\Configure;
                 <h1><a href="<?php echo Router::url('/', true); ?>">Helios Phoenix CMS</a></h1>
             </li>
         </ul>
+		<?php
+		if (empty($userData))
+		{
+			echo $this->Html->link(__('Login'), ['controller' => 'users', 'action' => 'login']);
+		}
+		else
+		{
+			echo $this->Html->link(__('Logout'), ['controller' => 'users', 'action' => 'logout']);
+			echo $this->Html->link(__('Add user'), ['controller' => 'users', 'action' => 'add']);
+			echo $this->Html->link(__('List users'), ['controller' => 'users', 'action' => 'index']);
+		}
+		?>
     </nav>
     <?= $this->Flash->render() ?>
     <section class="container clearfix">
