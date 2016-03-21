@@ -188,13 +188,13 @@ class MachinesController extends AppController
 			}
 			else
 			{
-				$this->Flash->error(__('The machine could not be deleted. Please, try again 1.'));
+				$this->Flash->error(__('The machine could not be deleted. Please, try again.'));
 				$this->add_key($machine['public_key']);
 			}
 		}
 		else
 		{
-			$this->Flash->error(__('The machine could not be deleted. Please, try again 2.'));
+			$this->Flash->error(__('The machine could not be deleted. Please, try again.'));
 		}
         return $this->redirect(['action' => 'index']);
     }
