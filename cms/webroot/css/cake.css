@@ -570,3 +570,8 @@ div.message.hidden {
 	text-overflow: ellipsis;
     overflow: hidden;
 }
+
+nav a {
+	color: white;
+	padding-left: 25px;
+}
