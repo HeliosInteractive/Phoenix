@@ -38,7 +38,7 @@
         public string FeedAddress
         {
             get { if (m_FeedAddress != null) return m_FeedAddress.OriginalString; else return string.Empty; }
-            set { if (!String.IsNullOrEmpty(value)) m_FeedAddress = new Uri(value); }
+            set { if (!String.IsNullOrEmpty(value)) try { m_FeedAddress = new Uri(value); } catch (Exception ex) { Logger.UpdateManager.ErrorFormat("Feed URL assignment failed: {0}", ex.Message); } }
         }
 
         /// <summary>
