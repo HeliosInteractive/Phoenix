@@ -5,7 +5,8 @@
  */
 window.log = function()
 {
-	if(this.console) {
+	if(this.console)
+	{
 		console.log( Array.prototype.slice.call(arguments) );
 	}
 };
@@ -31,15 +32,15 @@ function MqttChannelManager(base_path)
  */
 function Machines(cols)
 {
-	var columns = cols;
-	
-	var authorize = function(info) {
+	var authorize = function(info)
+	{
 		$.post(config.base_url + "machines/add", info, function(data) {
 			window.location.reload();
 		});
 	}
 	
-	var isAuthorized = function(obj) {
+	var isAuthorized = function(obj)
+	{
 		if (registered_systems == undefined)
 			return false;
 		
@@ -51,14 +52,29 @@ function Machines(cols)
 		return found;
 	}
 	
-	this.add = function(payload) {
+	var getColumns = function()
+	{
+		var columns = [];
+		$('.content table thead tr th').each(function( index, value ) {
+			var header = $('a', value).length == 1 ? $('a', value).text() : $(value).text();
+			header = header.toLowerCase().replace(' ', '_');
+			columns.push(header);
+		});
+		return columns;
+	}
+	
+	this.add = function(payload)
+	{
 		try { var msg = $.parseJSON(payload); }
 		catch(e) { log("Failed to parse: " + payload); return; }
 		
-		var row = $('<tr>');
-		columns.forEach(function(col) {
-			if (!isAuthorized(msg)) {
-				if (col == "actions") {
+		if (!isAuthorized(msg))
+		{
+			var row = $('<tr>');
+			getColumns().forEach(function(col)
+			{
+				if (col == "actions")
+				{
 					row.append($('<td>').append(
 						$('<a>')
 						.click(function() { authorize(msg); return false; })
@@ -69,15 +85,19 @@ function Machines(cols)
 				} else {
 					row.append($('<td>').text((col in msg) ? msg[col] : ''));
 				}
-			}
-		});
-		$('.content table')
-			.find('tbody')
-			.append(row);
+			});
+			
+			$('.content table')
+				.find('tbody')
+				.append(row);
+			
+			registered_systems.push({ name:msg.name, public_key:msg.public_key });
+		}
 	}
 }
 
-function HandlePing(payload) {
+function HandlePing(payload)
+{
 	try { var msg = $.parseJSON(payload); }
 	catch(e) { log("Failed to parse: " + payload); return; }
 	
@@ -101,7 +121,8 @@ function HandlePing(payload) {
 		});
 }
 
-function HandleOfflines(dead_interval) {
+function HandleOfflines(dead_interval)
+{
 	$('.content table tbody tr')
 		.each(function( index, value ) {
 			var elem = $(value);
@@ -120,24 +141,18 @@ function HandleOfflines(dead_interval) {
 		});
 }
 
-window.Command = function(action, name) {
+window.Command = function(action, name)
+{
 	/* no-op */
 }
 
-$(document).ready(function() {
-	
+$(document).ready(function()
+{
 	if (config.mqtt_url == "")
 		return;
 	
-	var columns = [];
-	$('.content table thead tr th').each(function( index, value ) {
-		var header = $('a', value).length == 1 ? $('a', value).text() : $(value).text();
-		header = header.toLowerCase().replace(' ', '_');
-		columns.push(header);
-	});
-	
 	var channel_mgr 	= new MqttChannelManager("/helios/phoenix")
-	var machines		= new Machines(columns);
+	var machines		= new Machines();
 	var client			= mqtt.connect(config.mqtt_url);
 	var ping_interval 	= 3 * 1000;
 	var dead_interval 	= 5 * ping_interval;
@@ -152,10 +167,10 @@ $(document).ready(function() {
 		$(".machines h3").text("Machines (disconnected)");
 	});
 	
-	client.on("message", function(topic, payload) {
-		if (topic == channel_mgr.getEcho())
-			machines.add(payload, columns);
-		else if (topic == channel_mgr.getPing())
+	client.on("message", function(channel, payload) {
+		if (channel == channel_mgr.getEcho())
+			machines.add(payload);
+		else if (channel == channel_mgr.getPing())
 			HandlePing(payload);
 	});
 	
