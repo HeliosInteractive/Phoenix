@@ -35,7 +35,7 @@ Phoenix consists of a client written in `WinForms C#` and an *optional* CMS writ
 
 ##Documentation
 
-Take a look at `/docs` for more information. `/docs` hold *end-user* documentation. Latest stable version of Doxygen generated *developer* documentation is available [here](https://phoenix.heliosinteractive.com).
+Take a look at `/docs` for more information. `/docs` hold *end-user* documentation. Latest stable version of Doxygen generated *developer* documentation is available [here](https://phoenix.heliosinteractive.com/docs/index.html).
 
 ##License
 
